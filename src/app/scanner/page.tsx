@@ -79,113 +79,119 @@ export default function ScannerPage() {
             {/* --- CAMERA VIEW --- */}
             {!scannedCard ? (
                 <>
-                    {/* Header Overlay */}
-                    <div className="absolute top-0 inset-x-0 z-20 p-6 bg-gradient-to-b from-black/80 to-transparent flex justify-between items-start">
-                        <div>
-                            <h1 className="text-2xl font-bold text-[#c8aa6e] tracking-widest">RIFTSCAN</h1>
-                            <p className="text-xs text-[#0ac8b9] uppercase tracking-wider">Augmented Reality Module</p>
-                        </div>
-                        <Link href="/" className="bg-black/50 p-2 rounded-full border border-[#c8aa6e]/50 text-[#c8aa6e]">
-                            ✕
-                        </Link>
-                    </div>
-
-                    {/* Camera Feed */}
-                    <div className="relative w-full h-full flex items-center justify-center bg-[#010a13]">
-                        {hasPermission === false ? (
-                            <div className="text-center p-8 space-y-4">
-                                <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
-                                <h3 className="text-xl font-bold">Camera Access Denied</h3>
-                                <p className="text-gray-400">Please enable camera permissions to scan cards.</p>
+                    {/* Overlay UI */}
+                    <div className="absolute inset-0 z-20 pointer-events-none p-6 flex flex-col justify-between">
+                        <header className="flex justify-between items-start">
+                            <Link href="/" className="pointer-events-auto bg-black/60 backdrop-blur-md p-2 rounded-full border border-[#c8aa6e] text-[#c8aa6e]">
+                                <ArrowLeft className="w-6 h-6" />
+                            </Link>
+                            <div className="bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-[#0ac8b9] text-[#0ac8b9] text-xs font-mono">
+                                <div className="flex items-center gap-2">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0ac8b9] opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0ac8b9]"></span>
+                                    </span>
+                                    SYSTEM ONLINE
+                                </div>
+                                <div className="mt-1 text-[10px] text-[#0ac8b9]/70">DB: 850+ Cards</div>
                             </div>
-                        ) : (
-                            <div className="relative w-full h-full">
-                                <video
-                                    ref={videoRef}
-                                    autoPlay
-                                    playsInline
-                                    muted
-                                    className="w-full h-full object-cover"
-                                />
-                                {/* Initializing placeholder */}
-                                {hasPermission === null && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black">
-                                        <Loader2 className="w-12 h-12 animate-spin text-[#c8aa6e]" />
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Hextech Reticle Overlay */}
-                        <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
-                            <div className={clsx(
-                                "w-64 h-88 border-2 border-[#0ac8b9]/50 rounded-lg relative transition-all duration-300",
-                                isScanning ? "border-[#c8aa6e] shadow-[0_0_50px_rgba(200,170,110,0.5)] scale-95" : "scale-100"
-                            )}>
-                                {/* Corners */}
-                                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#0ac8b9]" />
-                                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#0ac8b9]" />
-                                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#0ac8b9]" />
-                                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#0ac8b9]" />
-
-                                {/* Scan Line Animation */}
-                                {!isScanning && hasPermission && (
-                                    <div className="absolute top-0 left-0 right-0 h-1 bg-[#0ac8b9] shadow-[0_0_10px_#0ac8b9] animate-[scan_2s_ease-in-out_infinite]" />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Controls */}
-                    <div className="absolute bottom-0 inset-x-0 z-20 h-32 bg-gradient-to-t from-black via-black/80 to-transparent flex items-center justify-center pb-8">
-                        <button
-                            onClick={handleScan}
-                            disabled={!hasPermission || isScanning}
-                            className={clsx(
-                                "w-20 h-20 rounded-full border-4 flex items-center justify-center shadow-lg transition-all",
-                                isScanning ? "border-[#c8aa6e] bg-[#c8aa6e]/20 animate-pulse" : "border-[#f0e6d2] bg-[#f0e6d2]/10 hover:bg-[#f0e6d2]/20 active:scale-95"
-                            )}
-                        >
-                            {isScanning ? (
-                                <Loader2 className="w-8 h-8 animate-spin text-[#c8aa6e]" />
+                        </header>
+                        {/* Camera Feed */}
+                        <div className="relative w-full h-full flex items-center justify-center bg-[#010a13]">
+                            {hasPermission === false ? (
+                                <div className="text-center p-8 space-y-4">
+                                    <AlertCircle className="w-16 h-16 text-red-500 mx-auto" />
+                                    <h3 className="text-xl font-bold">Camera Access Denied</h3>
+                                    <p className="text-gray-400">Please enable camera permissions to scan cards.</p>
+                                </div>
                             ) : (
-                                <Camera className="w-8 h-8 text-[#f0e6d2]" />
+                                <div className="relative w-full h-full">
+                                    <video
+                                        ref={videoRef}
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* Initializing placeholder */}
+                                    {hasPermission === null && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black">
+                                            <Loader2 className="w-12 h-12 animate-spin text-[#c8aa6e]" />
+                                        </div>
+                                    )}
+                                </div>
                             )}
-                        </button>
-                    </div>
-                </>
-            ) : (
-                /* --- RESULT VIEW --- */
-                <div className="z-10 w-full max-w-md p-6 flex flex-col items-center animate-in zoom-in duration-300">
-                    <div className="mb-6 p-4 bg-[#0ac8b9]/10 border border-[#0ac8b9] rounded-full">
-                        <Check className="w-12 h-12 text-[#0ac8b9]" />
-                    </div>
 
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] to-[#f0e6d2] mb-2 font-serif" style={{ fontFamily: 'Beaufort' }}>
-                        IDENTIFIED
-                    </h2>
-                    <p className="text-[#a09b8c] text-sm uppercase tracking-widest mb-8">
-                        Added to Real Collection
-                    </p>
+                            {/* Hextech Reticle Overlay */}
+                            <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
+                                <div className={clsx(
+                                    "w-64 h-88 border-2 border-[#0ac8b9]/50 rounded-lg relative transition-all duration-300",
+                                    isScanning ? "border-[#c8aa6e] shadow-[0_0_50px_rgba(200,170,110,0.5)] scale-95" : "scale-100"
+                                )}>
+                                    {/* Corners */}
+                                    <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#0ac8b9]" />
+                                    <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#0ac8b9]" />
+                                    <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#0ac8b9]" />
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#0ac8b9]" />
 
-                    <div className="mb-8 transform scale-110">
-                        <CardComponent card={scannedCard} />
-                    </div>
+                                    {/* Scan Line Animation */}
+                                    {!isScanning && hasPermission && (
+                                        <div className="absolute top-0 left-0 right-0 h-1 bg-[#0ac8b9] shadow-[0_0_10px_#0ac8b9] animate-[scan_2s_ease-in-out_infinite]" />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
-                    <div className="flex gap-4 w-full">
-                        <button
-                            onClick={reset}
-                            className="flex-1 btn-hextech-primary flex items-center justify-center gap-2"
-                        >
-                            <RefreshCw className="w-4 h-4" />
-                            SCAN NEXT
-                        </button>
-                        <Link href="/collection" className="flex-1 btn-hextech text-center flex items-center justify-center">
-                            VIEW BINDER
-                        </Link>
+                        {/* Bottom Controls */}
+                        <div className="absolute bottom-0 inset-x-0 z-20 h-32 bg-gradient-to-t from-black via-black/80 to-transparent flex items-center justify-center pb-8">
+                            <button
+                                onClick={handleScan}
+                                disabled={!hasPermission || isScanning}
+                                className={clsx(
+                                    "w-20 h-20 rounded-full border-4 flex items-center justify-center shadow-lg transition-all",
+                                    isScanning ? "border-[#c8aa6e] bg-[#c8aa6e]/20 animate-pulse" : "border-[#f0e6d2] bg-[#f0e6d2]/10 hover:bg-[#f0e6d2]/20 active:scale-95"
+                                )}
+                            >
+                                {isScanning ? (
+                                    <Loader2 className="w-8 h-8 animate-spin text-[#c8aa6e]" />
+                                ) : (
+                                    <Camera className="w-8 h-8 text-[#f0e6d2]" />
+                                )}
+                            </button>
+                        </div>
+                    </>
+                    ) : (
+                    /* --- RESULT VIEW --- */
+                    <div className="z-10 w-full max-w-md p-6 flex flex-col items-center animate-in zoom-in duration-300">
+                        <div className="mb-6 p-4 bg-[#0ac8b9]/10 border border-[#0ac8b9] rounded-full">
+                            <Check className="w-12 h-12 text-[#0ac8b9]" />
+                        </div>
+
+                        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] to-[#f0e6d2] mb-2 font-serif" style={{ fontFamily: 'Beaufort' }}>
+                            IDENTIFIED
+                        </h2>
+                        <p className="text-[#a09b8c] text-sm uppercase tracking-widest mb-8">
+                            Added to Real Collection
+                        </p>
+
+                        <div className="mb-8 transform scale-110">
+                            <CardComponent card={scannedCard} />
+                        </div>
+
+                        <div className="flex gap-4 w-full">
+                            <button
+                                onClick={reset}
+                                className="flex-1 btn-hextech-primary flex items-center justify-center gap-2"
+                            >
+                                <RefreshCw className="w-4 h-4" />
+                                SCAN NEXT
+                            </button>
+                            <Link href="/collection" className="flex-1 btn-hextech text-center flex items-center justify-center">
+                                VIEW BINDER
+                            </Link>
+                        </div>
                     </div>
-                </div>
             )}
-        </main>
-    );
+                </main>
+            );
 }
