@@ -5,12 +5,15 @@ import { Card, Set } from '@/lib/database.types';
 // but in this environment it SHOULD exist.
 import OFFICIAL_DATA from '@/data/official-cards.json';
 
+// Riftbound TCG Official Sets
 export const MOCK_SETS: Set[] = [
-    { id: 'set1', name: 'Origins', code: 'ORI', release_date: '2024-01-01', total_cards: 318 },
-    { id: 'set2', name: 'Rising Tides', code: 'RIT', release_date: '2024-04-01', total_cards: 122 },
-    { id: 'set3', name: 'Mountain Call', code: 'COT', release_date: '2024-07-01', total_cards: 189 },
-    { id: 'set4', name: 'Empires', code: 'EMP', release_date: '2024-10-01', total_cards: 218 },
+    { id: 'set1', name: 'Origins', code: 'ORI', release_date: '2025-01-01', total_cards: 369 },
+    { id: 'set2', name: 'Spiritforged', code: 'SPI', release_date: '2026-02-01', total_cards: 220 },
+    { id: 'set3', name: 'Proving Grounds', code: 'PG', release_date: '2025-06-01', total_cards: 60 },
+    { id: 'set4', name: 'Arcane Box Set', code: 'ARC', release_date: '2025-09-02', total_cards: 6 },
+    { id: 'set5', name: 'Origins Organized Play', code: 'OOP', release_date: '2025-03-01', total_cards: 59 },
 ];
+
 
 // Cast the JSON data to our Card type
 // We ensure compatibility during the fetch script mapping
