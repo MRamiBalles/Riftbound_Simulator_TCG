@@ -24,16 +24,16 @@ const createCard = (id: string, name: string, cost: number, region: string, rari
 
 export const MOCK_CARDS: Card[] = [
     // --- SET 1: ORIGINS (Base) ---
-    createCard('c1', 'Jinx', 4, 'Piltover & Zaun', 'Champion', 'Legend', [4, 3], 'Level Up: I see your hand empty.', '01PZ040', 'set-1'),
-    createCard('c2', 'Garen', 5, 'Demacia', 'Champion', 'Legend', [5, 5], 'Regeneration.', '01DE012', 'set-1'),
-    createCard('c3', 'Darius', 6, 'Noxus', 'Champion', 'Legend', [6, 5], 'Overwhelm.', '01NX038', 'set-1'),
-    createCard('c4', 'Zed', 3, 'Ionia', 'Champion', 'Legend', [3, 2], 'Quick Attack.', '01IO009', 'set-1'),
-    createCard('c5', 'Teemo', 1, 'Piltover & Zaun', 'Champion', 'Legend', [1, 1], 'Elusive. Nexus Strike: Plant 5 Mushrooms.', '01PZ008', 'set-1'),
-    createCard('c6', 'Lux', 6, 'Demacia', 'Champion', 'Legend', [4, 5], 'Barrier.', '01DE042', 'set-1'),
-    createCard('c7', 'Anivia', 6, 'Freljord', 'Champion', 'Legend', [2, 4], 'Last Breath: Revive as Eggnivia.', '01FR024', 'set-1'),
-    createCard('c8', 'Karma', 6, 'Ionia', 'Champion', 'Legend', [4, 3], 'End of Round: Create a random spell.', '01IO041', 'set-1'),
-    createCard('c9', 'Thresh', 5, 'Shadow Isles', 'Champion', 'Legend', [3, 6], 'Challenger.', '01SI052', 'set-1'),
-    createCard('c10', 'Heimerdinger', 5, 'Piltover & Zaun', 'Champion', 'Legend', [1, 3], 'When you cast a spell, create a Turret.', '01PZ056', 'set-1'),
+    createCard('c1', 'Jinx', 4, 'Piltover & Zaun', 'Champion', 'Legend', [4, 3], 'Level Up: I see your hand empty.', '01PZ040', 'set-1', "Volatile explosives are a girl's best friend!"),
+    createCard('c2', 'Garen', 5, 'Demacia', 'Champion', 'Legend', [5, 5], 'Regeneration.', '01DE012', 'set-1', "For Demacia! The vanguard of the Dauntless plays no games."),
+    createCard('c3', 'Darius', 6, 'Noxus', 'Champion', 'Legend', [6, 5], 'Overwhelm.', '01NX038', 'set-1', "Strength above all. The weak deserve to be crushed."),
+    createCard('c4', 'Zed', 3, 'Ionia', 'Champion', 'Legend', [3, 2], 'Quick Attack.', '01IO009', 'set-1', "Balance is a lie. We are the true shadows."),
+    createCard('c5', 'Teemo', 1, 'Piltover & Zaun', 'Champion', 'Legend', [1, 1], 'Elusive. Nexus Strike: Plant 5 Mushrooms.', '01PZ008', 'set-1', "Size doesn't mean everything. Never underestimate the power of the Scout's Code."),
+    createCard('c6', 'Lux', 6, 'Demacia', 'Champion', 'Legend', [4, 5], 'Barrier.', '01DE042', 'set-1', "Her light shines brightest when the night is darkest."),
+    createCard('c7', 'Anivia', 6, 'Freljord', 'Champion', 'Legend', [2, 4], 'Last Breath: Revive as Eggnivia.', '01FR024', 'set-1', "The winter winds guide her eternal rebirth."),
+    createCard('c8', 'Karma', 6, 'Ionia', 'Champion', 'Legend', [4, 3], 'End of Round: Create a random spell.', '01IO041', 'set-1', "Peace begins within. Violence ends within."),
+    createCard('c9', 'Thresh', 5, 'Shadow Isles', 'Champion', 'Legend', [3, 6], 'Challenger.', '01SI052', 'set-1', "What is the worth of a soul? Let us find out together."),
+    createCard('c10', 'Heimerdinger', 5, 'Piltover & Zaun', 'Champion', 'Legend', [1, 3], 'When you cast a spell, create a Turret.', '01PZ056', 'set-1', "Progress doesn't make itself, you know!"),
 
     // Set 1 Epics/Rares
     createCard('c11', 'Commander Ledros', 9, 'Shadow Isles', 'Epic', 'Unit', [9, 6], 'Last Breath: Return me to hand.', '01SI033', 'set-1'),

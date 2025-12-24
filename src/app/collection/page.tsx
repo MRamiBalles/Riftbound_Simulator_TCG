@@ -11,11 +11,13 @@ import { generateCSV, generateJSON, downloadFile } from '@/services/export-servi
 import { Download, FileText, FileCode } from 'lucide-react';
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';
 import clsx from 'clsx';
+import CardDetailModal from '@/components/CardDetailModal';
 
 export default function CollectionPage() {
     const { inventory, getTotalCards } = useCollectionStore();
     const [filterOwned, setFilterOwned] = useState(false);
     const [selectedSet, setSelectedSet] = useState<string | 'ALL'>('ALL');
+    const [viewingCard, setViewingCard] = useState<typeof MOCK_CARDS[0] | null>(null);
 
     const handleExport = (type: 'csv' | 'json') => {
         if (type === 'csv') {
@@ -134,7 +136,11 @@ export default function CollectionPage() {
                     const isOwned = owned.virtual > 0 || owned.real > 0;
 
                     return (
-                        <div key={card.id} className={`relative group transform hover:z-10 hover:scale-105 transition-all duration-200 ${!isOwned && !filterOwned ? 'opacity-40 grayscale contrast-125' : ''}`}>
+                        <div
+                            key={card.id}
+                            onClick={() => setViewingCard(card)}
+                            className={`relative group transform hover:z-10 hover:scale-105 transition-all duration-200 cursor-pointer ${!isOwned && !filterOwned ? 'opacity-40 grayscale contrast-125' : ''}`}
+                        >
                             <CardComponent card={card} />
 
                             {/* Quantity Badge - Simplified for Mobile */}
@@ -154,6 +160,16 @@ export default function CollectionPage() {
                     );
                 })}
             </div>
+
+            {/* IMMERSIVE MODAL */}
+            {viewingCard && (
+                <CardDetailModal
+                    card={viewingCard}
+                    onClose={() => setViewingCard(null)}
+                    virtualCount={inventory[viewingCard.id]?.virtual || 0}
+                    realCount={inventory[viewingCard.id]?.real || 0}
+                />
+            )}
         </main>
     );
 }
