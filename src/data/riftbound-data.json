@@ -1,0 +1,248 @@
+[
+    {
+        "id": "OGS-001",
+        "name": "Annie Fiery",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-001.webp",
+        "set_code": "OGS",
+        "cost": 1,
+        "attack": 0,
+        "health": 2,
+        "type": "Unit",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-002",
+        "name": "Firestorm",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-002.webp",
+        "set_code": "OGS",
+        "cost": 3,
+        "type": "Spell",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-003",
+        "name": "Incinerate",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-003.webp",
+        "set_code": "OGS",
+        "cost": 1,
+        "type": "Spell",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-004",
+        "name": "Master Yi Meditative",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-004.webp",
+        "set_code": "OGS",
+        "cost": 2,
+        "attack": 2,
+        "health": 2,
+        "type": "Unit",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-005",
+        "name": "Zephyr Sage",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-005.webp",
+        "set_code": "OGS",
+        "cost": 2,
+        "attack": 1,
+        "health": 3,
+        "type": "Unit",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-006",
+        "name": "Lux Illuminated",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-006.webp",
+        "set_code": "OGS",
+        "cost": 3,
+        "attack": 2,
+        "health": 3,
+        "type": "Unit",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-007",
+        "name": "Garen Rugged",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-007.webp",
+        "set_code": "OGS",
+        "cost": 3,
+        "attack": 3,
+        "health": 3,
+        "type": "Unit",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-008",
+        "name": "Gentlemens Duel",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-008.webp",
+        "set_code": "OGS",
+        "cost": 2,
+        "type": "Spell",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-009",
+        "name": "Master Yi Honed",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-009.webp",
+        "set_code": "OGS",
+        "cost": 3,
+        "attack": 3,
+        "health": 2,
+        "type": "Unit",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-010",
+        "name": "Annie Stubborn",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-010.webp",
+        "set_code": "OGS",
+        "cost": 2,
+        "attack": 1,
+        "health": 3,
+        "type": "Unit",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-011",
+        "name": "Flash",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-011.webp",
+        "set_code": "OGS",
+        "cost": 1,
+        "type": "Spell",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-012",
+        "name": "Blast Of Power",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-012.webp",
+        "set_code": "OGS",
+        "cost": 4,
+        "type": "Spell",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-013",
+        "name": "Garen Commander",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-013.webp",
+        "set_code": "OGS",
+        "cost": 4,
+        "attack": 4,
+        "health": 4,
+        "type": "Unit",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-014",
+        "name": "Lux Crownguard",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-014.webp",
+        "set_code": "OGS",
+        "cost": 4,
+        "attack": 3,
+        "health": 4,
+        "type": "Unit",
+        "rarity": "Rare"
+    },
+    {
+        "id": "OGS-015",
+        "name": "Recruit The Vanguard",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-015.webp",
+        "set_code": "OGS",
+        "cost": 3,
+        "type": "Spell",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-016",
+        "name": "Vanguard Attendant",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-016.webp",
+        "set_code": "OGS",
+        "cost": 2,
+        "attack": 2,
+        "health": 2,
+        "type": "Unit",
+        "rarity": "Common"
+    },
+    {
+        "id": "OGS-017",
+        "name": "Annie Dark Child",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-017.webp",
+        "set_code": "OGS",
+        "cost": 4,
+        "attack": 2,
+        "health": 4,
+        "type": "Champion",
+        "rarity": "Champion"
+    },
+    {
+        "id": "OGS-018",
+        "name": "Tibbers",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-018.webp",
+        "set_code": "OGS",
+        "cost": 5,
+        "attack": 5,
+        "health": 5,
+        "type": "Unit",
+        "rarity": "Epic"
+    },
+    {
+        "id": "OGS-019",
+        "name": "Master Yi Wuju Bladesman",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-019.webp",
+        "set_code": "OGS",
+        "cost": 5,
+        "attack": 4,
+        "health": 4,
+        "type": "Champion",
+        "rarity": "Champion"
+    },
+    {
+        "id": "OGS-020",
+        "name": "Highlander",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-020.webp",
+        "set_code": "OGS",
+        "cost": 4,
+        "type": "Spell",
+        "rarity": "Epic"
+    },
+    {
+        "id": "OGS-021",
+        "name": "Lux Lady Of Luminosity",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-021.webp",
+        "set_code": "OGS",
+        "cost": 6,
+        "attack": 4,
+        "health": 5,
+        "type": "Champion",
+        "rarity": "Champion"
+    },
+    {
+        "id": "OGS-022",
+        "name": "Final Spark",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-022.webp",
+        "set_code": "OGS",
+        "cost": 6,
+        "type": "Spell",
+        "rarity": "Epic"
+    },
+    {
+        "id": "OGS-023",
+        "name": "Garen Might Of Demacia",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-023.webp",
+        "set_code": "OGS",
+        "cost": 6,
+        "attack": 5,
+        "health": 6,
+        "type": "Champion",
+        "rarity": "Champion"
+    },
+    {
+        "id": "OGS-024",
+        "name": "Decisive Strike",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-024.webp",
+        "set_code": "OGS",
+        "cost": 5,
+        "type": "Spell",
+        "rarity": "Epic"
+    }
+]
