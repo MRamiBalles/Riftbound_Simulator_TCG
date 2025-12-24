@@ -19,7 +19,6 @@ export interface Card {
     collector_number: string;
     market_price?: number;
     price_change_24h?: number;
-    flavor_text?: string;
     artist?: string;
 }
 

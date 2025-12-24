@@ -151,8 +151,8 @@ const generateBulkCards = (): Card[] => {
     };
 
     MOCK_SETS.forEach(set => {
-        // Generate ~50 diverse cards per set
-        for (let i = 0; i < 50; i++) {
+        // Generate ~200 diverse cards per set (Total ~800) to simulate "ALL" cards
+        for (let i = 0; i < 200; i++) {
             idCounter++;
             const isRare = Math.random() > 0.8;
             const rarity: any = isRare ? 'Rare' : 'Common'; // Changed Rarity to any to match createCard signature
