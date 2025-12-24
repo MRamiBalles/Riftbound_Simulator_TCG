@@ -1,6 +1,14 @@
-import { MOCK_CARDS, getCardById } from '@/services/card-service';
 import { Card } from '@/lib/database.types';
-import { Action, PlayerId, SerializedGameState, SerializedPlayerState } from './game.types';
+import {
+    Action,
+    CombatState,
+    PlayerId,
+    SerializedGameState,
+    SerializedPlayerState,
+    Phase
+} from './game.types';
+import { createRuntimeCard, RuntimeCard } from './RuntimeCard';
+import { CombatResolver } from './CombatResolver';
 
 export class CoreEngine {
     private state: SerializedGameState;
@@ -13,157 +21,255 @@ export class CoreEngine {
         }
     }
 
+    // --- INITIALIZATION ---
+
+    public initGame(playerDeck: Card[], opponentDeck: Card[]) {
+        this.state = this.createInitialState();
+
+        // Initialize Players
+        this.initializePlayer('player', playerDeck);
+        this.initializePlayer('opponent', opponentDeck);
+
+        // Start Game
+        this.state.log.push('Game Initialized');
+        this.drawInitialHands();
+        this.state.phase = 'Draw'; // Skip Mulligan for MVP, go straight to Draw
+        this.startTurn();
+    }
+
     private createInitialState(): SerializedGameState {
         return {
-            turn: 1,
-            activePlayer: 'player',
-            phase: 'Main',
+            turn: 0,
+            activePlayer: 'player', // Coin toss could go here
+            priority: 'player',
+            phase: 'Main', // Will be reset on startTurn
             players: {
-                player: this.createPlayerState('player'),
-                opponent: this.createPlayerState('opponent'),
+                player: this.createEmptyPlayerState('player'),
+                opponent: this.createEmptyPlayerState('opponent'),
             },
             winner: null,
-            log: ['Game Started'],
+            log: [],
+            combat: null,
+            stack: []
         };
     }
 
-    private createPlayerState(id: PlayerId): SerializedPlayerState {
+    private createEmptyPlayerState(id: PlayerId): SerializedPlayerState {
         return {
             id,
             health: 20,
             maxHealth: 20,
-            mana: 1,
-            maxMana: 1,
-            hand: [], // Should be dealt
-            deckCount: 30,
+            mana: 0,
+            maxMana: 0,
+            hand: [],
+            deckCount: 0, // Virtual count
             field: [],
-            graveyard: [],
+            graveyard: []
         };
     }
 
-    public getState(): SerializedGameState {
-        return JSON.parse(JSON.stringify(this.state));
+    private initializePlayer(id: PlayerId, deck: Card[]) {
+        // Shuffle deck
+        const shuffled = [...deck].sort(() => Math.random() - 0.5);
+        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
+        this.decks[id] = runtimeDeck;
+        this.state.players[id].deckCount = runtimeDeck.length;
     }
 
-    public getLegalActions(playerId: PlayerId): Action[] {
-        if (this.state.winner) return [];
-        if (this.state.activePlayer !== playerId) return [];
+    private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
 
-        const actions: Action[] = [];
-        const player = this.state.players[playerId];
-
-        // End Turn is always legal in Main phase
-        actions.push({ type: 'END_TURN', playerId });
-
-        // Play Card
-        player.hand.forEach(card => {
-            if (card.cost <= player.mana) {
-                actions.push({ type: 'PLAY_CARD', playerId, cardId: card.id });
-            }
-        });
-
-        // Attack (Simplified: All units can attack if they check some condition, mostly relevant in Combat phase or if they have "Rush")
-        // For MVP, letting units attack anytime in Main phase for simplicity of mock
-        player.field.forEach(card => {
-            // Mock target: opponent face
-            actions.push({ type: 'ATTACK', playerId, cardId: card.id, targetId: 'opponent' });
-        });
-
-        return actions;
+    private drawInitialHands() {
+        for (let i = 0; i < 4; i++) {
+            this.drawCard('player');
+            this.drawCard('opponent');
+        }
     }
+
+    // --- ACTIONS ---
 
     public applyAction(action: Action): SerializedGameState {
         if (this.state.winner) return this.state;
 
-        // Log action
-        this.state.log.push(`Player ${action.playerId} performed ${action.type}`);
+        this.state.log.push(`[${action.playerId}] ${action.type}`);
 
         switch (action.type) {
+            case 'PLAY_CARD':
+                this.handlePlayCard(action);
+                break;
+            case 'ATTACK_UNIT':
+                break;
+            case 'DECLARE_ATTACKERS':
+                this.handleDeclareAttackers(action);
+                break;
+            case 'DECLARE_BLOCKERS':
+                this.handleDeclareBlockers(action);
+                break;
+            case 'RESOLVE_COMBAT':
+                this.handleResolveCombat();
+                break;
             case 'END_TURN':
                 this.handleEndTurn();
-                break;
-            case 'PLAY_CARD':
-                if (action.cardId) this.handlePlayCard(action.playerId, action.cardId);
-                break;
-            case 'ATTACK':
-                if (action.cardId) this.handleAttack(action.playerId, action.cardId);
                 break;
         }
 
         return this.getState();
     }
 
-    private handleEndTurn() {
-        // Switch Player
-        const nextPlayer = this.state.activePlayer === 'player' ? 'opponent' : 'player';
-        this.state.activePlayer = nextPlayer;
+    public getState(): SerializedGameState {
+        return JSON.parse(JSON.stringify(this.state));
+    }
 
-        // Start of Turn Logic for new active player
-        const player = this.state.players[nextPlayer];
+    // --- GAME LOGIC ---
 
-        // Mana logic
-        if (nextPlayer === 'player') {
-            this.state.turn += 1;
-            const newManaCap = Math.min(10, this.state.turn);
-            player.maxMana = newManaCap;
-            player.mana = newManaCap;
-        } else {
-            // Opponent (AI) also gets mana refill
-            const opponentTurn = this.state.turn; // Synced turns for simplicity
-            const newManaCap = Math.min(10, opponentTurn);
-            player.maxMana = newManaCap;
-            player.mana = newManaCap;
+    private startTurn() {
+        this.state.turn++;
+        const active = this.state.activePlayer;
+        this.state.priority = active; // Update priority matches active player
+
+        // Mana Logic
+        const player = this.state.players[active];
+        player.maxMana = Math.min(10, player.maxMana + 1);
+        player.mana = player.maxMana;
+
+        this.state.phase = 'Draw';
+        this.drawCard(active);
+
+        this.state.phase = 'Main';
+
+        // Reset unit states
+        this.state.players[active].field.forEach(u => {
+            u.hasAttacked = false;
+            u.summoningSickness = false;
+        });
+    }
+
+    private drawCard(playerId: PlayerId) {
+        const deck = this.decks[playerId];
+        if (deck.length === 0) {
+            const other = playerId === 'player' ? 'opponent' : 'player';
+            this.state.winner = other;
+            this.state.log.push(`${playerId} deck empty! ${other} wins!`);
+            return;
         }
 
-        // Draw Card (Mock)
-        if (player.hand.length < 10) {
-            // Just cloning a random mock card for now
-            const randomCard = MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)];
-            // Assign unique runtime ID
-            const runtimeCard = { ...randomCard, id: randomCard.id + '-' + Math.random().toString(36).substr(2, 9) };
-            player.hand.push(runtimeCard);
+        const card = deck.pop();
+        if (card) {
+            this.state.players[playerId].hand.push(card);
+            this.state.players[playerId].deckCount = deck.length;
         }
     }
 
-    private handlePlayCard(playerId: PlayerId, cardId: string) {
-        const player = this.state.players[playerId];
-        const cardIndex = player.hand.findIndex(c => c.id === cardId);
+    private handlePlayCard(action: Action) {
+        if (!action.cardId) return;
+        const player = this.state.players[action.playerId];
+        const index = player.hand.findIndex(c => c.instanceId === action.cardId || c.id === action.cardId);
 
-        if (cardIndex === -1) return; // Error handling
-        const card = player.hand[cardIndex];
+        if (index === -1) return;
+        const card = player.hand[index];
 
-        if (player.mana < card.cost) return; // Illegal move check
+        // Validate Mana
+        if (player.mana < card.currentCost) return;
 
-        // Pay costs
-        player.mana -= card.cost;
+        // Pay Mana
+        player.mana -= card.currentCost;
 
-        // Move card
-        player.hand.splice(cardIndex, 1);
+        // Move Card
+        player.hand.splice(index, 1);
 
-        if (card.type === 'Spell') {
-            player.graveyard.push(card);
-            // Apply spell effect (simple damage for MVP)
-            const opponentId = playerId === 'player' ? 'opponent' : 'player';
-            this.state.players[opponentId].health -= 2; // Fixed 2 dmg for now
-        } else {
+        if (card.type === 'Unit' || card.type === 'Champion') {
+            card.summoningSickness = !card.keywords?.includes('Rush');
             player.field.push(card);
+        } else if (card.type === 'Spell') {
+            player.graveyard.push(card);
+            this.resolveSpell(card, action.targetId);
         }
     }
 
-    private handleAttack(playerId: PlayerId, cardId: string) {
-        const player = this.state.players[playerId];
-        const card = player.field.find(c => c.id === cardId);
-
-        if (!card || !card.attack) return;
-
-        // Direct damage to opponent face (MVP)
-        const opponentId = playerId === 'player' ? 'opponent' : 'player';
-        this.state.players[opponentId].health -= card.attack;
-
-        // Check Win Condition
-        if (this.state.players[opponentId].health <= 0) {
-            this.state.winner = playerId;
-            this.state.log.push(`Player ${playerId} WINS!`);
+    private resolveSpell(card: RuntimeCard, targetId?: string) {
+        if (targetId) {
+            if (targetId === 'opponent' || targetId === 'player') {
+                this.state.players[targetId as PlayerId].health -= 2; // Flat 2 dmg mock
+            }
         }
+    }
+
+    private handleDeclareAttackers(action: Action) {
+        if (this.state.phase !== 'Main') return;
+        if (!action.attackers || action.attackers.length === 0) return;
+
+        this.state.phase = 'Combat';
+        this.state.combat = {
+            attackers: {},
+            blockers: {},
+            isCombatPhase: true,
+            step: 'declare_blockers' // Next step
+        };
+
+        const opponentId = this.state.activePlayer === 'player' ? 'opponent' : 'player';
+
+        action.attackers.forEach(attackerId => {
+            const unit = this.state.players[this.state.activePlayer].field.find(c => c.instanceId === attackerId);
+            if (unit && !unit.hasAttacked && !unit.summoningSickness) {
+                if (this.state.combat) {
+                    this.state.combat.attackers[attackerId] = opponentId;
+                }
+                unit.hasAttacked = true;
+            }
+        });
+
+        // Priority passes to defender to block
+        this.state.priority = opponentId;
+    }
+
+    private handleDeclareBlockers(action: Action) {
+        if (!this.state.combat || this.state.combat.step !== 'declare_blockers') return;
+
+        if (action.blockers) {
+            this.state.combat.blockers = action.blockers;
+        }
+
+        this.state.combat.step = 'damage';
+        this.handleResolveCombat();
+    }
+
+    private handleResolveCombat() {
+        if (!this.state.combat) return;
+
+        const result = CombatResolver.resolveCombat(this.state, this.state.combat);
+
+        // Apply Damage Events
+        result.damageEvents.forEach(evt => {
+            if (evt.targetId === 'player' || evt.targetId === 'opponent') {
+                this.state.players[evt.targetId as PlayerId].health -= evt.amount;
+            } else {
+                ['player', 'opponent'].forEach(pid => {
+                    const p = this.state.players[pid as PlayerId];
+                    const unit = p.field.find(c => c.instanceId === evt.targetId);
+                    if (unit) {
+                        unit.currentHealth -= evt.amount;
+                    }
+                });
+            }
+        });
+
+        // Clean Dead Units
+        ['player', 'opponent'].forEach(pid => {
+            const p = this.state.players[pid as PlayerId];
+            p.field = p.field.filter(u => u.currentHealth > 0);
+        });
+
+        // Check Win
+        if (this.state.players.player.health <= 0) this.state.winner = 'opponent';
+        if (this.state.players.opponent.health <= 0) this.state.winner = 'player';
+
+        // End Combat
+        this.state.combat = null;
+        this.state.phase = 'Main';
+        this.state.priority = this.state.activePlayer;
+    }
+
+    private handleEndTurn() {
+        this.state.activePlayer = this.state.activePlayer === 'player' ? 'opponent' : 'player';
+        this.startTurn();
     }
 }

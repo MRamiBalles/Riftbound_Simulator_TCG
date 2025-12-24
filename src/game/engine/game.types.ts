@@ -1,17 +1,41 @@
 import { Card } from '@/lib/database.types';
+import { RuntimeCard } from './RuntimeCard';
 
 export type PlayerId = 'player' | 'opponent';
 export type Phase = 'Draw' | 'Main' | 'Combat' | 'End';
+export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End'; // More granular if needed
+
+export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration';
+export type TargetType = 'face' | 'unit' | 'any';
+export type SpellSpeed = 'Burst' | 'Fast' | 'Slow';
+
+export interface CombatState {
+    attackers: Record<string, string>; // attackerId -> targetId (usually opponent face or unit if challenged)
+    blockers: Record<string, string>;  // blockerId -> attackerId
+    isCombatPhase: boolean;
+    step: 'declare_attackers' | 'declare_blockers' | 'damage' | 'cleanup';
+}
 
 export interface SerializedGameState {
     turn: number;
     activePlayer: PlayerId;
     phase: Phase;
+    priority: PlayerId; // Who has priority to act
     players: {
         [key in PlayerId]: SerializedPlayerState;
     };
     winner: PlayerId | null;
     log: string[];
+    combat: CombatState | null;
+    stack: StackItem[]; // Spell/Ability stack
+}
+
+export interface StackItem {
+    id: string;
+    playerId: PlayerId;
+    cardId: string;
+    targetId?: string;
+    resolved: boolean;
 }
 
 export interface SerializedPlayerState {
@@ -19,18 +43,28 @@ export interface SerializedPlayerState {
     health: number;
     maxHealth: number;
     mana: number;
-    maxMana: number;
-    hand: Card[];
+    maxMana: number; /* Spell mana could be added here later */
+    hand: RuntimeCard[];
     deckCount: number;
-    field: Card[];
-    graveyard: Card[];
+    field: RuntimeCard[];
+    graveyard: RuntimeCard[];
 }
 
-export type ActionType = 'PLAY_CARD' | 'ATTACK' | 'END_TURN';
+export type ActionType =
+    | 'PLAY_CARD'
+    | 'ATTACK_UNIT' // Targeting a specific unit (e.g. Challenger) or Face
+    | 'DECLARE_ATTACKERS' // Commit attack
+    | 'DECLARE_BLOCKERS'
+    | 'BLOCK'
+    | 'RESOLVE_COMBAT'
+    | 'PASS' // Pass priority
+    | 'END_TURN';
 
 export interface Action {
     type: ActionType;
     playerId: PlayerId;
-    cardId?: string; // For Play and Attack
-    targetId?: string; // For Attack or targeted spells
+    cardId?: string;
+    targetId?: string;
+    attackers?: string[]; // IDs of attacking units
+    blockers?: Record<string, string>; // blockerId -> attackerId map
 }

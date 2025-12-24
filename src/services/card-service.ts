@@ -35,3 +35,17 @@ export async function getCardById(id: string): Promise<Card | undefined> {
     await new Promise(resolve => setTimeout(resolve, 100));
     return MOCK_CARDS.find(c => c.id === id);
 }
+
+// --- NEW DECK UTILITIES ---
+
+export function createDeckFromCardIds(cardIds: string[]): Card[] {
+    return cardIds.map(id => MOCK_CARDS.find(c => c.id === id)).filter(Boolean) as Card[];
+}
+
+export function createRandomDeck(size: number = 30): Card[] {
+    const deck: Card[] = [];
+    for (let i = 0; i < size; i++) {
+        deck.push(MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)]);
+    }
+    return deck;
+}

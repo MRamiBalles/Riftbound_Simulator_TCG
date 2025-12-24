@@ -23,6 +23,10 @@ interface CollectionState {
     // Showcase
     showcase: (string | null)[]; // 9 slots
     setShowcaseSlot: (index: number, cardId: string | null) => void;
+
+    // Deck Play
+    activeDeck: string[] | null;
+    setActiveDeck: (deck: string[]) => void;
 }
 
 export const useCollectionStore = create<CollectionState>()(
@@ -99,7 +103,10 @@ export const useCollectionStore = create<CollectionState>()(
                     }
                     return { showcase: newShowcase };
                 });
-            }
+            },
+
+            activeDeck: null,
+            setActiveDeck: (deck) => set({ activeDeck: deck }),
         }),
         {
             name: 'riftbound-hybrid-collection',

@@ -7,10 +7,12 @@ import { Card as CardComponent } from '@/components/Card';
 import { Search, AlertTriangle, CheckCircle, Copy, Save } from 'lucide-react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 
 export default function DeckBuilderPage() {
-    const { inventory } = useCollectionStore();
+    const router = useRouter();
+    const { inventory, setActiveDeck } = useCollectionStore();
     const [deck, setDeck] = useState<Record<string, number>>({});
     const [search, setSearch] = useState('');
 
@@ -76,8 +78,24 @@ export default function DeckBuilderPage() {
                         {isValid ? <CheckCircle className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
                         {isValid ? "READY TO PLAY" : "INCOMPLETE"}
                     </div>
-                    <button className="btn-hextech px-4 py-1 text-xs flex items-center gap-2">
-                        <Save className="w-4 h-4" /> SAVE
+                    {/* Play Button */}
+                    <button
+                        onClick={() => {
+                            // Expand deck to list of IDs
+                            const deckList: string[] = [];
+                            Object.entries(deck).forEach(([id, count]) => {
+                                for (let i = 0; i < count; i++) deckList.push(id);
+                            });
+                            setActiveDeck(deckList);
+                            router.push('/play');
+                        }}
+                        disabled={!isValid && deckSize === 0} // Allow testing incomplete decks
+                        className={clsx(
+                            "btn-hextech px-6 py-1 text-xs flex items-center gap-2 font-bold",
+                            isValid ? "text-[#0ac8b9] border-[#0ac8b9]" : "opacity-50 grayscale"
+                        )}
+                    >
+                        <Save className="w-4 h-4" /> PLAY DECK
                     </button>
                 </div>
             </header>
@@ -192,6 +210,6 @@ export default function DeckBuilderPage() {
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }
