@@ -17,8 +17,10 @@ export interface Card {
     image_url: string;
     set_id: string;
     collector_number: string;
-    market_price: number; // In mock currency or scraped USD
-    price_change_24h: number; // Percent change
+    market_price?: number;
+    price_change_24h?: number;
+    flavor_text?: string;
+    artist?: string;
 }
 
 export interface Set {

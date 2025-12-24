@@ -7,7 +7,7 @@ export const MOCK_SETS: Set[] = [
     { id: 'set-4', name: 'Empires', code: 'EMP', release_date: '2024-10-01', total_cards: 110 },
 ];
 
-const createCard = (id: string, name: string, cost: number, region: string, rarity: any, type: any, stats: [number, number] | null, text: string, imgId: string, set: string): Card => ({
+const createCard = (id: string, name: string, cost: number, region: string, rarity: any, type: any, stats: [number, number] | null, text: string, imgId: string, set: string, flavor?: string): Card => ({
     id, name, cost, region, rarity, type,
     subtypes: [],
     text,
@@ -17,7 +17,9 @@ const createCard = (id: string, name: string, cost: number, region: string, rari
     market_price: rarity === 'Champion' ? 15.0 : rarity === 'Epic' ? 5.0 : 0.5,
     price_change_24h: (Math.random() * 20) - 10,
     attack: stats ? stats[0] : undefined,
-    health: stats ? stats[1] : undefined
+    health: stats ? stats[1] : undefined,
+    flavor_text: flavor || "A legend of Runeterra.",
+    artist: "Sixmorevodka"
 });
 
 export const MOCK_CARDS: Card[] = [
