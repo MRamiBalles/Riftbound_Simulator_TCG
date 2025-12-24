@@ -104,7 +104,7 @@ const generateBulkCards = (): Card[] => {
 
     // --- DATA POOLS ---
     const ADJECTIVES = ['Elite', 'Vanguard', 'Veteran', 'Reckless', 'Cursed', 'Blessed', 'Ancient', 'Swift', 'Armored', 'Mystic'];
-    const NOUNS = {
+    const NOUNS: Record<string, string[]> = {
         'Demacia': ['Soldier', 'Knight', 'Ranger', 'Guardian', 'Duelist', 'Shieldbearer'],
         'Noxus': ['Gladiator', 'Assassin', 'Warmonger', 'Spy', 'Legionnaire', 'Battering Ram'],
         'Ionia': ['Monk', 'Ninja', 'Spirit', 'Elder', 'Blade', 'Dancer'],
@@ -138,7 +138,7 @@ const generateBulkCards = (): Card[] => {
         ],
         'Noxus': [
             'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01NX038.png',
-            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02NX007.png' // Swain is Set 2
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02NX007.png'
         ],
         'Piltover & Zaun': [
             'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01PZ040.png',
@@ -156,17 +156,17 @@ const generateBulkCards = (): Card[] => {
             'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01SI052.png',
             'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01SI033.png'
         ],
-        'Bilgewater': [ // Set 2
+        'Bilgewater': [
             'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW022.png',
             'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW032.png',
             'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW026.png'
         ],
-        'Targon': [ // Set 3
+        'Targon': [
             'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT054.png',
             'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT027.png',
             'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT087.png'
         ],
-        'Shurima': [ // Set 4
+        'Shurima': [
             'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH003.png',
             'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH047.png',
             'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH020.png'
@@ -184,9 +184,8 @@ const generateBulkCards = (): Card[] => {
             const rarity: any = isRare ? 'Rare' : 'Common';
 
             // Determine Region based on Set (Weighted deterministic)
-            // Use sub-ranges of rng to pick properties without correlation if possible, or just simplistic buckets
+            const regionRng = ((rng * 100) % 1);
             let region = 'Demacia';
-            const regionRng = (rng * 100) % 1; // Different slice of randomness
 
             if (set.code === 'ORI') {
                 const regions = ['Demacia', 'Noxus', 'Ionia', 'Piltover & Zaun', 'Freljord', 'Shadow Isles'];
@@ -197,17 +196,17 @@ const generateBulkCards = (): Card[] => {
             if (set.code === 'EMP') region = regionRng > 0.3 ? 'Shurima' : 'Noxus';
 
             // Generate Name
-            const nounList = NOUNS[region as keyof typeof NOUNS] || ['Unit'];
-            const noun = nounList[Math.floor(rng * nounList.length)]; // Reuse rng, it's fine for mock
-            const adj = ADJECTIVES[Math.floor(((rng * 50) % 1) * ADJECTIVES.length)];
+            const nounList = NOUNS[region] || ['Unit'];
+            const noun = nounList[Math.floor(((rng * 50) % 1) * nounList.length)];
+            const adj = ADJECTIVES[Math.floor(((rng * 25) % 1) * ADJECTIVES.length)];
             const name = `${adj} ${noun}`;
 
             // Generate Stats
-            const cost = Math.floor((rng * 8) % 9) + 1;
+            const cost = Math.floor((rng * 9));
             const attack = Math.floor(cost * (0.8 + ((rng * 10) % 1) * 0.4));
             const health = Math.floor(cost * (0.8 + ((rng * 20) % 1) * 0.4)) + (isRare ? 1 : 0);
 
-            // Generate Image (Random from pool)
+            // Generate Image
             const imgPool = IMAGE_POOLS[region] || IMAGE_POOLS['Demacia'];
             const imgId = imgPool[Math.floor(((rng * 99) % 1) * imgPool.length)];
 
@@ -217,13 +216,13 @@ const generateBulkCards = (): Card[] => {
             bulk.push(createCard(
                 id,
                 name,
-                cost,
+                cost + 1,
                 region,
                 rarity,
                 'Unit',
                 [attack, health],
                 isRare ? `Play: Grant allies +1|+1` : `Strike: Create a card.`,
-                imgId,
+                imgId, // This is a Full URL now
                 set.id,
                 flavor
             ));
