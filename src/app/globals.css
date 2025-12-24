@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Beaufort';
+  src: url('https://raw.githubusercontent.com/ngryman/lol-type details/master/fonts/BeaufortforLOL-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Spiegel';
+  src: url('https://raw.githubusercontent.com/ngryman/lol-type-details/master/fonts/Spiegel-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --background: #010a13;
+  --foreground: #f0e6d2;
+
+  /* Hextech Palette */
+  --hextech-action: #0ac8b9;
+  --hextech-magic: #c8aa6e;
+  --hextech-gold-1: #c8aa6e;
+  --hextech-gold-2: #7a5c29;
+  --hextech-metal: #1e2328;
+  --hextech-black: #010a13;
+  --hextech-blue-deep: #091428;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--hextech-black);
+  min-height: 100vh;
+  font-family: 'Spiegel', sans-serif;
+  background-image: url('https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/hextech-magic-background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* Headings use the strong Beaufort font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Beaufort', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Custom Utilities */
+@layer components {
+  .btn-hextech {
+    position: relative;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #cdbe91;
+    background-color: #1e2328;
+    border: 2px solid #c8aa6e;
+    transition: all 0.3s;
+    box-shadow: inset 0 0 10px #000;
+  }
+
+  .btn-hextech:hover {
+    color: white;
+    border-color: #f0e6d2;
+    box-shadow: 0 0 15px rgba(200, 170, 110, 0.5);
+    text-shadow: 0 0 10px rgba(200, 170, 110, 0.8);
+  }
+
+  .btn-hextech-primary {
+    position: relative;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    transition: all 0.3s;
+    background: linear-gradient(to bottom, #1e9ec5, #0a6285);
+    border: 2px solid #0ac8b9;
+    box-shadow: 0 0 15px rgba(10, 200, 185, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-hextech-primary:hover {
+    background: linear-gradient(to bottom, #2ac6f0, #137fac);
+    box-shadow: 0 0 25px rgba(10, 200, 185, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .card-frame {
+    position: relative;
+    overflow: hidden;
+    background-color: #0f172a;
+    border: 1px solid #7a5c29;
+    box-shadow: 0 0 0 1px #000, 0 0 0 2px #463714;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #091428;
+  border-left: 1px solid #1e282d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #785a28;
+  border: 1px solid #c8aa6e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c8aa6e;
+}
