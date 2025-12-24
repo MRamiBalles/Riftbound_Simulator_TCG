@@ -32,9 +32,9 @@ export default async function Home() {
           <a href="/play" className="btn-hextech-primary">
             PLAY SIMULATOR
           </a>
-          <button className="btn-hextech">
+          <a href="/decks" className="btn-hextech">
             DECK BUILDER
-          </button>
+          </a>
         </div>
       </header>
 
