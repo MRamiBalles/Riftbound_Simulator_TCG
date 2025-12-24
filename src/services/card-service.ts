@@ -22,7 +22,7 @@ const createCard = (id: string, name: string, cost: number, region: string, rari
     artist: "Sixmorevodka"
 });
 
-export const MOCK_CARDS: Card[] = [
+const HANDCRAFTED_CARDS: Card[] = [
     // --- SET 1: ORIGINS (Base) ---
     createCard('c1', 'Jinx', 4, 'Piltover & Zaun', 'Champion', 'Legend', [4, 3], 'Level Up: I see your hand empty.', '01PZ040', 'set-1', "Volatile explosives are a girl's best friend!"),
     createCard('c2', 'Garen', 5, 'Demacia', 'Champion', 'Legend', [5, 5], 'Regeneration.', '01DE012', 'set-1', "For Demacia! The vanguard of the Dauntless plays no games."),
@@ -67,12 +67,45 @@ export const MOCK_CARDS: Card[] = [
     createCard('c33', 'Azir', 3, 'Shurima', 'Champion', 'Legend', [1, 5], 'When allies attack, summon a Sand Soldier.', '04SH003', 'set-4'),
     createCard('c34', 'Nasus', 6, 'Shurima', 'Champion', 'Legend', [2, 2], 'I have +1|+1 for each unit you have slain.', '04SH047', 'set-4'),
     createCard('c35', 'Renekton', 4, 'Shurima', 'Champion', 'Legend', [4, 4], 'Overwhelm.', '04SH020', 'set-4'),
-    createCard('c36', 'Sivir', 4, 'Shurima', 'Champion', 'Legend', [5, 3], 'SpellShield.', '04SH020', 'set-4'), // Note: Reused ID in real db would be different
+    createCard('c36', 'Sivir', 4, 'Shurima', 'Champion', 'Legend', [5, 3], 'SpellShield.', '04SH020', 'set-4'),
     createCard('c37', 'Lissandra', 3, 'Freljord', 'Champion', 'Legend', [2, 3], 'Tough.', '04FR005', 'set-4'),
     createCard('c38', 'Kindred', 5, 'Shadow Isles', 'Champion', 'Legend', [4, 4], 'Quick Attack.', '04SI005', 'set-4'),
     createCard('c39', 'Viego', 5, 'Shadow Isles', 'Champion', 'Legend', [5, 4], 'Fearsome.', '04SI055', 'set-4'),
     createCard('c40', 'Akshan', 2, 'Shurima', 'Champion', 'Legend', [2, 2], 'When I\'m summoned, summon a Warlord\'s Palace.', '04SH130', 'set-4'),
 ];
+
+// Procedural Generator for "The Bulk"
+const generateBulkCards = (): Card[] => {
+    const bulk: Card[] = [];
+    let idCounter = 100;
+
+    MOCK_SETS.forEach(set => {
+        // Generate ~80 commons/rares per set
+        for (let i = 0; i < 80; i++) {
+            idCounter++;
+            const isRare = Math.random() > 0.7;
+            const region = set.code === 'ORI' ? 'Demacia' : set.code === 'RIT' ? 'Bilgewater' : set.code === 'COT' ? 'Targon' : 'Shurima';
+
+            bulk.push(createCard(
+                `gen-${set.id}-${i}`,
+                `${region} ${isRare ? 'Elite' : 'Soldier'} ${i}`,
+                Math.floor(Math.random() * 8) + 1,
+                region,
+                isRare ? 'Rare' : 'Common',
+                'Unit',
+                [Math.floor(Math.random() * 7) + 1, Math.floor(Math.random() * 7) + 1],
+                isRare ? `When summoned, grant allies +1|+1.` : `Strike: Draw 1.`,
+                set.code === 'ORI' ? '01DE001' : '02BW005', // Fallback images
+                set.id,
+                `A standard issue unit from the ${set.name} expansion.`
+            ));
+        }
+    });
+    return bulk;
+};
+
+export const MOCK_CARDS: Card[] = [...HANDCRAFTED_CARDS, ...generateBulkCards()];
+
 
 export async function getCards(query?: string): Promise<Card[]> {
     await new Promise(resolve => setTimeout(resolve, 300));

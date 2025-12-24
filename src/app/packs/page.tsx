@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { openPack, PackResult } from '@/services/pack-service';
+import { CardResultModal } from '@/components/CardResultModal';
 import { Card as CardComponent } from '@/components/Card';
 import { useEnergyStore } from '@/store/energy-store';
-import { useCollectionStore } from '@/store/collection-store'; // NEW
+import { useCollectionStore } from '@/store/collection-store';
+import { useMissionStore } from '@/store/mission-store';
 import { Loader2, Sparkles, Box } from 'lucide-react';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -12,7 +14,8 @@ import EnergyWidget from '@/components/layout/EnergyWidget';
 
 export default function PackOpenerPage() {
     const { energy, useEnergy } = useEnergyStore();
-    const { addCards } = useCollectionStore(); // NEW
+    const { addCards } = useCollectionStore();
+    const { updateMission } = useMissionStore(); // NEW
     const [isOpening, setIsOpening] = useState(false);
     const [packResult, setPackResult] = useState<PackResult | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -33,7 +36,9 @@ export default function PackOpenerPage() {
                 const result = await openPack();
                 setPackResult(result);
                 // Save to Virtual Collection
-                addCards(result.cards.map(c => c.id), 'VIRTUAL'); // NEW
+                addCards(result.cards.map(c => c.id), 'VIRTUAL');
+                // Update Daily Mission: Open 2 Packs
+                updateMission('m1', 1); // NEW
             } catch (e) {
                 console.error(e);
             } finally {
