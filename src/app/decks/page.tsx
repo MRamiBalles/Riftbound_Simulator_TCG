@@ -2,8 +2,11 @@ import Link from 'next/link';
 import { Plus, Layers, Library } from 'lucide-react';
 import React from 'react';
 import EnergyWidget from '@/components/layout/EnergyWidget';
+import { getHydratedStarterDecks } from '@/data/starter-decks';
 
 export default function DecksPage() {
+    const starterDecks = getHydratedStarterDecks();
+
     return (
         <main className="min-h-screen p-4 md:p-8 pt-20 md:pt-24 font-serif bg-[#010a13] text-[#f0e6d2] relative overflow-y-auto">
             <EnergyWidget />
