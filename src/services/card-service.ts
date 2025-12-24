@@ -7,20 +7,43 @@ export const MOCK_SETS: Set[] = [
     { id: 'set-4', name: 'Empires', code: 'EMP', release_date: '2024-10-01', total_cards: 110 },
 ];
 
-const createCard = (id: string, name: string, cost: number, region: string, rarity: any, type: any, stats: [number, number] | null, text: string, imgId: string, set: string, flavor?: string): Card => ({
-    id, name, cost, region, rarity, type,
-    subtypes: [],
-    text,
-    image_url: `https://dd.b.pvp.net/latest/set1/en_us/img/cards/${imgId}.png`,
-    set_id: set,
-    collector_number: id.replace('c', '').padStart(3, '0'),
-    market_price: rarity === 'Champion' ? 15.0 : rarity === 'Epic' ? 5.0 : 0.5,
-    price_change_24h: (Math.random() * 20) - 10,
-    attack: stats ? stats[0] : undefined,
-    health: stats ? stats[1] : undefined,
-    flavor_text: flavor || "A legend of Runeterra.",
-    artist: "Sixmorevodka"
-});
+// Helper for consistent "random" numbers based on string seed
+const getDeterministicRandom = (seed: string): number => {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+        hash |= 0;
+    }
+    const result = Math.abs(hash) / 2147483647;
+    return result;
+};
+
+// --- DATA ACCESS ---
+const createCard = (id: string, name: string, cost: number, region: string, rarity: any, type: any, stats: [number, number] | null, text: string, imgId: string, set: string, flavor?: string): Card => {
+    const rng = getDeterministicRandom(id); // Use ID as seed for consistency
+    const priceChange = (rng * 20) - 10;
+
+    // Handle Image URL: If it's a full URL, use it. Otherwise construct it (assuming Set 1 legacy default or specific logic)
+    let finalImageUrl = imgId;
+    if (!imgId.startsWith('http')) {
+        finalImageUrl = `https://dd.b.pvp.net/latest/set1/en_us/img/cards/${imgId}.png`;
+    }
+
+    return {
+        id, name, cost, region, rarity, type,
+        subtypes: [],
+        text,
+        image_url: finalImageUrl,
+        set_id: set,
+        collector_number: id.replace('c', '').padStart(3, '0'),
+        market_price: rarity === 'Champion' ? 15.0 : rarity === 'Epic' ? 5.0 : 0.5,
+        price_change_24h: priceChange,
+        flavor_text: flavor || "A legend of Runeterra.",
+        artist: "Sixmorevodka",
+        attack: stats ? stats[0] : undefined,
+        health: stats ? stats[1] : undefined,
+    };
+};
 
 const HANDCRAFTED_CARDS: Card[] = [
     // --- SET 1: ORIGINS (Base) ---
@@ -154,42 +177,52 @@ const generateBulkCards = (): Card[] => {
         // Generate ~200 diverse cards per set (Total ~800) to simulate "ALL" cards
         for (let i = 0; i < 200; i++) {
             idCounter++;
-            const isRare = Math.random() > 0.8;
-            const rarity: any = isRare ? 'Rare' : 'Common'; // Changed Rarity to any to match createCard signature
+            const id = `gen-${set.id}-${i}`;
+            const rng = getDeterministicRandom(id); // Stable Randomness 0.0-1.0
 
-            // Determine Region based on Set (Weighted)
+            const isRare = rng > 0.8;
+            const rarity: any = isRare ? 'Rare' : 'Common';
+
+            // Determine Region based on Set (Weighted deterministic)
+            // Use sub-ranges of rng to pick properties without correlation if possible, or just simplistic buckets
             let region = 'Demacia';
-            if (set.code === 'ORI') region = ['Demacia', 'Noxus', 'Ionia', 'Piltover & Zaun', 'Freljord', 'Shadow Isles'][Math.floor(Math.random() * 6)];
-            if (set.code === 'RIT') region = Math.random() > 0.3 ? 'Bilgewater' : 'Noxus';
-            if (set.code === 'COT') region = Math.random() > 0.3 ? 'Targon' : 'Ionia';
-            if (set.code === 'EMP') region = Math.random() > 0.3 ? 'Shurima' : 'Noxus';
+            const regionRng = (rng * 100) % 1; // Different slice of randomness
+
+            if (set.code === 'ORI') {
+                const regions = ['Demacia', 'Noxus', 'Ionia', 'Piltover & Zaun', 'Freljord', 'Shadow Isles'];
+                region = regions[Math.floor(regionRng * 6)];
+            }
+            if (set.code === 'RIT') region = regionRng > 0.3 ? 'Bilgewater' : 'Noxus';
+            if (set.code === 'COT') region = regionRng > 0.3 ? 'Targon' : 'Ionia';
+            if (set.code === 'EMP') region = regionRng > 0.3 ? 'Shurima' : 'Noxus';
 
             // Generate Name
-            const noun = NOUNS[region as keyof typeof NOUNS]?.[Math.floor(Math.random() * (NOUNS[region as keyof typeof NOUNS]?.length || 1))] || 'Unit';
-            const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+            const nounList = NOUNS[region as keyof typeof NOUNS] || ['Unit'];
+            const noun = nounList[Math.floor(rng * nounList.length)]; // Reuse rng, it's fine for mock
+            const adj = ADJECTIVES[Math.floor(((rng * 50) % 1) * ADJECTIVES.length)];
             const name = `${adj} ${noun}`;
 
             // Generate Stats
-            const cost = Math.floor(Math.random() * 9) + 1;
-            const attack = Math.floor(cost * (0.8 + Math.random() * 0.4));
-            const health = Math.floor(cost * (0.8 + Math.random() * 0.4)) + (isRare ? 1 : 0);
+            const cost = Math.floor((rng * 8) % 9) + 1;
+            const attack = Math.floor(cost * (0.8 + ((rng * 10) % 1) * 0.4));
+            const health = Math.floor(cost * (0.8 + ((rng * 20) % 1) * 0.4)) + (isRare ? 1 : 0);
 
             // Generate Image (Random from pool)
             const imgPool = IMAGE_POOLS[region] || IMAGE_POOLS['Demacia'];
-            const imgId = imgPool[Math.floor(Math.random() * imgPool.length)];
+            const imgId = imgPool[Math.floor(((rng * 99) % 1) * imgPool.length)];
 
             // Generate Flavor
-            const flavor = `${FLAVOR_PREFIXES[Math.floor(Math.random() * FLAVOR_PREFIXES.length)]} the ${name.toLowerCase()}.`;
+            const flavor = `${FLAVOR_PREFIXES[Math.floor(((rng * 77) % 1) * FLAVOR_PREFIXES.length)]} the ${name.toLowerCase()}.`;
 
             bulk.push(createCard(
-                `gen-${set.id}-${i}`,
+                id,
                 name,
                 cost,
                 region,
                 rarity,
                 'Unit',
                 [attack, health],
-                isRare ? `Play: Grant allies +1|+${Math.floor(Math.random() * 2)}` : `Strike: Create a random card in hand.`,
+                isRare ? `Play: Grant allies +1|+1` : `Strike: Create a card.`,
                 imgId,
                 set.id,
                 flavor
