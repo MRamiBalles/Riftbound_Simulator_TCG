@@ -48,7 +48,7 @@ export default function DecksPage() {
                     </div>
 
                     {/* Collection */}
-                    <div className="group relative p-8 border border-[#7a5c29] bg-[#091428]/80 backdrop-blur-md rounded-xl hover:bg-[#1e2328] transition-all cursor-pointer shadow-[0_0_0_1px_#000,0_0_0_2px_#463714] hover:shadow-[0_0_20px_rgba(200,170,110,0.3)]">
+                    <Link href="/collection" className="group relative p-8 border border-[#7a5c29] bg-[#091428]/80 backdrop-blur-md rounded-xl hover:bg-[#1e2328] transition-all cursor-pointer shadow-[0_0_0_1px_#000,0_0_0_2px_#463714] hover:shadow-[0_0_20px_rgba(200,170,110,0.3)]">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#1e9ec5]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                             <div className="p-4 rounded-full bg-[#1e9ec5]/10 border border-[#1e9ec5] group-hover:bg-[#1e9ec5] group-hover:text-[#010a13] transition-colors">
@@ -57,7 +57,7 @@ export default function DecksPage() {
                             <h2 className="text-2xl font-bold text-[#f0e6d2]" style={{ fontFamily: 'Beaufort' }}>COLLECTION</h2>
                             <p className="text-[#a09b8c] text-sm">Browse all cards in your library.</p>
                         </div>
-                    </div>
+                    </Link>
                 </div>
 
                 <div className="mt-16 text-center">

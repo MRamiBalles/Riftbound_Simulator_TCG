@@ -37,6 +37,9 @@ export default async function Home() {
           <a href="/decks" className="btn-hextech">
             DECK BUILDER
           </a>
+          <a href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)]">
+            OPEN PACKS
+          </a>
         </div>
       </header>
 
