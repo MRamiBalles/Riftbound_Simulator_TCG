@@ -39,6 +39,10 @@ body {
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll on mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* Remove tap highlight on mobile */
 }
 
 /* Headings use the strong Beaufort font */

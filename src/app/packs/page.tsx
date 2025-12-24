@@ -55,16 +55,16 @@ export default function PackOpenerPage() {
 
             {!packResult ? (
                 /* PACK STATE */
-                <div className="z-10 flex flex-col items-center text-center space-y-8 animate-in fade-in zoom-in duration-500">
-                    <h1 className="text-4xl font-bold tracking-widest uppercase text-[#c8aa6e]">
+                <div className="z-10 flex flex-col items-center text-center space-y-8 animate-in fade-in zoom-in duration-500 w-full px-4">
+                    <h1 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-[#c8aa6e]">
                         Open Hextech Chest
                     </h1>
 
                     <div
                         onClick={handleOpen}
                         className={clsx(
-                            "relative w-64 h-80 bg-gradient-to-br from-[#1e2328] to-[#091428] border-4 border-[#c8aa6e] rounded-xl cursor-pointer transition-all duration-300 transform",
-                            "hover:scale-105 hover:shadow-[0_0_50px_rgba(200,170,110,0.4)]",
+                            "relative w-48 h-64 md:w-64 md:h-80 bg-gradient-to-br from-[#1e2328] to-[#091428] border-4 border-[#c8aa6e] rounded-xl cursor-pointer transition-all duration-300 transform",
+                            "hover:scale-105 hover:shadow-[0_0_50px_rgba(200,170,110,0.4)] active:scale-95",
                             isOpening && "animate-pulse scale-110 shadow-[0_0_80px_rgba(10,200,185,0.8)]",
                             energy < 1 && "opacity-50 grayscale cursor-not-allowed hover:scale-100"
                         )}

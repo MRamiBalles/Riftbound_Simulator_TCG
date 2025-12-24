@@ -57,17 +57,17 @@ export default function CollectionPage() {
                 </div>
             </header>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 max-w-7xl mx-auto pb-20">
                 {filteredCards.map(card => {
                     const owned = inventory[card.id] || { virtual: 0, real: 0 };
                     const isOwned = owned.virtual > 0 || owned.real > 0;
 
                     return (
-                        <div key={card.id} className={`relative group ${!isOwned && !filterOwned ? 'opacity-50 grayscale hover:grayscale-0 transition-all' : ''}`}>
+                        <div key={card.id} className={`relative group transform hover:z-10 hover:scale-105 transition-all duration-200 ${!isOwned && !filterOwned ? 'opacity-40 grayscale contrast-125' : ''}`}>
                             <CardComponent card={card} />
 
-                            {/* Quantity Badge */}
-                            <div className="absolute -bottom-3 inset-x-0 flex justify-center gap-2">
+                            {/* Quantity Badge - Simplified for Mobile */}
+                            <div className="absolute -bottom-2 inset-x-0 flex justify-center gap-1 scale-75 md:scale-100 origin-bottom">
                                 {owned.virtual > 0 && (
                                     <div className="bg-[#0ac8b9] text-[#010a13] text-xs font-bold px-2 py-0.5 rounded-full shadow-lg border border-[#010a13]">
                                         V: {owned.virtual}

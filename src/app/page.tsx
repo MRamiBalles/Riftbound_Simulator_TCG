@@ -10,11 +10,11 @@ export default async function Home() {
     <main className="min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <EnergyWidget />
       {/* Header Section */}
-      <header className="flex flex-col items-center justify-center mb-12 space-y-4 relative z-10">
-        <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-widest font-serif" style={{ fontFamily: 'Beaufort' }}>
+      <header className="flex flex-col items-center justify-center mb-8 md:mb-12 space-y-4 relative z-10 w-full">
+        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-widest font-serif text-center" style={{ fontFamily: 'Beaufort' }}>
           RIFTBOUND
         </h1>
-        <p className="text-[#a09b8c] tracking-[0.3em] uppercase text-sm font-bold border-t border-b border-[#a09b8c]/30 py-2 px-8">
+        <p className="text-[#a09b8c] tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs md:text-sm font-bold border-t border-b border-[#a09b8c]/30 py-2 px-4 md:px-8 text-center">
           League of Legends TCG Simulator
         </p>
 
@@ -30,14 +30,14 @@ export default async function Home() {
           />
         </div>
 
-        <div className="flex gap-4 mt-6">
-          <a href="/play" className="btn-hextech-primary">
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full max-w-md px-4 sm:px-0">
+          <a href="/play" className="btn-hextech-primary w-full sm:w-auto text-center justify-center">
             PLAY SIMULATOR
           </a>
-          <a href="/decks" className="btn-hextech">
+          <a href="/decks" className="btn-hextech w-full sm:w-auto text-center justify-center">
             DECK BUILDER
           </a>
-          <a href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)]">
+          <a href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center">
             OPEN PACKS
           </a>
         </div>
