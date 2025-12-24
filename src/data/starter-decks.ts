@@ -18,13 +18,12 @@ export const STARTER_DECKS: StarterDeck[] = [
         name: 'Arcane Box Set',
         description: 'Featuring the stars of the hit series Arcane.',
         regions: ['Piltover & Zaun'],
-        mainChampions: ['Jinx Demolitionist', 'Vi Destructive'],
+        mainChampions: ['Vi - Destructive', 'Caitlyn - Patrolling'],
         cards: [
-            { name: 'Jinx Demolitionist', count: 3 },
-            { name: 'Vi Destructive', count: 3 },
-            { name: 'Flame Chompers', count: 3 },
-            { name: 'Get Excited!', count: 3 },
-            { name: 'Hextech Ray', count: 3 }
+            { name: 'Vi - Destructive', count: 3 },
+            { name: 'Caitlyn - Patrolling', count: 3 },
+            { name: 'Heimerdinger - Inventor', count: 3 },
+            { name: 'Chemtech Enforcer', count: 3 }, // OGN-003
         ]
     },
     {
@@ -32,13 +31,11 @@ export const STARTER_DECKS: StarterDeck[] = [
         name: 'Origins: First Flame',
         description: 'The fire of Annie burns bright in this starter deck.',
         regions: ['Noxus'],
-        mainChampions: ['Annie'],
+        mainChampions: ['Annie - Fiery'],
         cards: [
-            { name: 'Annie', count: 3 },
-            { name: 'Blazing Scorcher', count: 3 },
-            { name: 'Magma Wurm', count: 2 },
-            { name: 'Fury Rune', count: 3 },
-            { name: 'Calm Rune', count: 2 } // Mocking Calm Rune as cross-region legal for starter
+            { name: 'Annie - Fiery', count: 3 },
+            { name: 'Blazing Scorcher', count: 3 }, // OGN-001
+            { name: 'Cleave', count: 3 }, // OGN-004
         ]
     }
 ];
