@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { openPack, PackResult } from '@/services/pack-service';
-import { CardResultModal } from '@/components/CardResultModal';
 import { Card as CardComponent } from '@/components/Card';
 import { useEnergyStore } from '@/store/energy-store';
 import { useCollectionStore } from '@/store/collection-store';
