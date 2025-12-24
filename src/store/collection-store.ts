@@ -14,6 +14,7 @@ interface CollectionState {
 
     addCard: (cardId: string, source: CollectionSource) => void;
     addCards: (cardIds: string[], source: CollectionSource) => void;
+    removeCard: (cardId: string, source: CollectionSource) => void;
     getQuantity: (cardId: string, source?: CollectionSource) => number;
 
     // Helpers for UI
@@ -46,14 +47,32 @@ export const useCollectionStore = create<CollectionState>()(
 
             addCards: (cardIds, source) => {
                 set((state) => {
-                    const inv = { ...state.inventory };
+                    const newInventory = { ...state.inventory };
                     cardIds.forEach(id => {
-                        if (!inv[id]) inv[id] = { virtual: 0, real: 0 };
-
-                        if (source === 'VIRTUAL') inv[id].virtual++;
-                        else inv[id].real++;
+                        const existing = newInventory[id] || { virtual: 0, real: 0 };
+                        newInventory[id] = {
+                            ...existing,
+                            [source.toLowerCase()]: existing[source.toLowerCase() as 'virtual' | 'real'] + 1
+                        };
                     });
-                    return { inventory: inv };
+                    return { inventory: newInventory };
+                });
+            },
+
+            removeCard: (cardId, source) => {
+                set((state) => {
+                    const newInventory = { ...state.inventory };
+                    const existing = newInventory[cardId];
+                    if (existing) {
+                        const key = source.toLowerCase() as 'virtual' | 'real';
+                        if (existing[key] > 0) {
+                            newInventory[cardId] = {
+                                ...existing,
+                                [key]: existing[key] - 1
+                            };
+                        }
+                    }
+                    return { inventory: newInventory };
                 });
             },
 

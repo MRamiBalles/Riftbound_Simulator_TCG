@@ -49,6 +49,9 @@ export default async function Home() {
           <a href="/social/showcase" className="btn-hextech border-[#ffd700] text-[#ffd700] hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] w-full sm:w-auto text-center justify-center">
             SHOWCASE
           </a>
+          <a href="/social/trade" className="btn-hextech border-[#ff4500] text-[#ff4500] hover:shadow-[0_0_20px_rgba(255,69,0,0.4)] w-full sm:w-auto text-center justify-center">
+            TRADING
+          </a>
         </div>
       </header>
 
