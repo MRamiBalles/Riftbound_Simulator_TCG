@@ -82,12 +82,12 @@ export function Card({ card, onClick }: CardProps) {
                     <div className="mt-2 flex justify-between items-center text-xs text-slate-400 bg-slate-950/60 p-2 rounded-md backdrop-blur-sm">
                         <span>Market Price</span>
                         <div className="flex flex-col items-end">
-                            <span className="text-green-400 font-mono font-bold">${card.market_price.toFixed(2)}</span>
+                            <span className="text-green-400 font-mono font-bold">${(card.market_price || 0).toFixed(2)}</span>
                             <span className={clsx(
                                 "text-[10px]",
-                                card.price_change_24h >= 0 ? "text-green-500" : "text-red-500"
+                                (card.price_change_24h || 0) >= 0 ? "text-green-500" : "text-red-500"
                             )}>
-                                {card.price_change_24h > 0 ? '+' : ''}{card.price_change_24h}%
+                                {(card.price_change_24h || 0) > 0 ? '+' : ''}{(card.price_change_24h || 0).toFixed(1)}%
                             </span>
                         </div>
                     </div>

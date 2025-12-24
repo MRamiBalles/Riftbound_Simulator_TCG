@@ -24,7 +24,7 @@ export default function DecksPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
                     {/* Create New Deck */}
-                    <div className="group relative p-8 border border-[#7a5c29] bg-[#091428]/80 backdrop-blur-md rounded-xl hover:bg-[#1e2328] transition-all cursor-pointer shadow-[0_0_0_1px_#000,0_0_0_2px_#463714] hover:shadow-[0_0_20px_rgba(200,170,110,0.3)]">
+                    <Link href="/decks/builder" className="group relative p-8 border border-[#7a5c29] bg-[#091428]/80 backdrop-blur-md rounded-xl hover:bg-[#1e2328] transition-all cursor-pointer shadow-[0_0_0_1px_#000,0_0_0_2px_#463714] hover:shadow-[0_0_20px_rgba(200,170,110,0.3)]">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#c8aa6e]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                             <div className="p-4 rounded-full bg-[#c8aa6e]/10 border border-[#c8aa6e] group-hover:bg-[#c8aa6e] group-hover:text-[#010a13] transition-colors">
@@ -33,7 +33,7 @@ export default function DecksPage() {
                             <h2 className="text-2xl font-bold text-[#f0e6d2]" style={{ fontFamily: 'Beaufort' }}>NEW DECK</h2>
                             <p className="text-[#a09b8c] text-sm">Start from scratch and build a new strategy.</p>
                         </div>
-                    </div>
+                    </Link>
 
                     {/* My Decks */}
                     <div className="group relative p-8 border border-[#7a5c29] bg-[#091428]/80 backdrop-blur-md rounded-xl hover:bg-[#1e2328] transition-all cursor-pointer shadow-[0_0_0_1px_#000,0_0_0_2px_#463714] hover:shadow-[0_0_20px_rgba(200,170,110,0.3)]">
