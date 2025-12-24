@@ -1,4 +1,3 @@
-[
   {
     "id": "ORI-001",
     "name": "Jinx Demolitionist",
@@ -6,13 +5,15 @@
     "region": "Piltover & Zaun",
     "rarity": "Champion",
     "type": "Unit",
-    "subtypes": ["CHAMPION"],
+    "subtypes": [
+      "CHAMPION"
+    ],
     "text": "Quick Attack. When I'm summoned, create a 'Super Mega Death Rocket!' in hand.",
     "flavor_text": "Rules are made to be broken... like buildings! Or people!",
-    "artist": "Riot Games",
+    "artist": "Riftbound Studios",
     "attack": 4,
     "health": 3,
-    "image_url": "https://dd.b.pvp.net/latest/set1/en_us/img/cards/01PZ040.png", 
+    "image_url": "/cards/jinx-demo.png",
     "set_id": "set1",
     "collector_number": "001",
     "market_price": 25.0,
@@ -25,13 +26,15 @@
     "region": "Piltover & Zaun",
     "rarity": "Champion",
     "type": "Unit",
-    "subtypes": ["CHAMPION"],
+    "subtypes": [
+      "CHAMPION"
+    ],
     "text": "Challenger. Tough. Strike: Deal 5 to the enemy Nexus.",
     "flavor_text": "Punch first. Ask questions while punching.",
-    "artist": "Riot Games",
+    "artist": "Riftbound Studios",
     "attack": 2,
     "health": 5,
-    "image_url": "https://dd.b.pvp.net/latest/set2/en_us/img/cards/02PZ008.png",
+    "image_url": "/cards/vi-destruct.png",
     "set_id": "set1",
     "collector_number": "002",
     "market_price": 18.0,
@@ -63,7 +66,9 @@
     "region": "Runeterra",
     "rarity": "COMMON",
     "type": "Spell",
-    "subtypes": ["RUNE"],
+    "subtypes": [
+      "RUNE"
+    ],
     "text": "Grant an ally +2|+0 and Overwhelm this round.",
     "flavor_text": "The rune burns with unquenchable anger.",
     "artist": "Riot Games",
@@ -82,7 +87,9 @@
     "region": "Runeterra",
     "rarity": "COMMON",
     "type": "Spell",
-    "subtypes": ["RUNE"],
+    "subtypes": [
+      "RUNE"
+    ],
     "text": "Heal an ally 3 and draw 1.",
     "flavor_text": "Peace brings clarity.",
     "artist": "Riot Games",
@@ -101,7 +108,9 @@
     "region": "Noxus",
     "rarity": "COMMON",
     "type": "Unit",
-    "subtypes": ["DRAGON"],
+    "subtypes": [
+      "DRAGON"
+    ],
     "text": "Overwhelm. Attack: Deal 1 to all enemies.",
     "flavor_text": "It surfaces only to feed.",
     "artist": "Riot Games",
@@ -151,7 +160,7 @@
     "market_price": 0.2,
     "price_change_24h": 0.0
   },
-   {
+  {
     "id": "ORI-009",
     "name": "Hextech Ray",
     "cost": 1,
@@ -170,23 +179,24 @@
     "market_price": 0.2,
     "price_change_24h": 0.0
   },
-   {
+  {
     "id": "ORI-010",
     "name": "Annie",
     "cost": 1,
     "region": "Noxus",
     "rarity": "Champion",
     "type": "Unit",
-    "subtypes": ["CHAMPION"],
+    "subtypes": [
+      "CHAMPION"
+    ],
     "text": "Attack: Deal 2 to my blocker. Last Breath: Create a Tibbers in hand.",
     "flavor_text": "Have you seen my bear Tibbers?",
-    "artist": "Riot Games",
+    "artist": "Riftbound Studios",
     "attack": 0,
     "health": 2,
-    "image_url": "https://dd.b.pvp.net/latest/set6/en_us/img/cards/06NX012.png",
+    "image_url": "/cards/annie-origins.png",
     "set_id": "set1",
     "collector_number": "010",
     "market_price": 0.2,
     "price_change_24h": 0.0
   }
-]
