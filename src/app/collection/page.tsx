@@ -54,13 +54,32 @@ export default function CollectionPage() {
                     </div>
                 </div>
 
-                <div className="mt-8 flex gap-4">
+                <div className="mt-8 flex flex-wrap gap-4 justify-center">
                     <button
                         onClick={() => setFilterOwned(!filterOwned)}
                         className={`btn-hextech px-6 py-2 text-xs ${filterOwned ? 'bg-[#c8aa6e]/20' : ''}`}
                     >
                         {filterOwned ? 'SHOW ALL CARDS' : 'SHOW ONLY OWNED'}
                     </button>
+
+                    {/* Export Actions */}
+                    <button
+                        onClick={() => handleExport('csv')}
+                        className="btn-hextech px-4 py-2 text-xs flex items-center gap-2"
+                        title="Export as CSV (Excel)"
+                    >
+                        <FileText className="w-4 h-4" />
+                        CSV
+                    </button>
+                    <button
+                        onClick={() => handleExport('json')}
+                        className="btn-hextech px-4 py-2 text-xs flex items-center gap-2 border-[#0ac8b9] text-[#0ac8b9]"
+                        title="Backup as JSON"
+                    >
+                        <FileCode className="w-4 h-4" />
+                        JSON
+                    </button>
+
                     <Link href="/decks" className="btn-hextech px-6 py-2 text-xs">
                         BACK
                     </Link>

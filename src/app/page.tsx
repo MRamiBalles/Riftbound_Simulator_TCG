@@ -43,6 +43,12 @@ export default async function Home() {
           <a href="/scanner" className="btn-hextech border-[#c8aa6e] text-[#c8aa6e] hover:shadow-[0_0_20px_rgba(200,170,110,0.4)] w-full sm:w-auto text-center justify-center">
             SCANNER
           </a>
+          <a href="/social/echo" className="btn-hextech border-[#a020f0] text-[#a020f0] hover:shadow-[0_0_20px_rgba(160,32,240,0.4)] w-full sm:w-auto text-center justify-center">
+            WONDER PICK
+          </a>
+          <a href="/social/showcase" className="btn-hextech border-[#ffd700] text-[#ffd700] hover:shadow-[0_0_20px_rgba(255,215,0,0.4)] w-full sm:w-auto text-center justify-center">
+            SHOWCASE
+          </a>
         </div>
       </header>
 

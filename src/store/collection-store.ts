@@ -18,12 +18,17 @@ interface CollectionState {
 
     // Helpers for UI
     getTotalCards: (source: CollectionSource) => number;
+
+    // Showcase
+    showcase: (string | null)[]; // 9 slots
+    setShowcaseSlot: (index: number, cardId: string | null) => void;
 }
 
 export const useCollectionStore = create<CollectionState>()(
     persist(
         (set, get) => ({
             inventory: {},
+            showcase: Array(9).fill(null), // Init 9 empty slots
 
             addCard: (cardId, source) => {
                 set((state) => {
@@ -65,6 +70,16 @@ export const useCollectionStore = create<CollectionState>()(
                 return Object.values(inventory).reduce((acc, item) => {
                     return acc + (source === 'VIRTUAL' ? item.virtual : item.real);
                 }, 0);
+            },
+
+            setShowcaseSlot: (index, cardId) => {
+                set((state) => {
+                    const newShowcase = [...state.showcase];
+                    if (index >= 0 && index < 9) {
+                        newShowcase[index] = cardId;
+                    }
+                    return { showcase: newShowcase };
+                });
             }
         }),
         {
