@@ -31,6 +31,14 @@ export function Card({ card, onClick }: CardProps) {
                         alt={card.name}
                         className="object-cover w-full h-full opacity-90 group-hover:opacity-100 transition-opacity"
                     />
+
+                    {/* VIRTUAL WATERMARK */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                        <div className="text-[40px] font-black text-white/10 -rotate-45 whitespace-nowrap select-none border-4 border-white/10 px-8 py-2 uppercase tracking-widest backdrop-blur-[1px]">
+                            VIRTUAL
+                        </div>
+                    </div>
+
                     <div className="absolute inset-0 bg-gradient-to-t from-[#010a13] via-transparent to-transparent opacity-90" />
                 </div>
             </div>
