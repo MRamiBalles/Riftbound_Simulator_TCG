@@ -7,13 +7,23 @@ import { Card as CardComponent } from '@/components/Card';
 import { useCollectionStore } from '@/store/collection-store';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import Link from 'next/link';
-
-// Mock fetching all cards client-side for now (in real app, use Server Component + Hydration)
+import { generateCSV, generateJSON, downloadFile } from '@/services/export-service';
+import { Download, FileText, FileCode } from 'lucide-react';
 import { MOCK_CARDS } from '@/services/card-service';
 
 export default function CollectionPage() {
     const { inventory, getTotalCards } = useCollectionStore();
     const [filterOwned, setFilterOwned] = useState(false);
+
+    const handleExport = (type: 'csv' | 'json') => {
+        if (type === 'csv') {
+            const data = generateCSV(inventory, MOCK_CARDS);
+            downloadFile(data, `riftbound-collection-${new Date().toISOString().split('T')[0]}.csv`, 'csv');
+        } else {
+            const data = generateJSON(inventory, MOCK_CARDS);
+            downloadFile(data, `riftbound-backup-${new Date().toISOString().split('T')[0]}.json`, 'json');
+        }
+    };
 
     // Stats
     const totalVirtual = getTotalCards('VIRTUAL');
