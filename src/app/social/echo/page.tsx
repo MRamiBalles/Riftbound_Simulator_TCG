@@ -68,24 +68,67 @@ export default function HextechEchoPage() {
                     </div>
                 ) : !selectedEcho ? (
                     /* ECHO LIST */
+                    /* ECHO LIST */
                     <div className="grid gap-4">
                         {echoes.map((echo) => (
                             <div
                                 key={echo.id}
-                                onClick={() => setSelectedEcho(echo)}
-                                className="group relative bg-[#091428]/80 border border-[#0ac8b9]/30 p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-[#1e2328] hover:border-[#0ac8b9] transition-all hover:scale-[1.02]"
+                                onClick={() => echo.type === 'PACK' && setSelectedEcho(echo)}
+                                className={clsx(
+                                    "group relative bg-[#091428]/80 border border-[#0ac8b9]/30 p-4 rounded-xl flex items-center gap-4 transition-all hover:scale-[1.02]",
+                                    echo.type === 'PACK' ? "cursor-pointer hover:bg-[#1e2328] hover:border-[#0ac8b9]" : "cursor-default border-white/5"
+                                )}
                             >
                                 {/* Avatar */}
                                 <img src={echo.avatarUrl} alt={echo.username} className="w-12 h-12 rounded-full border-2 border-[#c8aa6e]" />
 
                                 <div className="flex-1">
-                                    <h3 className="font-bold text-[#f0e6d2]">{echo.username}</h3>
-                                    <p className="text-xs text-[#0ac8b9]">Opened a Pack &bull; {echo.timeAgo}</p>
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="font-bold text-[#f0e6d2]">{echo.username}</h3>
+                                        <span className="text-xs text-[#5c5b57]">{echo.timeAgo}</span>
+                                    </div>
+
+                                    {/* CONTENT BY TYPE */}
+                                    {echo.type === 'PACK' && (
+                                        <p className="text-xs text-[#0ac8b9] flex items-center gap-1">
+                                            <Gem className="w-3 h-3" /> Opened an Origins Pack
+                                        </p>
+                                    )}
+                                    {echo.type === 'DECK' && (
+                                        <div className="mt-1">
+                                            <p className="text-xs text-[#c8aa6e] mb-1">Constructed a new deck:</p>
+                                            <div className="bg-[#010a13] px-3 py-2 rounded border border-[#c8aa6e]/30 flex justify-between items-center">
+                                                <span className="font-bold text-[#f0e6d2]">{(echo as any).deckName}</span>
+                                                <span className="text-[10px] uppercase text-[#a09b8c]">{(echo as any).mainChampion}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {echo.type === 'TRADE' && (
+                                        <p className="text-sm mt-1">
+                                            <span className={(echo as any).action === 'BOUGHT' ? "text-green-400" : "text-red-400"}>
+                                                {(echo as any).action}
+                                            </span>
+                                            {" "}
+                                            <span className="font-bold text-[#f0e6d2]">{(echo as any).cardName}</span>
+                                            {" "}
+                                            for <span className="text-[#c8aa6e]">${(echo as any).price.toFixed(2)}</span>
+                                        </p>
+                                    )}
                                 </div>
 
+                                {/* ACTION BUTTONS */}
                                 <div className="text-[#c8aa6e] flex items-center gap-2">
-                                    <span className="text-xs uppercase font-bold tracking-wider">Intercept</span>
-                                    <Radio className="w-5 h-5 animate-pulse" />
+                                    {echo.type === 'PACK' && (
+                                        <>
+                                            <span className="text-xs uppercase font-bold tracking-wider hidden md:block">Intercept</span>
+                                            <Radio className="w-5 h-5 animate-pulse text-[#0ac8b9]" />
+                                        </>
+                                    )}
+                                    {echo.type === 'DECK' && (
+                                        <button className="px-3 py-1 bg-[#c8aa6e]/10 border border-[#c8aa6e] rounded hover:bg-[#c8aa6e]/20 text-xs font-bold transition-colors">
+                                            COPY
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -99,7 +142,7 @@ export default function HextechEchoPage() {
                         </div>
 
                         <div className="flex flex-wrap justify-center gap-4 perspective-1000">
-                            {selectedEcho.packResult.map((card, idx) => {
+                            {(selectedEcho as any).packResult.map((card: any, idx: number) => {
                                 const isRevealed = revealedIndex === idx;
                                 const isChoseOther = revealedIndex !== null && !isRevealed;
 
