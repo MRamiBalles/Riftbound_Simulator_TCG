@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCollectionStore } from '@/store/collection-store';
 import { MOCK_CARDS } from '@/services/card-service';
-import { Loader2, Camera, Check, AlertCircle, RefreshCw } from 'lucide-react';
+import { Loader2, Camera, Check, AlertCircle, RefreshCw, ArrowLeft } from 'lucide-react';
 import { Card as CardComponent } from '@/components/Card';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -159,38 +159,40 @@ export default function ScannerPage() {
                                 )}
                             </button>
                         </div>
-                        ) : (
-                        /* --- RESULT VIEW --- */
-                        <div className="z-10 w-full max-w-md p-6 flex flex-col items-center animate-in zoom-in duration-300">
-                            <div className="mb-6 p-4 bg-[#0ac8b9]/10 border border-[#0ac8b9] rounded-full">
-                                <Check className="w-12 h-12 text-[#0ac8b9]" />
-                            </div>
+                    </div>
+                </>
+            ) : (
+                /* --- RESULT VIEW --- */
+                <div className="z-10 w-full max-w-md p-6 flex flex-col items-center animate-in zoom-in duration-300">
+                    <div className="mb-6 p-4 bg-[#0ac8b9]/10 border border-[#0ac8b9] rounded-full">
+                        <Check className="w-12 h-12 text-[#0ac8b9]" />
+                    </div>
 
-                            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] to-[#f0e6d2] mb-2 font-serif" style={{ fontFamily: 'Beaufort' }}>
-                                IDENTIFIED
-                            </h2>
-                            <p className="text-[#a09b8c] text-sm uppercase tracking-widest mb-8">
-                                Added to Real Collection
-                            </p>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] to-[#f0e6d2] mb-2 font-serif" style={{ fontFamily: 'Beaufort' }}>
+                        IDENTIFIED
+                    </h2>
+                    <p className="text-[#a09b8c] text-sm uppercase tracking-widest mb-8">
+                        Added to Real Collection
+                    </p>
 
-                            <div className="mb-8 transform scale-110">
-                                <CardComponent card={scannedCard} />
-                            </div>
+                    <div className="mb-8 transform scale-110">
+                        <CardComponent card={scannedCard} />
+                    </div>
 
-                            <div className="flex gap-4 w-full">
-                                <button
-                                    onClick={reset}
-                                    className="flex-1 btn-hextech-primary flex items-center justify-center gap-2"
-                                >
-                                    <RefreshCw className="w-4 h-4" />
-                                    SCAN NEXT
-                                </button>
-                                <Link href="/collection" className="flex-1 btn-hextech text-center flex items-center justify-center">
-                                    VIEW BINDER
-                                </Link>
-                            </div>
-                        </div>
+                    <div className="flex gap-4 w-full">
+                        <button
+                            onClick={reset}
+                            className="flex-1 btn-hextech-primary flex items-center justify-center gap-2"
+                        >
+                            <RefreshCw className="w-4 h-4" />
+                            SCAN NEXT
+                        </button>
+                        <Link href="/collection" className="flex-1 btn-hextech text-center flex items-center justify-center">
+                            VIEW BINDER
+                        </Link>
+                    </div>
+                </div>
             )}
-                    </main>
-                    );
+        </main>
+    );
 }
