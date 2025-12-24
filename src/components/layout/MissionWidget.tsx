@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useMissionStore } from '@/store/mission-store';
 import { Gift, CheckCircle, Target } from 'lucide-react';
 import clsx from 'clsx';
-import confetti from 'canvas-confetti';
 
 export default function MissionWidget() {
     const { missions, dailyClaimed, checkDailyLogin, claimDaily } = useMissionStore();
@@ -20,12 +19,8 @@ export default function MissionWidget() {
     const handleClaimDaily = () => {
         const reward = claimDaily();
         if (reward > 0) {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#c8aa6e', '#0ac8b9']
-            });
+            // Simple alert or visual feedback instead of confetti
+            alert(`Claimed ${reward} Hex Cores!`);
         }
     };
 

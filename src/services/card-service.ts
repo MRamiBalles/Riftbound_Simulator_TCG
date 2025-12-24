@@ -79,25 +79,89 @@ const generateBulkCards = (): Card[] => {
     const bulk: Card[] = [];
     let idCounter = 100;
 
+    // --- DATA POOLS ---
+    const ADJECTIVES = ['Elite', 'Vanguard', 'Veteran', 'Reckless', 'Cursed', 'Blessed', 'Ancient', 'Swift', 'Armored', 'Mystic'];
+    const NOUNS = {
+        'Demacia': ['Soldier', 'Knight', 'Ranger', 'Guardian', 'Duelist', 'Shieldbearer'],
+        'Noxus': ['Gladiator', 'Assassin', 'Warmonger', 'Spy', 'Legionnaire', 'Battering Ram'],
+        'Ionia': ['Monk', 'Ninja', 'Spirit', 'Elder', 'Blade', 'Dancer'],
+        'Freljord': ['Yeti', 'Archer', 'Raider', 'Shaman', 'Troll', 'Winter\'s Claw'],
+        'Piltover & Zaun': ['Inventor', 'Chemist', 'Bot', 'Thug', 'Investigator', 'Sniper'],
+        'Shadow Isles': ['Ghost', 'Specter', 'Undead', 'Horror', 'Mistwraith', 'Soulhelper'],
+        'Bilgewater': ['Pirate', 'Merchant', 'Corsair', 'Hunter', 'Gambler', 'Cutthroat'],
+        'Targon': ['Climber', 'Starseer', 'Priest', 'Dragon', 'Goat', 'Traveler'],
+        'Shurima': ['Sandspinner', 'Raider', 'Nomad', 'Soldier', 'Baccai', 'Scholar']
+    };
+
+    const FLAVOR_PREFIXES = [
+        "The best offense is a good defense, specifically",
+        "Never turn your back on",
+        "In the darkest nights,",
+        "Legends say that",
+        "It is said that",
+        "Beware the power of",
+        "Only the strong survive",
+        "Written in the stars:",
+        "Lost in the sands of time,",
+        "Forged in the fires of battle,"
+    ];
+
+    // Image Pools per Region (Real Card Art URLs for variety)
+    const IMAGE_POOLS: Record<string, string[]> = {
+        'Demacia': ['01DE001', '01DE012', '01DE042', '01DE002', '01DE020'],
+        'Noxus': ['01NX038', '02NX007', '01NX011', '01NX040'],
+        'Piltover & Zaun': ['01PZ040', '01PZ008', '01PZ056', '01PZ020', '01PZ030'],
+        'Ionia': ['01IO009', '01IO041', '01IO002', '01IO012'],
+        'Freljord': ['01FR024', '02FR002', '01FR010', '01FR030'],
+        'Shadow Isles': ['01SI052', '01SI033', '01SI001', '01SI020'],
+        'Bilgewater': ['02BW022', '02BW032', '02BW026', '02BW046'],
+        'Targon': ['03MT054', '03MT027', '03MT087', '03MT008'],
+        'Shurima': ['04SH003', '04SH047', '04SH020', '04SH130']
+    };
+
     MOCK_SETS.forEach(set => {
-        // Generate ~80 commons/rares per set
-        for (let i = 0; i < 80; i++) {
+        // Generate ~50 diverse cards per set
+        for (let i = 0; i < 50; i++) {
             idCounter++;
-            const isRare = Math.random() > 0.7;
-            const region = set.code === 'ORI' ? 'Demacia' : set.code === 'RIT' ? 'Bilgewater' : set.code === 'COT' ? 'Targon' : 'Shurima';
+            const isRare = Math.random() > 0.8;
+            const rarity: any = isRare ? 'Rare' : 'Common'; // Changed Rarity to any to match createCard signature
+
+            // Determine Region based on Set (Weighted)
+            let region = 'Demacia';
+            if (set.code === 'ORI') region = ['Demacia', 'Noxus', 'Ionia', 'Piltover & Zaun', 'Freljord', 'Shadow Isles'][Math.floor(Math.random() * 6)];
+            if (set.code === 'RIT') region = Math.random() > 0.3 ? 'Bilgewater' : 'Noxus';
+            if (set.code === 'COT') region = Math.random() > 0.3 ? 'Targon' : 'Ionia';
+            if (set.code === 'EMP') region = Math.random() > 0.3 ? 'Shurima' : 'Noxus';
+
+            // Generate Name
+            const noun = NOUNS[region as keyof typeof NOUNS]?.[Math.floor(Math.random() * (NOUNS[region as keyof typeof NOUNS]?.length || 1))] || 'Unit';
+            const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+            const name = `${adj} ${noun}`;
+
+            // Generate Stats
+            const cost = Math.floor(Math.random() * 9) + 1;
+            const attack = Math.floor(cost * (0.8 + Math.random() * 0.4));
+            const health = Math.floor(cost * (0.8 + Math.random() * 0.4)) + (isRare ? 1 : 0);
+
+            // Generate Image (Random from pool)
+            const imgPool = IMAGE_POOLS[region] || IMAGE_POOLS['Demacia'];
+            const imgId = imgPool[Math.floor(Math.random() * imgPool.length)];
+
+            // Generate Flavor
+            const flavor = `${FLAVOR_PREFIXES[Math.floor(Math.random() * FLAVOR_PREFIXES.length)]} the ${name.toLowerCase()}.`;
 
             bulk.push(createCard(
                 `gen-${set.id}-${i}`,
-                `${region} ${isRare ? 'Elite' : 'Soldier'} ${i}`,
-                Math.floor(Math.random() * 8) + 1,
+                name,
+                cost,
                 region,
-                isRare ? 'Rare' : 'Common',
+                rarity,
                 'Unit',
-                [Math.floor(Math.random() * 7) + 1, Math.floor(Math.random() * 7) + 1],
-                isRare ? `When summoned, grant allies +1|+1.` : `Strike: Draw 1.`,
-                set.code === 'ORI' ? '01DE001' : '02BW005', // Fallback images
+                [attack, health],
+                isRare ? `Play: Grant allies +1|+${Math.floor(Math.random() * 2)}` : `Strike: Create a random card in hand.`,
+                imgId,
                 set.id,
-                `A standard issue unit from the ${set.name} expansion.`
+                flavor
             ));
         }
     });
