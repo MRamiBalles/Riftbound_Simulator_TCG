@@ -31,7 +31,7 @@ export default function HextechEchoPage() {
         setRevealedIndex(index);
 
         // Add to collection
-        if (selectedEcho) {
+        if (selectedEcho && selectedEcho.type === 'PACK') {
             const card = selectedEcho.packResult[index];
             addCard(card.id, 'VIRTUAL');
         }
@@ -67,7 +67,6 @@ export default function HextechEchoPage() {
                         <Loader2 className="w-12 h-12 animate-spin text-[#0ac8b9]" />
                     </div>
                 ) : !selectedEcho ? (
-                    /* ECHO LIST */
                     /* ECHO LIST */
                     <div className="grid gap-4">
                         {echoes.map((echo) => (
@@ -142,7 +141,7 @@ export default function HextechEchoPage() {
                         </div>
 
                         <div className="flex flex-wrap justify-center gap-4 perspective-1000">
-                            {(selectedEcho as any).packResult.map((card: any, idx: number) => {
+                            {selectedEcho.type === 'PACK' && selectedEcho.packResult.map((card, idx) => {
                                 const isRevealed = revealedIndex === idx;
                                 const isChoseOther = revealedIndex !== null && !isRevealed;
 
