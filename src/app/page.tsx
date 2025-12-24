@@ -1,12 +1,14 @@
 import { getCards } from '@/services/card-service';
 import { CardGrid } from '@/components/CardGrid';
 import { Search } from 'lucide-react';
+import EnergyWidget from "@/components/layout/EnergyWidget";
 
 export default async function Home() {
   const cards = await getCards();
 
   return (
     <main className="min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <EnergyWidget />
       {/* Header Section */}
       <header className="flex flex-col items-center justify-center mb-12 space-y-4 relative z-10">
         <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-widest font-serif" style={{ fontFamily: 'Beaufort' }}>

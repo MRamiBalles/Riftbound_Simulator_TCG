@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { Plus, Layers, Library } from 'lucide-react';
 import React from 'react';
+import EnergyWidget from '@/components/layout/EnergyWidget';
 
 export default function DecksPage() {
     return (
         <main className="min-h-screen p-8 pt-24 font-serif bg-[#010a13] text-[#f0e6d2] relative overflow-hidden">
+            <EnergyWidget />
 
             {/* Background Elements */}
             <div className="absolute inset-0 z-0 bg-[url('https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt2a829e1f57fb8b78/62e0339aab625e114008778a/01PZ040-full.png')] bg-cover bg-center opacity-20 blur-sm" />
