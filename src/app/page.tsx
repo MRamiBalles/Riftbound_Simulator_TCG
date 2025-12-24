@@ -40,6 +40,9 @@ export default async function Home() {
           <a href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center">
             OPEN PACKS
           </a>
+          <a href="/scanner" className="btn-hextech border-[#c8aa6e] text-[#c8aa6e] hover:shadow-[0_0_20px_rgba(200,170,110,0.4)] w-full sm:w-auto text-center justify-center">
+            SCANNER
+          </a>
         </div>
       </header>
 
