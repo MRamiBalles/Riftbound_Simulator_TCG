@@ -106,17 +106,48 @@ const generateBulkCards = (): Card[] => {
         "Forged in the fires of battle,"
     ];
 
-    // Image Pools per Region (Real Card Art URLs for variety)
+    // Image Pools per Region (Real Card Art URLs for variety) with CORRECT Set Paths
     const IMAGE_POOLS: Record<string, string[]> = {
-        'Demacia': ['01DE001', '01DE012', '01DE042', '01DE002', '01DE020'],
-        'Noxus': ['01NX038', '02NX007', '01NX011', '01NX040'],
-        'Piltover & Zaun': ['01PZ040', '01PZ008', '01PZ056', '01PZ020', '01PZ030'],
-        'Ionia': ['01IO009', '01IO041', '01IO002', '01IO012'],
-        'Freljord': ['01FR024', '02FR002', '01FR010', '01FR030'],
-        'Shadow Isles': ['01SI052', '01SI033', '01SI001', '01SI020'],
-        'Bilgewater': ['02BW022', '02BW032', '02BW026', '02BW046'],
-        'Targon': ['03MT054', '03MT027', '03MT087', '03MT008'],
-        'Shurima': ['04SH003', '04SH047', '04SH020', '04SH130']
+        'Demacia': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01DE001.png',
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01DE012.png',
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01DE042.png'
+        ],
+        'Noxus': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01NX038.png',
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02NX007.png' // Swain is Set 2
+        ],
+        'Piltover & Zaun': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01PZ040.png',
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01PZ008.png'
+        ],
+        'Ionia': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01IO009.png',
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01IO041.png'
+        ],
+        'Freljord': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01FR024.png',
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02FR002.png'
+        ],
+        'Shadow Isles': [
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01SI052.png',
+            'https://dd.b.pvp.net/latest/set1/en_us/img/cards/01SI033.png'
+        ],
+        'Bilgewater': [ // Set 2
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW022.png',
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW032.png',
+            'https://dd.b.pvp.net/latest/set2/en_us/img/cards/02BW026.png'
+        ],
+        'Targon': [ // Set 3
+            'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT054.png',
+            'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT027.png',
+            'https://dd.b.pvp.net/latest/set3/en_us/img/cards/03MT087.png'
+        ],
+        'Shurima': [ // Set 4
+            'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH003.png',
+            'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH047.png',
+            'https://dd.b.pvp.net/latest/set4/en_us/img/cards/04SH020.png'
+        ]
     };
 
     MOCK_SETS.forEach(set => {
