@@ -10,6 +10,11 @@ import {
 import { createRuntimeCard, RuntimeCard } from './RuntimeCard';
 import { CombatResolver } from './CombatResolver';
 
+/**
+ * The core deterministic game engine for Riftbound Simulator.
+ * Manages game state, turn flow, mana logic, and action resolution.
+ * Designed for full serializability to support AI training and state syncing.
+ */
 export class CoreEngine {
     private state: SerializedGameState;
 
@@ -23,6 +28,13 @@ export class CoreEngine {
 
     // --- INITIALIZATION ---
 
+    /**
+     * Initializes a new game session with provided decks.
+     * Shuffles decks, draws initial hands, and sets the starting turn.
+     * 
+     * @param playerDeck - Array of cards for the human player.
+     * @param opponentDeck - Array of cards for the AI opponent.
+     */
     public initGame(playerDeck: Card[], opponentDeck: Card[]) {
         this.state = this.createInitialState();
 
@@ -87,6 +99,13 @@ export class CoreEngine {
 
     // --- ACTIONS ---
 
+    /**
+     * Applies a player action to the current state and returns the resulting state.
+     * Dispatches to internal handlers based on the ActionType.
+     * 
+     * @param action - The action to perform (e.g., PLAY_CARD, END_TURN).
+     * @returns The updated SerializedGameState.
+     */
     public applyAction(action: Action): SerializedGameState {
         if (this.state.winner) return this.state;
 

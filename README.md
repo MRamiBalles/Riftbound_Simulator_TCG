@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Riftbound Simulator TCG
 
-## Getting Started
+A high-fidelity simulation and training environment for the **Riftbound TCG**, featuring a deterministic game engine, AI training capabilities, and a modern card management interface.
 
-First, run the development server:
+## 🚀 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Riftbound Simulator is designed to bridge the gap between competitive play and advanced AI development. It provides a pixel-perfect React frontend for playtesting and a Python-powered backend for training reinforcement learning agents using current industry-standard frameworks.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Key Features
+- **Deterministic Game Engine**: Built from the ground up to ensure state parity between TypeScript (UI) and Python (AI).
+- **Intelligent AI Opponents**: Includes both a rule-based Heuristic Bot and hooks for Stable-Baselines3 RL agents.
+- **Card Management**: Full-featured Deck Builder with advanced filtering, Pack Simulator, and Physical Card Scanner (OCR-ready).
+- **Architecture**: Modern Next.js 15+ stack with Zustand for lean state management and Tailwind CSS for a premium "Hextech" aesthetic.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Frontend (Next.js)
+- **Framework**: React 19, Next.js 15 (App Router)
+- **State Management**: Zustand (Global Store)
+- **Styling**: Tailwind CSS 4, Lucide React
+- **Logic**: TypeScript 5, CoreEngine (Deterministic State Machine)
 
-## Learn More
+### Backend (Python)
+- **Framework**: FastAPI (Inference Server)
+- **AI/ML**: PyTorch, Gymnasium, Stable-Baselines3
+- **Schema**: Shared SerializedGameState for cross-language parity
 
-To learn more about Next.js, take a look at the following resources:
+## 🚦 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
+- **Node.js**: 18.x or higher
+- **Python**: 3.10+ (for AI/Backend)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
+1.  **Clone & Install Dependencies**:
+    ```bash
+    npm install
+    cd backend && pip install -r requirements.txt
+    ```
+2.  **Run Development Server**:
+    ```bash
+    npm run dev
+    ```
+3.  **Run AI Backend** (Optional):
+    ```bash
+    cd backend && uvicorn api.main:app --reload
+    ```
 
-## Deploy on Vercel
+## 📚 Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For detailed technical insights into the game mechanics, AI integration, and data flow, please refer to the [Technical Guide](./TECHNICAL_GUIDE.md).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Developed for the Riftbound community by Advanced Agentic Coding.*

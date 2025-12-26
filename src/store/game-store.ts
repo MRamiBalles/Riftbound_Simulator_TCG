@@ -32,6 +32,10 @@ const INITIAL_STATE: SerializedGameState = {
     stack: []
 };
 
+/**
+ * Main application store for managing game state and engine interactions.
+ * Connects the React UI to the deterministic CoreEngine.
+ */
 export const useGameStore = create<GameStoreState>((set, get) => ({
     ...INITIAL_STATE,
     engine: null,

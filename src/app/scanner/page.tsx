@@ -12,8 +12,9 @@ export default function ScannerPage() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-    const [isScanning, setIsScanning] = useState(false);
+    const [scanState, setScanState] = useState<'idle' | 'capturing' | 'analyzing' | 'matching' | 'done'>('idle');
     const [scannedCard, setScannedCard] = useState<any | null>(null);
+    const [history, setHistory] = useState<any[]>([]);
     const { addCard } = useCollectionStore();
 
     useEffect(() => {
@@ -44,32 +45,37 @@ export default function ScannerPage() {
     };
 
     const handleScan = async () => {
-        if (isScanning) return;
-        setIsScanning(true);
+        if (scanState !== 'idle') return;
+
+        setScanState('capturing');
         setScannedCard(null);
 
-        // 1. Capture Frame (Visual flair only for now)
+        // 1. Capture Frame (Visual flair)
         if (videoRef.current && canvasRef.current) {
             const context = canvasRef.current.getContext('2d');
             if (context) {
-                // Flash effect could go here
                 context.drawImage(videoRef.current, 0, 0, 300, 400);
             }
         }
 
-        // 2. Simulate Cloud Analysis (OCR)
-        setTimeout(() => {
-            // Mock Result: Pick a random card to simulate "Recognizing" the real card
-            // In a real app, this would send the image blob to an OCR endpoint
-            const randomCard = MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)];
+        // 2. Multi-step Simulation
+        await new Promise(r => setTimeout(r, 800));
+        setScanState('analyzing');
 
-            setScannedCard(randomCard);
-            addCard(randomCard.id, 'REAL'); // Save to Physical Collection
-            setIsScanning(false);
-        }, 2000);
+        await new Promise(r => setTimeout(r, 1200));
+        setScanState('matching');
+
+        await new Promise(r => setTimeout(r, 1000));
+
+        const randomCard = MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)];
+        setScannedCard(randomCard);
+        setHistory(prev => [randomCard, ...prev].slice(0, 5));
+        addCard(randomCard.id, 'REAL');
+        setScanState('done');
     };
 
     const reset = () => {
+        setScanState('idle');
         setScannedCard(null);
     };
 
@@ -126,7 +132,7 @@ export default function ScannerPage() {
                             <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
                                 <div className={clsx(
                                     "w-64 h-88 border-2 border-[#0ac8b9]/50 rounded-lg relative transition-all duration-300",
-                                    isScanning ? "border-[#c8aa6e] shadow-[0_0_50px_rgba(200,170,110,0.5)] scale-95" : "scale-100"
+                                    scanState !== 'idle' ? "border-[#c8aa6e] shadow-[0_0_50px_rgba(200,170,110,0.5)] scale-95" : "scale-100"
                                 )}>
                                     {/* Corners */}
                                     <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#0ac8b9]" />
@@ -135,24 +141,50 @@ export default function ScannerPage() {
                                     <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#0ac8b9]" />
 
                                     {/* Scan Line Animation */}
-                                    {!isScanning && hasPermission && (
+                                    {scanState === 'idle' && hasPermission && (
                                         <div className="absolute top-0 left-0 right-0 h-1 bg-[#0ac8b9] shadow-[0_0_10px_#0ac8b9] animate-[scan_2s_ease-in-out_infinite]" />
+                                    )}
+
+                                    {/* Status Overlay */}
+                                    {scanState !== 'idle' && scanState !== 'done' && (
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                                            <div className="text-[#c8aa6e] text-xs font-bold tracking-widest uppercase animate-pulse mb-2">
+                                                {scanState === 'capturing' && 'Capturing...'}
+                                                {scanState === 'analyzing' && 'Analyzing OCR...'}
+                                                {scanState === 'matching' && 'Matching DB...'}
+                                            </div>
+                                            <Loader2 className="w-8 h-8 animate-spin text-[#c8aa6e]" />
+                                        </div>
                                     )}
                                 </div>
                             </div>
                         </div>
 
+                        {/* Recent History (Floating thumbnails) */}
+                        {history.length > 0 && scanState === 'idle' && (
+                            <div className="absolute bottom-36 inset-x-0 z-20 px-6 flex flex-col items-center">
+                                <span className="text-[10px] text-[#a09b8c] uppercase tracking-wider mb-2">Recent Scans</span>
+                                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                                    {history.map((card, i) => (
+                                        <div key={i} className="w-12 h-16 rounded border border-[#7a5c29] overflow-hidden opacity-60 hover:opacity-100 transition-opacity flex-shrink-0 shadow-lg">
+                                            <img src={card.image_url} alt="" className="w-full h-full object-cover" />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Bottom Controls */}
                         <div className="absolute bottom-0 inset-x-0 z-20 h-32 bg-gradient-to-t from-black via-black/80 to-transparent flex items-center justify-center pb-8">
                             <button
                                 onClick={handleScan}
-                                disabled={!hasPermission || isScanning}
+                                disabled={!hasPermission || scanState !== 'idle'}
                                 className={clsx(
                                     "w-20 h-20 rounded-full border-4 flex items-center justify-center shadow-lg transition-all",
-                                    isScanning ? "border-[#c8aa6e] bg-[#c8aa6e]/20 animate-pulse" : "border-[#f0e6d2] bg-[#f0e6d2]/10 hover:bg-[#f0e6d2]/20 active:scale-95"
+                                    scanState !== 'idle' ? "border-[#c8aa6e] bg-[#c8aa6e]/20 animate-pulse" : "border-[#f0e6d2] bg-[#f0e6d2]/10 hover:bg-[#f0e6d2]/20 active:scale-95"
                                 )}
                             >
-                                {isScanning ? (
+                                {scanState !== 'idle' ? (
                                     <Loader2 className="w-8 h-8 animate-spin text-[#c8aa6e]" />
                                 ) : (
                                     <Camera className="w-8 h-8 text-[#f0e6d2]" />

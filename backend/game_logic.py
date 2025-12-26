@@ -7,6 +7,10 @@ PlayerId = str
 Phase = str
 
 class Card:
+    """
+    Represents a game card with its core stats and keyword mechanics.
+    Mirror of the frontend RuntimeCard structure for parity in RL environments.
+    """
     def __init__(self, id: str, cost: int, attack: int = 0, health: int = 0, type: str = "Unit", keywords: List[str] = None):
         self.id = id
         self.cost = cost
@@ -125,6 +129,10 @@ class PythonCoreEngine:
                         self.state.winner = p_id
 
     def _resolve_unit_combat(self, attacker: Card, blocker: Card, defender_id: str):
+        """
+        Resolves combat between units in the Python environment.
+        Implements Quick Attack, Barrier, and Overwhelm to ensure training parity.
+        """
         attacker_dmg = attacker.attack
         blocker_dmg = blocker.attack
 

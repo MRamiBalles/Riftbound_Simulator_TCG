@@ -14,7 +14,19 @@ interface CombatResult {
     nexusDamage: Record<PlayerId, number>; // Damage to players
 }
 
+/**
+ * Utility for resolving combat interactions between units and the Nexus.
+ * Handles keyword mechanics such as Barrier, Quick Attack, and Overwhelm.
+ */
 export class CombatResolver {
+    /**
+     * Resolves an entire combat state, iterating through all declared attackers
+     * and matching them against blockers to determine damage distribution.
+     * 
+     * @param state - The current serialized game state.
+     * @param combat - The current active combat configuration.
+     * @returns A result object containing damage events, death notifications, and nexus damage.
+     */
     public static resolveCombat(
         state: SerializedGameState,
         combat: CombatState
@@ -54,6 +66,16 @@ export class CombatResolver {
         return result;
     }
 
+    /**
+     * Resolves combat between a single attacker and its blocker.
+     * Implements the logic for Barrier (negation), Quick Attack (strike order), 
+     * and Overwhelm (excess damage).
+     * 
+     * @param attacker - The unit initiating the attack.
+     * @param blocker - The unit declared as a blocker.
+     * @param result - The accumulator for combat results.
+     * @param defenderId - The ID of the player being attacked.
+     */
     private static resolveUnitCombat(
         attacker: RuntimeCard,
         blocker: RuntimeCard,
