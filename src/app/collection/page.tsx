@@ -1,20 +1,19 @@
-'use client';
-
 import React, { useEffect, useState } from 'react';
 import { getCards } from '@/services/card-service'; // We'll need a client version or pass data
 import { Card as CardType } from '@/lib/database.types';
-import { Card as CardComponent } from '@/components/Card';
-import { useCollectionStore } from '@/store/collection-store';
+import { Search, Filter, ArrowRight, Grid, List, Briefcase, Download, Upload, Hammer, Plus } from 'lucide-react';
+import { VfxService } from '@/services/vfx-service';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import Link from 'next/link';
 import { generateCSV, generateJSON, downloadFile } from '@/services/export-service';
-import { Download, FileText, FileCode, Library, Star, Plus } from 'lucide-react';
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';
+import { useCollectionStore } from '@/store/collection-store';
+import { Card as CardComponent } from '@/components/Card';
 import clsx from 'clsx';
 import CardDetailModal from '@/components/CardDetailModal';
 
 export default function CollectionPage() {
-    const { inventory, getTotalCards, showcase, setShowcaseSlot } = useCollectionStore();
+    const { inventory, setActiveDeck, decks, getTotalCards, showcase, setShowcaseSlot } = useCollectionStore();
     const [filterOwned, setFilterOwned] = useState(false);
     const [selectedSet, setSelectedSet] = useState<string | 'ALL'>('ALL');
     const [viewingCard, setViewingCard] = useState<typeof MOCK_CARDS[0] | null>(null);
@@ -61,6 +60,15 @@ export default function CollectionPage() {
                 </h1>
 
                 <div className="flex justify-center gap-8 mt-4 text-sm tracking-widest uppercase">
+                    <div className="flex gap-4">
+                        <Link href="/collection/altar" className="btn-hextech px-6 py-3 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border-[#c8aa6e]/30 text-[#c8aa6e] hover:bg-[#c8aa6e]/10 transition-all">
+                            <Hammer size={16} /> ALTAR OF TRANSCENDENCE
+                        </Link>
+                        <div className="bg-black/40 border border-white/10 rounded-2xl px-6 py-3 backdrop-blur-xl text-center">
+                            <div className="text-[8px] font-black text-[#add8e6] uppercase tracking-widest">TOTAL CARDS</div>
+                            <div className="text-xl font-black text-white">{Object.values(inventory).reduce((a, b) => a + (b.virtual + b.real), 0)}</div>
+                        </div>
+                    </div>
                     <div className="flex flex-col items-center">
                         <span className="text-[#0ac8b9] font-bold text-xl">{totalVirtual}</span>
                         <span className="text-[#5c5b57]">Virtual</span>

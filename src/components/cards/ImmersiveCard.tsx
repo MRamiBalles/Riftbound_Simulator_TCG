@@ -9,13 +9,17 @@ import { Trophy, Swords, Zap } from 'lucide-react';
 
 interface ImmersiveCardProps {
     card: Card;
+    size?: 'sm' | 'md' | 'lg';
+    className?: string;
+    onClick?: () => void;
+    showStats?: boolean;
 }
 
 /**
  * ImmersiveCard (Phase 23)
  * Provides 3D parallax visual effects matching TCGP's Immersive Cards.
  */
-export const ImmersiveCard: React.FC<ImmersiveCardProps> = ({ card }) => {
+export function ImmersiveCard({ card, size = 'md', className, onClick, showStats = true }: ImmersiveCardProps) {
     const { cardLegacies } = useUserStore();
     const legacy = cardLegacies[card.id] || { wins: 0, games: 0, kills: 0 };
     const title = LegacyService.getTitle(legacy);

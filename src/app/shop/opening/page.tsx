@@ -28,17 +28,22 @@ export default function PackOpeningPage() {
     const [bulkIndex, setBulkIndex] = useState(0);
     const [isGodPack, setIsGodPack] = useState(false);
 
+    const [finalPity, setFinalPity] = useState(0);
+
     useEffect(() => {
         getCards().then(allCards => {
             if (count > 1) {
-                const results = PackService.openBulk(allCards, packType, pityCounter, count);
-                setBulkResults(results);
-                setPackCards(results[0]);
-                const hasGod = results.some((p: Card[]) => p.filter((c: Card) => ['Legendary', 'Champion'].includes(c.rarity)).length >= 2);
+                const result = PackService.openBulk(allCards, packType, pityCounter, count);
+                setBulkResults(result.packs);
+                setPackCards(result.packs[0]);
+                setFinalPity(result.finalPity);
+                const hasGod = result.packs.some((p: Card[]) => p.filter((c: Card) => ['Legendary', 'Champion'].includes(c.rarity)).length >= 2);
                 setIsGodPack(hasGod);
             } else {
                 const cards = PackService.openPack(allCards, packType, pityCounter);
                 setPackCards(cards);
+                const hasRare = cards.some(c => ['Legendary', 'Champion'].includes(c.rarity));
+                setFinalPity(hasRare ? 0 : pityCounter + 1);
                 if (cards.filter(c => ['Legendary', 'Champion'].includes(c.rarity)).length >= 2) setIsGodPack(true);
             }
         });
@@ -50,12 +55,12 @@ export default function PackOpeningPage() {
         setStep('CUTTING');
         VfxService.trigger('PACK_OPEN');
 
-        // Register opening logic
+        // Register opening logic with precision pity
         const anyRare = count > 1 ?
             bulkResults.some(p => p.some(c => ['Legendary', 'Champion'].includes(c.rarity))) :
             packCards.some(c => ['Legendary', 'Champion'].includes(c.rarity));
 
-        registerPackOpening(anyRare, count);
+        registerPackOpening(anyRare, count, finalPity);
 
         // Broadcast IF it's a hit!
         if (anyRare) {

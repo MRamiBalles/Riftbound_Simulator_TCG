@@ -11,7 +11,7 @@ export interface CardLegacyStats {
  * Manages card-specific titles and visual evolution based on performance.
  */
 export class LegacyService {
-    public static getTitle(stats: CardLegacyStats): string | null {
+    public static getTitle(stats: { wins: number; games: number; kills: number }): string | null {
         if (stats.kills >= 50) return 'The Executioner';
         if (stats.wins >= 25) return 'The Unconquered';
         if (stats.games >= 100) return 'The Veteran';

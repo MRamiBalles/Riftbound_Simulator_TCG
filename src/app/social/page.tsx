@@ -8,7 +8,7 @@ import { getCards } from '@/services/card-service';
 import { Card } from '@/lib/database.types';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Sparkles, Zap, Timer, Globe, Trophy } from 'lucide-react';
+import { Users, Sparkles, Zap, Timer, Globe, Trophy, ArrowRightLeft } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -30,9 +30,7 @@ export default function SocialHubPage() {
     };
 
     const handlePick = (index: number) => {
-        // In a real app, this would be a server-side random pick from the 5 hidden cards
         getCards().then(allCards => {
-            // Pick a random card for simulation
             const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
             setPickedCard(randomCard);
             setWonderStep('REVEALED');
@@ -52,19 +50,23 @@ export default function SocialHubPage() {
                             <Globe size={14} className="text-[#0ac8b9]" /> LIVE MULTIVERSE PULL FEED
                         </p>
                     </div>
-                    <div className="bg-black/40 border border-white/10 rounded-2xl p-4 backdrop-blur-xl flex items-center gap-4">
-                        <div className="text-right">
-                            <div className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-widest">WONDER SHARDS</div>
-                            <div className="text-2xl font-black text-white">{wonderShards}</div>
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-[#c8aa6e]/10 flex items-center justify-center border border-[#c8aa6e]/30">
-                            <Sparkles size={20} className="text-[#c8aa6e]" />
+                    <div className="flex gap-4">
+                        <Link href="/social/trade" className="btn-hextech px-6 py-3 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border-amber-500/30 text-amber-500 hover:bg-amber-500/10 transition-all">
+                            <ArrowRightLeft size={16} /> TRADE HUB
+                        </Link>
+                        <div className="bg-black/40 border border-white/10 rounded-2xl p-4 backdrop-blur-xl flex items-center gap-4">
+                            <div className="text-right">
+                                <div className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-widest">WONDER SHARDS</div>
+                                <div className="text-2xl font-black text-white">{wonderShards}</div>
+                            </div>
+                            <div className="w-10 h-10 rounded-full bg-[#c8aa6e]/10 flex items-center justify-center border border-[#c8aa6e]/30">
+                                <Sparkles size={20} className="text-[#c8aa6e]" />
+                            </div>
                         </div>
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    {/* FEED LIST */}
                     <div className="lg:col-span-2 space-y-6">
                         <AnimatePresence>
                             {feed.map((pull, idx) => (
@@ -89,10 +91,6 @@ export default function SocialHubPage() {
                                         </div>
 
                                         <div className="flex items-center gap-6">
-                                            <div className="text-right">
-                                                <div className="text-[10px] font-black text-[#0ac8b9] uppercase tracking-widest mb-1">PULL TYPE</div>
-                                                <div className="text-xs font-black text-white uppercase italic">{pull.packType} CORE</div>
-                                            </div>
                                             <button
                                                 onClick={() => startWonderPick(pull)}
                                                 className={clsx(
@@ -105,7 +103,6 @@ export default function SocialHubPage() {
                                         </div>
                                     </div>
 
-                                    {/* MOCK CARD BACKS */}
                                     <div className="mt-6 flex gap-2">
                                         {[1, 2, 3, 4, 5].map(i => (
                                             <div key={i} className="w-12 h-16 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center grayscale opacity-30">
@@ -113,15 +110,12 @@ export default function SocialHubPage() {
                                             </div>
                                         ))}
                                     </div>
-
-                                    {/* DECORATIVE LIGHT */}
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-[#c8aa6e]/2 blur-[40px] rounded-full group-hover:bg-[#c8aa6e]/5 transition-colors" />
                                 </motion.div>
                             ))}
                         </AnimatePresence>
                     </div>
 
-                    {/* SIDEBAR: RANKINGS */}
                     <div className="space-y-8">
                         <div className="bg-black/40 border border-white/5 rounded-[2rem] p-8 backdrop-blur-xl">
                             <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-6 flex items-center gap-2">
@@ -143,16 +137,15 @@ export default function SocialHubPage() {
                                 ))}
                             </div>
                         </div>
-
-                        <Link href="/shop" className="block w-full btn-hextech-primary py-6 text-center text-xs font-black uppercase tracking-[0.2em] relative overflow-hidden group">
-                            <span className="relative z-10 text-black">OPEN YOUR OWN PACKS</span>
-                            <div className="absolute inset-x-0 bottom-0 h-1 bg-black/20" />
-                        </Link>
                     </div>
                 </div>
+
+                <Link href="/shop" className="mt-12 block w-full btn-hextech-primary py-6 text-center text-xs font-black uppercase tracking-[0.2em] relative overflow-hidden group">
+                    <span className="relative z-10 text-black">OPEN YOUR OWN PACKS</span>
+                    <div className="absolute inset-x-0 bottom-0 h-1 bg-black/20" />
+                </Link>
             </div>
 
-            {/* WONDER PICK OVERLAY */}
             <AnimatePresence>
                 {wonderStep !== 'IDLE' && (
                     <motion.div
@@ -184,7 +177,6 @@ export default function SocialHubPage() {
                                         </motion.div>
                                     ))}
                                 </div>
-
                                 <button onClick={() => setWonderStep('IDLE')} className="text-[10px] font-black text-[#5c5b57] hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.3em]">Cancel / GO BACK</button>
                             </div>
                         )}

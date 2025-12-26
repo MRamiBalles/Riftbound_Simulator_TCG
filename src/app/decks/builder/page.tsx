@@ -5,6 +5,7 @@ import { MOCK_CARDS } from '@/services/card-service';
 import { useCollectionStore } from '@/store/collection-store';
 import { Card as CardComponent } from '@/components/Card';
 import { NameGenService } from '@/services/namegen-service';
+import { MetaService } from '@/services/meta-service';
 import { VfxService } from '@/services/vfx-service';
 import { Search, AlertTriangle, CheckCircle, Copy, Save, Share2, CornerUpLeft, Plus, Wand2 } from 'lucide-react';
 import clsx from 'clsx';
@@ -19,10 +20,11 @@ export default function DeckBuilderPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckId = searchParams.get('id');
+    const metaId = searchParams.get('meta');
 
     const { inventory, setActiveDeck, decks, addDeck, updateDeck } = useCollectionStore();
 
-    // Initial state from existing deck if id provided
+    // Initial state from existing deck OR meta deck template
     const [deck, setDeck] = useState<Record<string, number>>(() => {
         if (deckId) {
             const existing = decks.find(d => d.id === deckId);
@@ -32,11 +34,20 @@ export default function DeckBuilderPage() {
                 return counts;
             }
         }
+        if (metaId) {
+            const meta = MetaService.getMetaDecks().find(m => m.id === metaId);
+            if (meta) {
+                const counts: Record<string, number> = {};
+                meta.coreCards.forEach(id => counts[id] = 3); // Pre-fill 3 of each core card
+                return counts;
+            }
+        }
         return {};
     });
 
     const [deckName, setDeckName] = useState(() => {
         if (deckId) return decks.find(d => d.id === deckId)?.name || 'New deck';
+        if (metaId) return MetaService.getMetaDecks().find(m => m.id === metaId)?.name || 'Meta Deck';
         return 'New deck';
     });
 

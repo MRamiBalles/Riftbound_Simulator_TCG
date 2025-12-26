@@ -24,7 +24,7 @@ export class PackService {
         return pack;
     }
 
-    public static openBulk(pool: Card[], packType: 'alpha' | 'omega' | 'void', pityCounter: number, count: number): Card[][] {
+    public static openBulk(pool: Card[], packType: 'alpha' | 'omega' | 'void', pityCounter: number, count: number): { packs: Card[][], finalPity: number } {
         const boxes: Card[][] = [];
         let currentPity = pityCounter;
 
@@ -36,7 +36,7 @@ export class PackService {
             currentPity = hasRare ? 0 : currentPity + 1;
         }
 
-        return boxes;
+        return { packs: boxes, finalPity: currentPity };
     }
 
     private static pullCard(pool: Card[], rarities: Rarity[], packType: string): Card {

@@ -5,88 +5,63 @@ export interface Mission {
     id: string;
     title: string;
     description: string;
-    progress: number;
     target: number;
-    rewardXP: number;
+    current: number;
+    reward: { type: 'SHARDS' | 'ENERGY' | 'DUST', amount: number };
     completed: boolean;
-}
-
-export interface PassTier {
-    level: number;
-    rewardName: string;
-    isPremium: boolean;
-    unlocked: boolean;
+    claimed: boolean;
 }
 
 interface MissionState {
-    level: number;
-    currentXP: number;
-    requiredXP: number;
-    activeMissions: Mission[];
-    passTiers: PassTier[];
+    dailyMissions: Mission[];
+    weeklyMissions: Mission[];
 
     // Actions
-    updateMissionProgress: (id: string, val: number) => void;
-    claimTierReward: (level: number) => void;
+    updateProgress: (id: string, amount: number) => void;
+    claimReward: (id: string) => void;
+    refreshDaily: () => void;
 }
 
 export const useMissionStore = create<MissionState>()(
     persist(
         (set) => ({
-            level: 1,
-            currentXP: 250,
-            requiredXP: 1000,
-            activeMissions: [
-                { id: 'm1', title: 'Tactical Superiority', description: 'Win 3 games against AI Hard.', progress: 1, target: 3, rewardXP: 500, completed: false },
-                { id: 'm2', title: 'Rift Explorer', description: 'Scan 5 new physical cards.', progress: 2, target: 5, rewardXP: 300, completed: false },
-                { id: 'm3', title: 'Market regular', description: 'Buy or Sell 1 card in the Bazaar.', progress: 0, target: 1, rewardXP: 200, completed: false },
+            dailyMissions: [
+                { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', target: 1, current: 0, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
+                { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', target: 5000, current: 0, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
             ],
-            passTiers: Array.from({ length: 50 }, (_, i) => ({
-                level: i + 1,
-                rewardName: i % 5 === 0 ? 'Foil Shard' : '50 Scraps',
-                isPremium: i % 10 === 0,
-                unlocked: i < 1
-            })),
+            weeklyMissions: [
+                { id: 'w1', title: 'Market Mogul', description: 'Complete 3 Trades', target: 3, current: 0, reward: { type: 'DUST', amount: 500 }, completed: false, claimed: false }
+            ],
 
-            updateMissionProgress: (id, val) => set(state => {
-                const updatedMissions = state.activeMissions.map(m => {
-                    if (m.id === id) {
-                        const newProgress = Math.min(m.progress + val, m.target);
-                        const completed = newProgress >= m.target;
-                        return { ...m, progress: newProgress, completed };
-                    }
-                    return m;
-                });
-
-                // Calculate added XP
-                const mission = updatedMissions.find(m => m.id === id);
-                let addedXP = 0;
-                if (mission?.completed && !state.activeMissions.find(m => m.id === id)?.completed) {
-                    addedXP = mission.rewardXP;
-                }
-
-                let newXP = state.currentXP + addedXP;
-                let newLevel = state.level;
-                while (newXP >= state.requiredXP) {
-                    newXP -= state.requiredXP;
-                    newLevel++;
-                }
-
+            updateProgress: (id, amount) => set(state => {
+                const update = (m: Mission) => {
+                    if (m.id !== id || m.completed) return m;
+                    const next = m.current + amount;
+                    return { ...m, current: next, completed: next >= m.target };
+                };
                 return {
-                    activeMissions: updatedMissions,
-                    currentXP: newXP,
-                    level: newLevel,
-                    passTiers: state.passTiers.map(t => ({
-                        ...t,
-                        unlocked: t.level <= newLevel
-                    }))
+                    dailyMissions: state.dailyMissions.map(update),
+                    weeklyMissions: state.weeklyMissions.map(update)
                 };
             }),
 
-            claimTierReward: (level) => set(state => ({
-                passTiers: state.passTiers.map(t => t.level === level ? { ...t, unlocked: true } : t)
-            }))
+            claimReward: (id) => set(state => {
+                const claim = (m: Mission) => (m.id === id ? { ...m, claimed: true } : m);
+                return {
+                    dailyMissions: state.dailyMissions.map(claim),
+                    weeklyMissions: state.weeklyMissions.map(claim)
+                };
+            }),
+
+            refreshDaily: () => set({
+                dailyMissions: [
+                    { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', target: 1, current: 0, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
+                    { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', target: 5000, current: 0, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
+                ]
+            })
         }),
-        { name: 'riftbound-mission-storage' }
+        {
+            name: 'riftbound-mission-storage'
+        }
     )
 );

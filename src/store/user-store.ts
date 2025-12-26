@@ -7,6 +7,7 @@ interface UserState {
     totalScansPerformed: number;
     lastAdView: number | null;
     wonderShards: number;
+    starDust: number;
     cardLegacies: Record<string, { wins: number; games: number; kills: number }>;
     lastPackOpened: number | null;
     packHourglasses: number;
@@ -22,7 +23,7 @@ interface UserState {
     addWonderShards: (amount: number) => void;
     updateCardLegacy: (cardId: string, stats: { win?: boolean; kill?: boolean }) => void;
     addPackHourglasses: (amount: number) => void;
-    registerPackOpening: (hasRare: boolean, count?: number) => void;
+    registerPackOpening: (hasRare: boolean, count?: number, forcedPity?: number) => void;
     consumeEnergy: (amount: number) => boolean;
     getRefreshedEnergy: () => number;
     useHourglass: () => void;
@@ -36,6 +37,7 @@ export const useUserStore = create<UserState>()(
             totalScansPerformed: 0,
             lastAdView: null,
             wonderShards: 3,
+            starDust: 0,
             cardLegacies: {},
             lastPackOpened: null,
             packHourglasses: 3,
@@ -97,6 +99,8 @@ export const useUserStore = create<UserState>()(
 
             addWonderShards: (amount) => set(state => ({ wonderShards: state.wonderShards + amount })),
 
+            addStarDust: (amount: number) => set(state => ({ starDust: state.starDust + amount })),
+
             updateCardLegacy: (cardId, stats) => set(state => {
                 const legacy = state.cardLegacies[cardId] || { wins: 0, games: 0, kills: 0 };
                 return {
@@ -123,10 +127,22 @@ export const useUserStore = create<UserState>()(
                 return state;
             }),
 
-            registerPackOpening: (hasRare, count = 1) => set(state => ({
-                lastPackOpened: Date.now(),
-                pityCounter: hasRare ? 0 : state.pityCounter + count
-            }))
+            registerPackOpening: (hasRare, count = 1, forcedPity) => set(state => {
+                const lastPackOpened = Date.now();
+
+                if (forcedPity !== undefined) {
+                    return { lastPackOpened, pityCounter: forcedPity };
+                }
+
+                if (hasRare) {
+                    return { lastPackOpened, pityCounter: 0 };
+                }
+
+                return {
+                    lastPackOpened,
+                    pityCounter: state.pityCounter + count
+                };
+            }),
         }),
         {
             name: 'riftbound-user-storage'
