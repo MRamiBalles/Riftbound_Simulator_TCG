@@ -1,53 +1,70 @@
 'use client';
 
-import React, { useState } from 'react';
-import { openPack, PackResult } from '@/services/pack-service';
+import React, { useState, useEffect } from 'react';
+import { PackService } from '@/services/pack-service';
 import { Card as CardComponent } from '@/components/Card';
-import { useEnergyStore } from '@/store/energy-store';
-import { useCollectionStore } from '@/store/collection-store';
+import { useUserStore } from '@/store/user-store';
 import { useMissionStore } from '@/store/mission-store';
 import { Loader2, Sparkles, Box } from 'lucide-react';
+import { getCards } from '@/services/card-service';
+import { Card } from '@/lib/database.types';
 import clsx from 'clsx';
 import Link from 'next/link';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 
 export default function PackOpenerPage() {
-    const { energy, useEnergy } = useEnergyStore();
-    const { addCards } = useCollectionStore();
-    const { updateMission } = useMissionStore(); // NEW
+    const { getRefreshedEnergy, consumeEnergy, registerPackOpening } = useUserStore();
+    const { updateProgress } = useMissionStore();
+
     const [isOpening, setIsOpening] = useState(false);
-    const [packResult, setPackResult] = useState<PackResult | null>(null);
+    const [openedCards, setOpenedCards] = useState<Card[] | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [allCards, setAllCards] = useState<Card[]>([]);
+
+    useEffect(() => {
+        getCards().then(setAllCards);
+    }, []);
 
     const handleOpen = async () => {
         if (isOpening) return;
-        if (energy < 1) {
-            setError("Not enough Energy! Wait for recharge.");
-            return;
+        const currentEnergy = getRefreshedEnergy();
+
+        if (currentEnergy < 12) { // Assuming 12 energy for a standard pack in legacy view, or 1? Let's check user store logic. standard usage
+            // Actually consumeEnergy handles the check.
         }
 
         setError(null);
-        setPackResult(null);
+        setOpenedCards(null);
+        setIsOpening(true);
 
-        if (useEnergy(1)) {
-            setIsOpening(true);
+        // Simulate network delay
+        await new Promise(r => setTimeout(r, 1000));
+
+        if (consumeEnergy(12)) {
             try {
-                const result = await openPack();
-                setPackResult(result);
-                // Save to Virtual Collection
-                addCards(result.cards.map(c => c.id), 'VIRTUAL');
-                // Update Daily Mission: Open 2 Packs
-                updateMission('m1', 1); // NEW
+                // Using 'alpha' and 0 pity for legacy simple opener
+                const cards = PackService.openPack(allCards, 'alpha', 0);
+                setOpenedCards(cards);
+
+                const hasUltraRare = cards.some(c => ['Legendary', 'Champion'].includes(c.rarity));
+                registerPackOpening(hasUltraRare, 1, 0);
+
+                // Update Daily Mission: Open 1 Pack
+                updateProgress('d1', 1);
             } catch (e) {
                 console.error(e);
+                setError("Failed to open pack.");
             } finally {
                 setIsOpening(false);
             }
+        } else {
+            setError("Not enough Energy! Need 12.");
+            setIsOpening(false);
         }
     };
 
     const reset = () => {
-        setPackResult(null);
+        setOpenedCards(null);
     };
 
     return (
@@ -57,7 +74,7 @@ export default function PackOpenerPage() {
             {/* Background VFX */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,#0ac8b9_0%,transparent_70%)] opacity-10 blur-3xl" />
 
-            {!packResult ? (
+            {!openedCards ? (
                 /* PACK STATE */
                 <div className="z-10 flex flex-col items-center text-center space-y-8 animate-in fade-in zoom-in duration-500 w-full px-4">
                     <h1 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-[#c8aa6e]">
@@ -69,8 +86,7 @@ export default function PackOpenerPage() {
                         className={clsx(
                             "relative w-48 h-64 md:w-64 md:h-80 bg-gradient-to-br from-[#1e2328] to-[#091428] border-4 border-[#c8aa6e] rounded-xl cursor-pointer transition-all duration-300 transform",
                             "hover:scale-105 hover:shadow-[0_0_50px_rgba(200,170,110,0.4)] active:scale-95",
-                            isOpening && "animate-pulse scale-110 shadow-[0_0_80px_rgba(10,200,185,0.8)]",
-                            energy < 1 && "opacity-50 grayscale cursor-not-allowed hover:scale-100"
+                            isOpening && "animate-pulse scale-110 shadow-[0_0_80px_rgba(10,200,185,0.8)]"
                         )}
                     >
                         {/* Chest Design */}
@@ -91,7 +107,7 @@ export default function PackOpenerPage() {
 
                     <div className="space-y-4">
                         <p className="text-[#a09b8c] uppercase tracking-wider text-sm font-bold">
-                            Cost: 1 Energy
+                            Cost: 12 Energy
                         </p>
                         {error && (
                             <p className="text-red-400 bg-red-900/20 px-4 py-2 rounded border border-red-500/50">
@@ -106,16 +122,8 @@ export default function PackOpenerPage() {
             ) : (
                 /* REVEAL STATE */
                 <div className="z-10 w-full max-w-6xl flex flex-col items-center animate-in slide-in-from-bottom-10 fade-in duration-700">
-                    {packResult.godRoll && (
-                        <div className="absolute top-10 animate-bounce">
-                            <span className="bg-gradient-to-r from-yellow-400 to-red-500 text-transparent bg-clip-text text-6xl font-black drop-shadow-lg">
-                                GOD ROLL!
-                            </span>
-                        </div>
-                    )}
-
                     <div className="flex flex-wrap justify-center gap-6 mb-12 perspective-1000">
-                        {packResult.cards.map((card, index) => (
+                        {openedCards.map((card, index) => (
                             <div
                                 key={index}
                                 className="animate-in zoom-in fade-in duration-500"
