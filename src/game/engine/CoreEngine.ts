@@ -17,6 +17,8 @@ import { CombatResolver } from './CombatResolver';
  */
 export class CoreEngine {
     private state: SerializedGameState;
+    private actionHistory: Action[] = [];
+    private randomSeed: number = Math.random();
 
     constructor(initialState?: SerializedGameState) {
         if (initialState) {
@@ -34,8 +36,11 @@ export class CoreEngine {
      * 
      * @param playerDeck - Array of cards for the human player.
      * @param opponentDeck - Array of cards for the AI opponent.
+     * @param seed - Optional random seed for deterministic replays.
      */
-    public initGame(playerDeck: Card[], opponentDeck: Card[]) {
+    public initGame(playerDeck: Card[], opponentDeck: Card[], seed?: number) {
+        if (seed !== undefined) this.randomSeed = seed;
+        this.actionHistory = [];
         this.state = this.createInitialState();
 
         // Initialize Players
@@ -43,7 +48,7 @@ export class CoreEngine {
         this.initializePlayer('opponent', opponentDeck);
 
         // Start Game
-        this.state.log.push('Game Initialized');
+        this.state.log.push('Game Initialized' + (seed ? ` (Seed: ${seed})` : ''));
         this.drawInitialHands();
         this.state.phase = 'Mulligan';
     }
@@ -80,11 +85,21 @@ export class CoreEngine {
     }
 
     private initializePlayer(id: PlayerId, deck: Card[]) {
-        // Shuffle deck
-        const shuffled = [...deck].sort(() => Math.random() - 0.5);
+        // Deterministic Shuffle
+        const shuffled = [...deck];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(this.nextRandom() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
         const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
+    }
+
+    private nextRandom(): number {
+        const x = Math.sin(this.randomSeed++) * 10000;
+        return x - Math.floor(x);
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -108,6 +123,7 @@ export class CoreEngine {
     public applyAction(action: Action): SerializedGameState {
         if (this.state.winner) return this.state;
 
+        this.actionHistory.push(action);
         this.state.log.push(`[${action.playerId}] ${action.type}`);
 
         switch (action.type) {
@@ -137,6 +153,10 @@ export class CoreEngine {
         }
 
         return this.getState();
+    }
+
+    public getActionHistory(): Action[] {
+        return [...this.actionHistory];
     }
 
     public getState(): SerializedGameState {
