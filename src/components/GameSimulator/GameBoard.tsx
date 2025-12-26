@@ -21,44 +21,22 @@ export function GameBoard() {
         initGame,
         performAction,
         log,
-        winner
+        winner,
+        fetchInferenceAction
     } = useGameStore();
 
     const player = players.player;
     const opponent = players.opponent;
 
-    // AI Integration
+    // AI Integration (External Inference)
     useEffect(() => {
         if (activePlayer === 'opponent' && !winner) {
-            const bot = new HeuristicBot('opponent');
-
-            // Allow state to update and UI to render "Opponent Turn" before thinking
             const timer = setTimeout(async () => {
-                const performBotMove = async () => {
-                    // Get latest state
-                    const currentState = useGameStore.getState();
-                    if (currentState.activePlayer !== 'opponent') return;
-
-                    console.log("Bot thinking...");
-                    const action = await bot.decideAction(currentState);
-                    console.log("Bot decided:", action);
-
-                    if (action) {
-                        performAction(action);
-
-                        // If action wasn't END_TURN, try to act again after delay
-                        if (action.type !== 'END_TURN') {
-                            setTimeout(performBotMove, 1500);
-                        }
-                    }
-                };
-
-                performBotMove();
+                await fetchInferenceAction();
             }, 1000);
-
             return () => clearTimeout(timer);
         }
-    }, [activePlayer, performAction, players.opponent.winner, players.player.winner]);
+    }, [activePlayer, fetchInferenceAction, winner]);
 
     // Auto-start
     useEffect(() => {
@@ -88,6 +66,22 @@ export function GameBoard() {
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,#010a13_90%)]" />
 
             <CombatOverlay />
+
+            {/* --- MULLIGAN OVERLAY --- */}
+            {phase === 'Mulligan' && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xl">
+                    <div className="text-center p-12 border-2 border-[#c8aa6e]/50 rounded-3xl bg-[#010a13] shadow-[0_0_50px_rgba(200,170,110,0.2)]">
+                        <h2 className="text-4xl font-bold text-[#c8aa6e] uppercase tracking-tighter mb-4 animate-pulse">Initial Hand</h2>
+                        <p className="text-[#a09b8c] mb-8 max-w-md">Review your starting cards. In this version, all cards are kept for the tactical simulation.</p>
+                        <button
+                            onClick={() => performAction({ type: 'SELECT_MULLIGAN', playerId: 'player' })}
+                            className="px-12 py-4 bg-gradient-to-r from-[#c8aa6e] to-[#7a5c29] text-black font-black uppercase tracking-widest rounded-full hover:scale-110 active:scale-95 transition-all shadow-xl hover:shadow-[#c8aa6e]/30"
+                        >
+                            Confirm & Start
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="relative z-10 w-full h-full flex flex-col justify-between p-6">
 
@@ -162,13 +156,21 @@ export function GameBoard() {
                                 Your Units
                             </div>
                         )}
+                        {/* Battlefield Empty State */}
+                        {player.field.length === 0 && (
+                            <div className="text-[#a09b8c]/20 text-4xl font-black uppercase border-2 border-dashed border-[#c8aa6e]/10 px-8 py-4 rounded-2xl">
+                                Battlefield
+                            </div>
+                        )}
+
                         {player.field.map((card) => (
                             <div
                                 key={card.instanceId}
                                 onClick={() => handleCardClick(card.instanceId, 'field')}
                                 className={clsx(
-                                    "w-32 transform transition-transform cursor-pointer relative group",
-                                    (!card.summoningSickness && !card.hasAttacked) ? "hover:scale-110 ring-2 ring-yellow-500 rounded-lg" : "hover:scale-105"
+                                    "w-32 transform transition-all cursor-pointer relative group",
+                                    (!card.summoningSickness && !card.hasAttacked) ? "hover:scale-110 ring-2 ring-yellow-500 rounded-lg shadow-[0_0_15px_rgba(234,179,8,0.4)]" : "hover:scale-105",
+                                    card.hasAttacked && "grayscale opacity-80"
                                 )}
                             >
                                 <Card card={card} />

@@ -45,8 +45,7 @@ export class CoreEngine {
         // Start Game
         this.state.log.push('Game Initialized');
         this.drawInitialHands();
-        this.state.phase = 'Draw'; // Skip Mulligan for MVP, go straight to Draw
-        this.startTurn();
+        this.state.phase = 'Mulligan';
     }
 
     private createInitialState(): SerializedGameState {
@@ -129,6 +128,9 @@ export class CoreEngine {
             case 'END_TURN':
                 this.handleEndTurn();
                 break;
+            case 'SELECT_MULLIGAN':
+                this.handleMulligan(action);
+                break;
         }
 
         return this.getState();
@@ -139,6 +141,16 @@ export class CoreEngine {
     }
 
     // --- GAME LOGIC ---
+
+    private handleMulligan(action: Action) {
+        if (this.state.phase !== 'Mulligan') return;
+        // In this simplified version, we just transition to turn start
+        // Real logic would involve replacing selected cards.
+        this.state.log.push(`[${action.playerId}] Mulligan Complete`);
+
+        // If both players mulliganed (or we just force it for now)
+        this.startTurn();
+    }
 
     private startTurn() {
         this.state.turn++;

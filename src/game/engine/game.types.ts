@@ -2,7 +2,7 @@ import { Card } from '@/lib/database.types';
 import { RuntimeCard } from './RuntimeCard';
 
 export type PlayerId = 'player' | 'opponent';
-export type Phase = 'Draw' | 'Main' | 'Combat' | 'End';
+export type Phase = 'Draw' | 'Mulligan' | 'Main' | 'Combat' | 'End';
 export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End'; // More granular if needed
 
 export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration' | 'Quick Attack';
@@ -58,6 +58,7 @@ export type ActionType =
     | 'BLOCK'
     | 'RESOLVE_COMBAT'
     | 'PASS' // Pass priority
+    | 'SELECT_MULLIGAN'
     | 'END_TURN';
 
 export interface Action {

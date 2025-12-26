@@ -1,11 +1,18 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Card } from '@/lib/database.types';
 
 export type CollectionSource = 'REAL' | 'VIRTUAL';
 
 interface CollectionEntry {
     virtual: number;
     real: number;
+}
+
+interface Deck {
+    id: string;
+    name: string;
+    cards: string[]; // Array of card IDs
 }
 
 interface CollectionState {
@@ -27,13 +34,25 @@ interface CollectionState {
     // Deck Play
     activeDeck: string[] | null;
     setActiveDeck: (deck: string[]) => void;
+
+    // New deck management
+    decks: Deck[];
+    addDeck: (deck: Omit<Deck, 'id'>) => void;
+    updateDeck: (id: string, cards: string[]) => void;
+    deleteDeck: (id: string) => void;
 }
 
+/**
+ * Store for managing the user's card collection and custom decks.
+ * Includes persistence to LocalStorage for a consistent experience across sessions.
+ */
 export const useCollectionStore = create<CollectionState>()(
     persist(
         (set, get) => ({
             inventory: {},
             showcase: Array(9).fill(null), // Init 9 empty slots
+            activeDeck: null,
+            decks: [], // Initialize decks array
 
             addCard: (cardId, source) => {
                 set((state) => {
@@ -107,6 +126,17 @@ export const useCollectionStore = create<CollectionState>()(
 
             activeDeck: null,
             setActiveDeck: (deck) => set({ activeDeck: deck }),
+
+            decks: [],
+            addDeck: (deck) => set((state) => ({
+                decks: [...state.decks, { ...deck, id: Math.random().toString(36).substr(2, 9) }]
+            })),
+            updateDeck: (id, cards) => set((state) => ({
+                decks: state.decks.map((d) => (d.id === id ? { ...d, cards } : d))
+            })),
+            deleteDeck: (id) => set((state) => ({
+                decks: state.decks.filter((d) => d.id !== id)
+            })),
         }),
         {
             name: 'riftbound-hybrid-collection',
