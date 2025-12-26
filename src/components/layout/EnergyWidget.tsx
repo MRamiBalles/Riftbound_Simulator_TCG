@@ -37,7 +37,7 @@ export default function EnergyWidget() {
             {/* Main Energy Badge */}
             <div className={clsx(
                 "flex items-center gap-2 px-4 py-2 rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all",
-                energy > 0
+                currentEnergy > 0
                     ? "bg-[#091428]/90 border-[#0ac8b9] shadow-[0_0_10px_rgba(10,200,185,0.4)]"
                     : "bg-gray-900/90 border-gray-600 grayscale"
             )}>
