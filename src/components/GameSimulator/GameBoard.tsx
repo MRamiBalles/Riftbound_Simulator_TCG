@@ -8,6 +8,9 @@ import { Action, PlayerId } from '@/game/engine/game.types';
 import { MOCK_CARDS } from '@/services/card-service';
 import { BattleLog } from '@/components/game/BattleLog';
 import { soundService } from '@/services/sound-service';
+import { ReplayService } from '@/services/replay-service';
+import { History, Save } from 'lucide-react';
+import Link from 'next/link';
 
 // Helper to create a mock deck for now
 const createMockDeck = () => Array.from({ length: 30 }, () => MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)]);
@@ -22,7 +25,10 @@ export function GameBoard() {
         performAction,
         log,
         winner,
-        fetchInferenceAction
+        fetchInferenceAction,
+        engine,
+        seed,
+        initialDecks
     } = useGameStore();
 
     const [selectedMulliganIds, setSelectedMulliganIds] = useState<string[]>([]);
@@ -81,6 +87,19 @@ export function GameBoard() {
             playerId: 'player',
             mulliganCards: selectedMulliganIds
         });
+    };
+
+    const handleSaveReplay = () => {
+        if (!engine || !winner) return;
+        const replay = ReplayService.createReplay(
+            seed,
+            initialDecks.player,
+            initialDecks.opponent,
+            engine.getActionHistory(),
+            winner
+        );
+        ReplayService.saveToLibrary(replay);
+        alert('Match successfully archived in Library of Legends!');
     };
 
     return (
@@ -331,6 +350,44 @@ export function GameBoard() {
                 <aside className="w-80 h-full border-l border-white/10 hidden xl:block">
                     <BattleLog logs={log} />
                 </aside>
+
+                {/* --- WINNER OVERLAY --- */}
+                {winner && (
+                    <div className="absolute inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-xl animate-in fade-in duration-1000">
+                        <div className="text-center p-12 rounded-[3rem] border border-white/10 bg-gradient-to-b from-white/5 to-transparent relative overflow-hidden group">
+                            {/* Animated Background Rays */}
+                            <div className="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(circle_at_center,#06b6d4_0%,transparent_70%)] animate-pulse" />
+
+                            <h2 className="text-7xl font-black italic tracking-tighter text-white mb-2 relative z-10 drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]">
+                                {winner === 'player' ? 'VICTORY' : 'DEFEAT'}
+                            </h2>
+                            <p className="text-cyan-400 font-mono text-sm tracking-[0.5em] mb-12 relative z-10">COMBAT SIMULATION TERMINATED</p>
+
+                            <div className="flex flex-col gap-4 relative z-10">
+                                <button
+                                    onClick={handleSaveReplay}
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-cyan-600 hover:bg-cyan-500 rounded-2xl font-black text-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(6,182,212,0.3)]"
+                                >
+                                    <Save size={24} />
+                                    SAVE TO REPLAYS
+                                </button>
+                                <Link
+                                    href="/replays"
+                                    className="flex items-center justify-center gap-3 w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-bold transition-all"
+                                >
+                                    <History size={20} />
+                                    OPEN LIBRARY
+                                </Link>
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="w-full py-4 text-white/40 hover:text-white transition-colors font-bold uppercase tracking-widest text-xs mt-4"
+                                >
+                                    Initiate New Run
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

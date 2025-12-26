@@ -6,6 +6,8 @@ import { AIService } from '@/services/ai-service';
 
 interface GameStoreState extends SerializedGameState {
     engine: CoreEngine | null;
+    seed: number;
+    initialDecks: { player: Card[], opponent: Card[] };
 
     // Actions
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => void;
@@ -41,11 +43,19 @@ const INITIAL_STATE: SerializedGameState = {
 export const useGameStore = create<GameStoreState>((set, get) => ({
     ...INITIAL_STATE,
     engine: null,
+    seed: 0,
+    initialDecks: { player: [], opponent: [] },
 
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => {
+        const seed = Math.floor(Math.random() * 1000000);
         const engine = new CoreEngine();
-        engine.initGame(playerDeck, opponentDeck);
-        set({ engine, ...engine.getState() });
+        engine.initGame(playerDeck, opponentDeck, seed);
+        set({
+            engine,
+            seed,
+            initialDecks: { player: playerDeck, opponent: opponentDeck },
+            ...engine.getState()
+        });
     },
 
     performAction: (action: Action) => {
