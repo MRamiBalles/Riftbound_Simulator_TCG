@@ -2,10 +2,13 @@ export interface AuctionItem {
     id: string;
     cardId: string;
     cardName: string;
+    rarity: string;
+    image_url: string;
     currentBid: number;
     highestBidder: string;
     endTime: number;
     status: 'ACTIVE' | 'ENDED';
+    isPremium?: boolean;
 }
 
 /**
@@ -18,15 +21,20 @@ export class AuctionService {
             id: 'auc-001',
             cardId: 'card-legacy-001',
             cardName: 'Lux: The Kingslayer',
+            rarity: 'Legendary',
+            image_url: 'https://riftbound.gg/cards/lux-kingslayer.png',
             currentBid: 1250,
             highestBidder: 'RiftWalker_99',
             endTime: Date.now() + 3600000, // 1 hour
-            status: 'ACTIVE'
+            status: 'ACTIVE',
+            isPremium: true
         },
         {
             id: 'auc-002',
             cardId: 'card-forge-772',
-            cardName: 'Void Sentinel (Forged)',
+            cardName: 'Void Sentinel',
+            rarity: 'Epic',
+            image_url: 'https://riftbound.gg/cards/void-sentinel.png',
             currentBid: 3200,
             highestBidder: 'NexusGuardian',
             endTime: Date.now() + 1800000, // 30 mins

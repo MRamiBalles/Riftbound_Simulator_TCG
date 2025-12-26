@@ -23,7 +23,7 @@ export default function PrismForgePage() {
         getCards().then(setAllCards);
     }, []);
 
-    const skins: { id: CardSkin, name: string, cost: number, icon: any }[] = [
+    const skins: { id: CardSkin, name: string, cost: number, icon: React.ComponentType<{ size?: number, className?: string }> }[] = [
         { id: 'DEFAULT', name: 'Standard Art', cost: 0, icon: Palette },
         { id: 'GOLD_BORDER', name: 'Gold Trim', cost: 2500, icon: Shield },
         { id: 'PRISM', name: 'Prism Holo', cost: 10000, icon: Sparkles },

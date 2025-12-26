@@ -36,12 +36,19 @@ export class BazaarService {
         return newListing;
     }
 
-    public static async purchaseListing(listingId: string, buyer: string): Promise<boolean> {
+    public static async purchaseListing(listingId: string, buyer: string): Promise<{ success: boolean; prestigeEarned: number }> {
         const listing = this.listings.find(l => l.id === listingId);
         if (listing && listing.status === 'ACTIVE') {
             listing.status = 'SOLD';
-            return true;
+            // 5% of price as prestige for the buyer (investing in the ecosystem)
+            const prestigeEarned = Math.floor(listing.price * 0.05);
+            return { success: true, prestigeEarned };
         }
-        return false;
+        return { success: false, prestigeEarned: 0 };
+    }
+
+    public static getListingFee(price: number): number {
+        // 2% fee in Shards for listing, or free for premium users (handled in store)
+        return Math.ceil(price * 0.02);
     }
 }

@@ -14,6 +14,7 @@ interface UserState {
     pityCounter: number;
     boosterEnergy: number; // 0 to 24 (12 per pack)
     lastEnergyUpdate: number;
+    prestigePoints: number; // Total points earned (Loyalty)
 
     // Actions
     useScanCredit: () => boolean;
@@ -28,6 +29,7 @@ interface UserState {
     consumeEnergy: (amount: number) => boolean;
     getRefreshedEnergy: () => number;
     useHourglass: () => void;
+    addPrestigePoints: (amount: number) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -45,6 +47,7 @@ export const useUserStore = create<UserState>()(
             pityCounter: 0,
             boosterEnergy: 12,
             lastEnergyUpdate: Date.now(),
+            prestigePoints: 0,
 
             getRefreshedEnergy: () => {
                 const { boosterEnergy, lastEnergyUpdate } = get();
@@ -144,6 +147,8 @@ export const useUserStore = create<UserState>()(
                     pityCounter: state.pityCounter + count
                 };
             }),
+
+            addPrestigePoints: (amount) => set(state => ({ prestigePoints: state.prestigePoints + amount })),
         }),
         {
             name: 'riftbound-user-storage'

@@ -11,15 +11,16 @@ import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import { useUserStore } from '@/store/user-store';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Zap, ArrowRight, Scissors } from 'lucide-react';
+import { Sparkles, Zap, ArrowRight, Scissors, Trophy, Gem, Box, Crown } from 'lucide-react';
+import { PointStrategyService } from '@/services/point-strategy-service';
 import Link from 'next/link';
 import clsx from 'clsx';
 
 export default function PackOpeningPage() {
     const searchParams = useSearchParams();
-    const packType = (searchParams.get('pack') || 'alpha') as 'alpha' | 'omega' | 'void';
+    const packType = (searchParams.get('pack') || 'alpha') as 'alpha' | 'omega' | 'void' | 'master_box';
     const count = parseInt(searchParams.get('count') || '1');
-    const { pityCounter, registerPackOpening, consumeEnergy } = useUserStore();
+    const { pityCounter, registerPackOpening, consumeEnergy, addPrestigePoints } = useUserStore();
 
     const [step, setStep] = useState<'IDLE' | 'CUTTING' | 'REVEALING' | 'DONE'>('IDLE');
     const [packCards, setPackCards] = useState<Card[]>([]);
@@ -27,20 +28,22 @@ export default function PackOpeningPage() {
     const [revealIndex, setRevealIndex] = useState(0);
     const [bulkIndex, setBulkIndex] = useState(0);
     const [isGodPack, setIsGodPack] = useState(false);
+    const [earnedPoints, setEarnedPoints] = useState(0);
 
     const [finalPity, setFinalPity] = useState(0);
 
     useEffect(() => {
         getCards().then(allCards => {
+            const actualPackType = packType === 'master_box' ? 'alpha' : packType; // Master box opens alpha for now
             if (count > 1) {
-                const result = PackService.openBulk(allCards, packType, pityCounter, count);
+                const result = PackService.openBulk(allCards, actualPackType as any, pityCounter, count);
                 setBulkResults(result.packs);
                 setPackCards(result.packs[0]);
                 setFinalPity(result.finalPity);
                 const hasGod = result.packs.some((p: Card[]) => p.filter((c: Card) => ['Legendary', 'Champion'].includes(c.rarity)).length >= 2);
                 setIsGodPack(hasGod);
             } else {
-                const cards = PackService.openPack(allCards, packType, pityCounter);
+                const cards = PackService.openPack(allCards, actualPackType as any, pityCounter);
                 setPackCards(cards);
                 const hasRare = cards.some(c => ['Legendary', 'Champion'].includes(c.rarity));
                 setFinalPity(hasRare ? 0 : pityCounter + 1);
@@ -50,10 +53,17 @@ export default function PackOpeningPage() {
     }, [packType, pityCounter, count]);
 
     const handleCut = () => {
-        if (!consumeEnergy(12 * count)) return;
+        const isBox = packType === 'master_box';
+        const energyCost = isBox ? 0 : 12 * count; // Boxes might be wonder shard based later
+
+        if (!consumeEnergy(energyCost)) return;
 
         setStep('CUTTING');
         VfxService.trigger('PACK_OPEN');
+
+        const points = PointStrategyService.calculatePoints(count, isBox);
+        setEarnedPoints(points);
+        addPrestigePoints(points);
 
         // Register opening logic with precision pity
         const anyRare = count > 1 ?
@@ -104,18 +114,30 @@ export default function PackOpeningPage() {
                         exit={{ opacity: 0, y: 20 }}
                         className="flex flex-col items-center gap-12"
                     >
-                        <div className="relative w-64 h-96 group cursor-pointer" onClick={handleCut}>
-                            <div className="absolute inset-0 bg-gradient-to-b from-[#c8aa6e] to-black rounded-[2.5rem] p-1">
-                                <div className="w-full h-full bg-[#091428] rounded-[2.4rem] flex flex-col items-center justify-center border border-white/10 overflow-hidden relative">
-                                    <div className="absolute top-8 text-[10px] font-black uppercase tracking-[0.4em] text-[#c8aa6e]">GENETIC ORIGINS</div>
-                                    <div className="w-32 h-32 rounded-full bg-[#c8aa6e]/10 flex items-center justify-center animate-pulse">
-                                        <Zap size={48} className="text-[#c8aa6e]" />
-                                    </div>
-                                    <div className="absolute bottom-12 font-black text-2xl uppercase italic">{packType} CORE</div>
+                        <div className="relative group cursor-pointer" onClick={handleCut}>
+                            {packType === 'master_box' ? (
+                                <div className="w-80 h-48 bg-[#010a13] rounded-3xl border-4 border-[#c8aa6e] shadow-[0_0_100px_rgba(200,170,110,0.3)] flex flex-col items-center justify-center relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,170,110,0.1),transparent_70%)]" />
+                                    <Box size={100} className="text-[#c8aa6e] mb-2" />
+                                    <div className="text-[10px] font-black text-[#c8aa6e] tracking-[0.4em]">GENETIC ORIGINS</div>
+                                    <div className="text-3xl font-black italic">COLLECTOR BOX</div>
+                                    <Crown className="absolute top-4 right-4 text-[#c8aa6e]" size={24} />
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="relative w-64 h-96 group cursor-pointer">
+                                    <div className="absolute inset-0 bg-gradient-to-b from-[#c8aa6e] to-black rounded-[2.5rem] p-1">
+                                        <div className="w-full h-full bg-[#091428] rounded-[2.4rem] flex flex-col items-center justify-center border border-white/10 overflow-hidden relative">
+                                            <div className="absolute top-8 text-[10px] font-black uppercase tracking-[0.4em] text-[#c8aa6e]">GENETIC ORIGINS</div>
+                                            <div className="w-32 h-32 rounded-full bg-[#c8aa6e]/10 flex items-center justify-center animate-pulse">
+                                                <Zap size={48} className="text-[#c8aa6e]" />
+                                            </div>
+                                            <div className="absolute bottom-12 font-black text-2xl uppercase italic">{packType.toUpperCase()} CORE</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
-                            <div className="absolute -top-6 -right-6 w-16 h-16 bg-white rounded-full flex items-center justify-center text-black animate-bounce shadow-2xl">
+                            <div className="absolute -top-6 -right-6 w-16 h-16 bg-white rounded-full flex items-center justify-center text-black animate-bounce shadow-2xl z-50">
                                 <Scissors size={24} />
                             </div>
                         </div>
@@ -200,7 +222,14 @@ export default function PackOpeningPage() {
                         </div>
 
                         <div className="space-y-6 text-center">
-                            <h2 className="text-4xl font-black text-white uppercase tracking-tighter">
+                            <div className="flex flex-col items-center gap-2 mb-8">
+                                <div className="text-[10px] font-black text-[#0ac8b9] uppercase tracking-[0.4em]">PRESTIGE EARNED</div>
+                                <div className="text-5xl font-black text-white flex items-center gap-3">
+                                    <Trophy size={32} className="text-[#0ac8b9]" /> +{earnedPoints}
+                                </div>
+                            </div>
+
+                            <h2 className="text-2xl font-black text-white uppercase tracking-tighter">
                                 {count > 1 ? 'BOX PULL COMPLETED' : 'PULL COMPLETED'}
                             </h2>
                             <div className="flex gap-4 justify-center">

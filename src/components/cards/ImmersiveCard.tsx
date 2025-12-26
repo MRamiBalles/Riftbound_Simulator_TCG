@@ -5,7 +5,7 @@ import { Card } from '@/lib/database.types';
 import { LegacyService } from '@/services/legacy-service';
 import { useUserStore } from '@/store/user-store';
 import { useCosmeticStore } from '@/store/cosmetic-store';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, MotionValue } from 'framer-motion';
 import { Trophy, Swords, Zap } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -112,7 +112,7 @@ export function ImmersiveCard({ card, size = 'md', className, onClick, showStats
             <motion.div
                 style={{
                     background: useTransform(
-                        [x, y] as any,
+                        [x, y] as [MotionValue<number>, MotionValue<number>],
                         ([valX, valY]: [number, number]) =>
                             `radial-gradient(circle at ${50 + valX / 2}% ${50 + valY / 2}%, rgba(255,255,255,0.15) 0%, transparent 60%)`
                     )

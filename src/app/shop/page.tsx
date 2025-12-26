@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import extensionsData from '@/data/extensions.json';
-import { Package, Sparkles, Zap, Lock, Clock, ArrowRight } from 'lucide-react';
+import { Package, Sparkles, Zap, Lock, Clock, ArrowRight, Trophy, Crown, Box } from 'lucide-react';
 import { useUserStore } from '@/store/user-store';
+import { PointStrategyService } from '@/services/point-strategy-service';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -38,16 +39,14 @@ export default function ShopPage() {
                                 style={{ width: `${(currentEnergy / 24) * 100}%` }}
                             />
                         </div>
-                        {/* DECORATIVE LIGHT */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-[#c8aa6e]/5 blur-[50px] rounded-full group-hover:bg-[#c8aa6e]/10 transition-colors" />
                     </div>
 
-                    <div className="bg-black/40 border border-white/5 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-center">
-                        <h4 className="text-[10px] font-black text-[#0ac8b9] uppercase tracking-[0.3em] mb-2">Divine Pity</h4>
-                        <div className="flex items-end gap-2">
-                            <div className="text-3xl font-black text-white font-mono">{50 - pityCounter}</div>
-                            <div className="text-[8px] font-black text-[#5c5b57] uppercase tracking-widest pb-1">to guaranteed hit</div>
-                        </div>
+                    <div className="bg-black/40 border border-[#0ac8b9]/20 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-center relative overflow-hidden group">
+                        <Trophy className="absolute -right-4 -bottom-4 text-[#0ac8b9]/10 group-hover:scale-110 transition-transform" size={100} />
+                        <h4 className="text-[10px] font-black text-[#0ac8b9] uppercase tracking-[0.3em] mb-2">LOYALTY RANK</h4>
+                        <div className="text-xl font-black text-white uppercase">{PointStrategyService.getTier(useUserStore.getState().prestigePoints).title}</div>
+                        <div className="text-[8px] font-black text-[#5c5b57] uppercase tracking-widest mt-1">{useUserStore.getState().prestigePoints.toLocaleString()} PRESTIGE</div>
                     </div>
 
                     <div className="bg-black/40 border border-[#c8aa6e]/20 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-center items-center text-center cursor-pointer hover:bg-[#c8aa6e]/10 transition-all group" onClick={useHourglass}>
@@ -135,6 +134,62 @@ export default function ShopPage() {
                             />
                         </div>
                     ))}
+                </div>
+
+                {/* PREMIUM BUNDLES: MONETIZATION */}
+                <div className="mt-24 space-y-8">
+                    <div className="flex justify-between items-end">
+                        <div className="flex items-center gap-4">
+                            <Box className="text-[#c8aa6e]" size={24} />
+                            <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Origins Collector Boxes</h2>
+                        </div>
+                        <div className="text-[10px] font-black text-[#5c5b57] uppercase tracking-[0.2em]">PREMIUM OFFERING</div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-[#c8aa6e]/5 to-transparent border border-[#c8aa6e]/20 rounded-[3rem] p-12 backdrop-blur-3xl flex flex-col md:flex-row items-center gap-12 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-96 h-96 bg-[#c8aa6e]/5 blur-[100px] pointer-events-none" />
+
+                        {/* BOX GRAPHIC: ORIGINS DELUXE */}
+                        <div className="relative w-72 h-48 bg-[#010a13] rounded-2xl border-2 border-[#c8aa6e]/50 shadow-[0_0_50px_rgba(200,170,110,0.2)] flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,170,110,0.1),transparent_70%)] animate-pulse" />
+                            <Box size={80} className="text-[#c8aa6e] z-10" />
+                            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#c8aa6e]/20 to-transparent flex flex-col items-center justify-center font-black">
+                                <div className="text-[10px] uppercase tracking-[0.5em] text-[#c8aa6e]">GENETIC ORIGINS</div>
+                                <div className="text-2xl italic">DISPLAY BOX</div>
+                            </div>
+                            {/* BOX TOPPER SEAL */}
+                            <div className="absolute -top-4 -right-4 w-12 h-12 bg-[#c8aa6e] rounded-full flex items-center justify-center shadow-2xl rotate-12">
+                                <Crown size={20} className="text-black" />
+                            </div>
+                        </div>
+
+                        <div className="flex-1 space-y-6">
+                            <div>
+                                <h3 className="text-4xl font-black text-white uppercase tracking-tight mb-2">Origins Master Box</h3>
+                                <p className="text-sm text-[#a09b8c] leading-relaxed max-w-xl uppercase tracking-widest font-bold">
+                                    Contains 24 Genetic Origins boosters + 1 Guaranteed Box Topper (Secret Rare).
+                                    High prestige yield.
+                                </p>
+                            </div>
+
+                            <div className="flex gap-12">
+                                <div>
+                                    <div className="text-[10px] font-black text-[#5c5b57] uppercase tracking-widest mb-1">TOTAL POINTS</div>
+                                    <div className="text-2xl font-black text-[#0ac8b9] flex items-center gap-2">
+                                        <Zap size={18} /> {PointStrategyService.calculatePoints(24, true)}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-black text-[#5c5b57] uppercase tracking-widest mb-1">GUARANTEED RARE</div>
+                                    <div className="text-2xl font-black text-[#c8aa6e]">BOX TOPPER</div>
+                                </div>
+                            </div>
+
+                            <Link href="/shop/opening?pack=master_box&count=24" className="btn-hextech-primary inline-flex items-center gap-4 px-12 py-6 text-black font-black uppercase tracking-[0.2em] group">
+                                UNLOCK BOX SET <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
 

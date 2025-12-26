@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
+import { Card } from '@/lib/database.types';
 
 interface ManaCurveChartProps {
     deck: Record<string, number>;
-    cards: any[];
+    cards: Card[];
 }
 
 export const ManaCurveChart: React.FC<ManaCurveChartProps> = ({ deck, cards }) => {
