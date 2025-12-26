@@ -4,7 +4,9 @@ import React, { useState, useMemo } from 'react';
 import { MOCK_CARDS } from '@/services/card-service';
 import { useCollectionStore } from '@/store/collection-store';
 import { Card as CardComponent } from '@/components/Card';
-import { Search, AlertTriangle, CheckCircle, Copy, Save, Share2, CornerUpLeft, Plus } from 'lucide-react';
+import { NameGenService } from '@/services/namegen-service';
+import { VfxService } from '@/services/vfx-service';
+import { Search, AlertTriangle, CheckCircle, Copy, Save, Share2, CornerUpLeft, Plus, Wand2 } from 'lucide-react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -121,6 +123,16 @@ export default function DeckBuilderPage() {
         return null;
     }).filter(Boolean);
 
+    const handleGenerateName = () => {
+        const regions = Array.from(new Set(
+            Object.keys(deck).map(id => MOCK_CARDS.find(c => c.id === id)?.region).filter(Boolean)
+        )) as string[];
+
+        const newName = NameGenService.generate(regions);
+        setDeckName(newName);
+        VfxService.trigger('CRITICAL_HIT');
+    };
+
     const isValid = deckSize === 40 && validationIssues.length === 0;
 
     return (
@@ -133,13 +145,22 @@ export default function DeckBuilderPage() {
                     <Link href="/decks" className="p-2 hover:bg-white/5 rounded-full text-[#a09b8c] transition-colors">
                         <CornerUpLeft className="w-5 h-5" />
                     </Link>
-                    <input
-                        type="text"
-                        value={deckName}
-                        onChange={e => setDeckName(e.target.value)}
-                        className="bg-transparent text-xl font-bold bg-clip-text text-[#c8aa6e] border-b border-[#c8aa6e]/0 hover:border-[#c8aa6e]/30 focus:border-[#c8aa6e] outline-none transition-all uppercase tracking-widest"
-                        style={{ fontFamily: 'Beaufort' }}
-                    />
+                    <div className="relative group">
+                        <input
+                            type="text"
+                            value={deckName}
+                            onChange={e => setDeckName(e.target.value)}
+                            className="bg-transparent text-xl font-bold bg-clip-text text-[#c8aa6e] border-b border-[#c8aa6e]/0 hover:border-[#c8aa6e]/30 focus:border-[#c8aa6e] outline-none transition-all uppercase tracking-widest"
+                            style={{ fontFamily: 'Beaufort' }}
+                        />
+                        <button
+                            onClick={handleGenerateName}
+                            className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 text-[#c8aa6e]/50 hover:text-[#c8aa6e] transition-colors opacity-0 group-hover:opacity-100"
+                            title="Generate AI Name"
+                        >
+                            <Wand2 size={16} />
+                        </button>
+                    </div>
                     <span className="text-xs font-mono text-slate-500 uppercase tracking-tighter">({deckSize}/40)</span>
                 </div>
 

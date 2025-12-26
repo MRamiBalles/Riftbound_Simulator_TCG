@@ -91,6 +91,7 @@ export default async function Home() {
           </h2>
           <div className="flex items-center">
             <Link href="/social" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10 first:border-0">Social Hub</Link>
+            <Link href="/invasion" className="px-6 py-2 text-[10px] font-black text-red-500 hover:text-red-400 transition-colors uppercase tracking-[0.2em] border-l border-white/10 animate-pulse">Boss Raid</Link>
             <Link href="/shop" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10">Market</Link>
           </div>
         </div>
