@@ -1,7 +1,7 @@
 import { RuntimeCard } from './RuntimeCard';
 import { CombatState, PlayerId, SerializedGameState } from './game.types';
 
-interface DamageEvent {
+export interface DamageEvent {
     sourceId: string;
     targetId: string;
     amount: number;
@@ -11,25 +11,14 @@ interface DamageEvent {
 
 export interface CombatResult {
     damageEvents: DamageEvent[];
-    deadUnits: string[]; // IDs of units that died
-    poppedBarriers: string[]; // IDs of units whose barrier was consumed
-    nexusDamage: Record<PlayerId, number>; // Damage to players
-    lifestealHeal: Record<PlayerId, number>; // Healing from lifesteal
+    deadUnits: string[];
+    poppedBarriers: string[];
+    nexusDamage: Record<PlayerId, number>;
+    lifestealHeal: Record<PlayerId, number>;
 }
 
-/**
- * Utility for resolving combat interactions between units and the Nexus.
- * Handles keyword mechanics such as Barrier, Quick Attack, Overwhelm, and Lifesteal.
- */
 export class CombatResolver {
-    /**
-     * Resolves an entire combat state, iterating through all declared attackers
-     * and matching them against blockers to determine damage distribution.
-     */
-    public static resolveCombat(
-        state: SerializedGameState,
-        combat: CombatState
-    ): CombatResult {
+    public static resolveCombat(state: SerializedGameState, combat: CombatState): CombatResult {
         const globalResult: CombatResult = {
             damageEvents: [],
             deadUnits: [],
@@ -40,7 +29,6 @@ export class CombatResolver {
 
         const activePlayerId = state.activePlayer;
         const defenderId = activePlayerId === 'player' ? 'opponent' : 'player';
-
         const attackerField = state.players[activePlayerId].field;
         const defenderField = state.players[defenderId].field;
 
@@ -48,27 +36,25 @@ export class CombatResolver {
             const attacker = attackerField.find(c => c.instanceId === attackerId);
             if (!attacker) return;
 
-            const blockerId = Object.keys(combat.blockers).find(
-                bId => combat.blockers[bId] === attackerId
-            );
+            const blockerId = Object.keys(combat.blockers).find(bId => combat.blockers[bId] === attackerId);
             const blocker = blockerId ? defenderField.find(c => c.instanceId === blockerId) : null;
 
-            let interactionResult: CombatResult;
+            let result: CombatResult;
             if (blocker) {
                 const isQuickAttack = attacker.keywords.includes('Quick Attack' as any);
-                interactionResult = this.resolveUnitCombat(attacker, blocker, isQuickAttack);
+                result = this.resolveUnitCombat(attacker, blocker, isQuickAttack);
             } else {
-                interactionResult = this.resolveDirectHit(attacker);
+                result = this.resolveDirectHit(attacker);
             }
 
-            // Merge results
-            globalResult.damageEvents.push(...interactionResult.damageEvents);
-            globalResult.deadUnits.push(...interactionResult.deadUnits);
-            globalResult.poppedBarriers.push(...interactionResult.poppedBarriers);
-            globalResult.nexusDamage.player += interactionResult.nexusDamage.player;
-            globalResult.nexusDamage.opponent += interactionResult.nexusDamage.opponent;
-            globalResult.lifestealHeal.player += interactionResult.lifestealHeal.player;
-            globalResult.lifestealHeal.opponent += interactionResult.lifestealHeal.opponent;
+            // Merge
+            globalResult.damageEvents.push(...result.damageEvents);
+            globalResult.deadUnits.push(...result.deadUnits);
+            globalResult.poppedBarriers.push(...result.poppedBarriers);
+            globalResult.nexusDamage.player += result.nexusDamage.player;
+            globalResult.nexusDamage.opponent += result.nexusDamage.opponent;
+            globalResult.lifestealHeal.player += result.lifestealHeal.player;
+            globalResult.lifestealHeal.opponent += result.lifestealHeal.opponent;
         });
 
         return globalResult;
@@ -77,34 +63,24 @@ export class CombatResolver {
     public static resolveUnitCombat(
         attacker: RuntimeCard,
         blocker: RuntimeCard,
-        isQuickAttack: boolean = false,
-        isChallenger: boolean = false
+        isQuickAttack: boolean = false
     ): CombatResult {
         const result: CombatResult = {
-            damageEvents: [],
-            deadUnits: [],
-            poppedBarriers: [],
-            nexusDamage: { player: 0, opponent: 0 },
-            lifestealHeal: { player: 0, opponent: 0 }
+            damageEvents: [], deadUnits: [], poppedBarriers: [],
+            nexusDamage: { player: 0, opponent: 0 }, lifestealHeal: { player: 0, opponent: 0 }
         };
 
         const attackerId = attacker.ownerId as PlayerId;
         const blockerId = blocker.ownerId as PlayerId;
         const defenderId = attackerId === 'player' ? 'opponent' : 'player';
 
-        const attackerDamage = this.calculateStrikingDamage(attacker);
-        const blockerDamage = this.calculateStrikingDamage(blocker);
+        const atkDmg = this.calculateStrikingDamage(attacker);
+        const blkDmg = this.calculateStrikingDamage(blocker);
 
-        const unitsStruck: Set<string> = new Set();
+        const applyStrike = (striker: RuntimeCard, target: RuntimeCard, dmg: number, sId: PlayerId, tId: PlayerId) => {
+            if (result.deadUnits.includes(striker.instanceId)) return;
+            const targetPreHP = target.currentHealth;
 
-        const applyStrike = (striker: RuntimeCard, target: RuntimeCard, damage: number, sOwner: PlayerId, tOwner: PlayerId) => {
-            if (unitsStruck.has(striker.instanceId) || result.deadUnits.includes(striker.instanceId)) return;
-            if (result.deadUnits.includes(target.instanceId) && !striker.keywords.includes('Overwhelm' as any)) return;
-
-            unitsStruck.add(striker.instanceId);
-            const targetPreHealth = target.currentHealth;
-
-            // Barrier
             if (target.isBarrierActive || target.keywords.includes('Barrier' as any)) {
                 result.poppedBarriers.push(target.instanceId);
                 result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: 0, isCombat: true });
@@ -112,22 +88,19 @@ export class CombatResolver {
                 return;
             }
 
-            // Tough / Damage
-            let actualDamage = damage;
-            if (target.keywords.includes('Tough' as any)) actualDamage = Math.max(0, actualDamage - 1);
+            let actual = dmg;
+            if (target.keywords.includes('Tough' as any)) actual = Math.max(0, actual - 1);
 
-            target.currentHealth -= actualDamage;
-            result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: actualDamage, isCombat: true });
+            target.currentHealth -= actual;
+            result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: actual, isCombat: true });
+            if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sId] += actual;
 
-            if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sOwner] += actualDamage;
-
-            // Overwhelm
             if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
-                const excess = Math.max(0, actualDamage - targetPreHealth);
+                const excess = Math.max(0, actual - targetPreHP);
                 if (excess > 0) {
                     result.nexusDamage[defenderId] += excess;
                     result.damageEvents.push({ sourceId: striker.instanceId, targetId: defenderId, amount: excess, isOverwhelm: true });
-                    if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sOwner] += excess;
+                    if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sId] += excess;
                 }
             }
 
@@ -135,14 +108,13 @@ export class CombatResolver {
         };
 
         if (isQuickAttack) {
-            applyStrike(attacker, blocker, attackerDamage, attackerId, blockerId);
+            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId);
             if (!result.deadUnits.includes(blocker.instanceId)) {
-                applyStrike(blocker, attacker, blockerDamage, blockerId, attackerId);
+                applyStrike(blocker, attacker, blkDmg, blockerId, attackerId);
             }
         } else {
-            // Simultaneous strike
-            applyStrike(attacker, blocker, attackerDamage, attackerId, blockerId);
-            applyStrike(blocker, attacker, blockerDamage, blockerId, attackerId);
+            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId);
+            applyStrike(blocker, attacker, blkDmg, blockerId, attackerId);
         }
 
         return result;
@@ -150,33 +122,22 @@ export class CombatResolver {
 
     public static resolveDirectHit(attacker: RuntimeCard): CombatResult {
         const result: CombatResult = {
-            damageEvents: [],
-            deadUnits: [],
-            poppedBarriers: [],
-            nexusDamage: { player: 0, opponent: 0 },
-            lifestealHeal: { player: 0, opponent: 0 }
+            damageEvents: [], deadUnits: [], poppedBarriers: [],
+            nexusDamage: { player: 0, opponent: 0 }, lifestealHeal: { player: 0, opponent: 0 }
         };
 
-        const damage = this.calculateStrikingDamage(attacker);
-        const attackerId = attacker.ownerId as PlayerId;
-        const defenderId = attackerId === 'player' ? 'opponent' : 'player';
+        const dmg = this.calculateStrikingDamage(attacker);
+        const sId = attacker.ownerId as PlayerId;
+        const dId = sId === 'player' ? 'opponent' : 'player';
 
-        result.nexusDamage[defenderId] += damage;
-        result.damageEvents.push({
-            sourceId: attacker.instanceId,
-            targetId: defenderId,
-            amount: damage
-        });
-
-        if (attacker.keywords.includes('Lifesteal' as any)) {
-            result.lifestealHeal[attackerId] += damage;
-        }
+        result.nexusDamage[dId] += dmg;
+        result.damageEvents.push({ sourceId: attacker.instanceId, targetId: dId, amount: dmg });
+        if (attacker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sId] += dmg;
 
         return result;
     }
-}
 
     private static calculateStrikingDamage(card: RuntimeCard): number {
-    return Math.max(0, card.currentAttack);
-}
+        return Math.max(0, card.currentAttack);
+    }
 }
