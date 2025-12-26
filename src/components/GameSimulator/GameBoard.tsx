@@ -4,8 +4,10 @@ import { Card } from '../Card';
 import clsx from 'clsx';
 import { Sparkles, Sword, Shield, Zap, Skull, RefreshCcw } from 'lucide-react';
 import { CombatOverlay } from './CombatOverlay';
+import { Action, PlayerId } from '@/game/engine/game.types';
 import { MOCK_CARDS } from '@/services/card-service';
-import { BattleLog } from '../game/BattleLog';
+import { BattleLog } from '@/components/game/BattleLog';
+import { soundService } from '@/services/sound-service';
 
 // Helper to create a mock deck for now
 const createMockDeck = () => Array.from({ length: 30 }, () => MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)]);
@@ -63,8 +65,18 @@ export function GameBoard() {
         );
     };
 
+    const handleAction = (action: Action) => {
+        // Play appropriate sound
+        if (action.type === 'PLAY_CARD') soundService.play('CARD_PLAY');
+        else if (action.type === 'DECLARE_ATTACKERS') soundService.play('ATTACK_LIGHT');
+        else if (action.type === 'END_TURN') soundService.play('HEX_UI_OPEN');
+        else soundService.play('CLICK');
+
+        performAction(action);
+    };
+
     const confirmMulligan = () => {
-        performAction({
+        handleAction({
             type: 'SELECT_MULLIGAN',
             playerId: 'player',
             mulliganCards: selectedMulliganIds

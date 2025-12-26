@@ -20,7 +20,7 @@ export function Card({ card, onClick }: CardProps) {
             className={clsx(
                 "group relative w-64 aspect-[2/3] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(200,170,110,0.4)]",
                 "card-frame", // New Hextech Card Frame class
-                isChampion && "border-[#c8aa6e] shadow-[0_0_20px_rgba(200,170,110,0.2)]"
+                isChampion && "border-[#c8aa6e] shadow-[0_0_20px_rgba(200,170,110,0.2)] prismatic-champion"
             )}
         >
             <CardTooltip keywords={(card as any).keywords || []} />

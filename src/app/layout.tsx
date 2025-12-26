@@ -27,7 +27,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both">
+          {children}
+        </div>
       </body>
     </html>
   );

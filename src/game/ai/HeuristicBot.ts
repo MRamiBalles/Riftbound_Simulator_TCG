@@ -9,10 +9,12 @@ import { Bot } from './BotInterface';
 export class HeuristicBot implements Bot {
     id: PlayerId;
     name: string;
+    difficulty: 'Easy' | 'Medium' | 'Hard';
 
-    constructor(id: PlayerId = 'opponent', name: string = 'Noxian General') {
+    constructor(id: PlayerId = 'opponent', name: string = 'Noxian General', difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium') {
         this.id = id;
         this.name = name;
+        this.difficulty = difficulty;
     }
 
     /**
@@ -177,7 +179,15 @@ export class HeuristicBot implements Bot {
         const playableCards = player.hand.filter((c: RuntimeCard) => c.currentCost <= player.mana);
 
         if (playableCards.length > 0) {
-            playableCards.sort((a: RuntimeCard, b: RuntimeCard) => b.currentCost - a.currentCost);
+            // "Easy" bots sometimes play the cheapest card or skip
+            if (this.difficulty === 'Easy' && Math.random() < 0.3) return null;
+
+            playableCards.sort((a: RuntimeCard, b: RuntimeCard) => {
+                const aValue = a.currentAttack + a.currentHealth + (a.rarity === 'Champion' ? 5 : 0);
+                const bValue = b.currentAttack + b.currentHealth + (b.rarity === 'Champion' ? 5 : 0);
+                return bValue - aValue;
+            });
+
             const cardToPlay = playableCards[0];
             return {
                 type: 'PLAY_CARD',
