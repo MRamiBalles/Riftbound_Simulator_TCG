@@ -5,7 +5,7 @@ export type PlayerId = 'player' | 'opponent';
 export type Phase = 'Draw' | 'Mulligan' | 'Main' | 'Combat' | 'End';
 export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End'; // More granular if needed
 
-export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration' | 'Quick Attack';
+export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration' | 'Quick Attack' | 'Lifesteal';
 export type TargetType = 'face' | 'unit' | 'any';
 export type SpellSpeed = 'Burst' | 'Fast' | 'Slow';
 
@@ -68,4 +68,5 @@ export interface Action {
     targetId?: string;
     attackers?: string[]; // IDs of attacking units
     blockers?: Record<string, string>; // blockerId -> attackerId map
+    mulliganCards?: string[]; // Cards to swap during Mulligan
 }

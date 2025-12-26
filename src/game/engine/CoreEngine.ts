@@ -131,6 +131,9 @@ export class CoreEngine {
             case 'SELECT_MULLIGAN':
                 this.handleMulligan(action);
                 break;
+            case 'PASS':
+                this.handlePass(action.playerId);
+                break;
         }
 
         return this.getState();
@@ -144,31 +147,76 @@ export class CoreEngine {
 
     private handleMulligan(action: Action) {
         if (this.state.phase !== 'Mulligan') return;
-        // In this simplified version, we just transition to turn start
-        // Real logic would involve replacing selected cards.
-        this.state.log.push(`[${action.playerId}] Mulligan Complete`);
 
-        // If both players mulliganed (or we just force it for now)
-        this.startTurn();
+        const playerId = action.playerId;
+        const player = this.state.players[playerId];
+        const swapIds = action.mulliganCards || [];
+
+        if (swapIds.length > 0) {
+            this.state.log.push(`[${playerId}] Replacing ${swapIds.length} cards in Mulligan`);
+
+            const cardsToSwap: RuntimeCard[] = [];
+
+            // Remove from hand
+            swapIds.forEach(id => {
+                const idx = player.hand.findIndex(c => c.instanceId === id);
+                if (idx !== -1) {
+                    cardsToSwap.push(player.hand.splice(idx, 1)[0]);
+                }
+            });
+
+            // Draw new ones
+            for (let i = 0; i < cardsToSwap.length; i++) {
+                this.drawCard(playerId);
+            }
+
+            // Shuffle old ones back
+            const deck = this.decks[playerId];
+            deck.push(...cardsToSwap);
+            deck.sort(() => Math.random() - 0.5);
+            player.deckCount = deck.length;
+        }
+
+        // track which players have mulliganed
+        this.mulliganStatus[playerId] = true;
+
+        // Simple AI Mulligan (AI never swaps for now, but mark it done)
+        if (playerId === 'player') {
+            this.mulliganStatus['opponent'] = true;
+        }
+
+        if (this.mulliganStatus.player && this.mulliganStatus.opponent) {
+            this.state.log.push(`Mulligan Phase Complete`);
+            this.startTurn();
+        }
     }
+
+    private mulliganStatus: Record<PlayerId, boolean> = { player: false, opponent: false };
 
     private startTurn() {
         this.state.turn++;
         const active = this.state.activePlayer;
-        this.state.priority = active; // Update priority matches active player
+        this.state.priority = active;
 
-        // Mana Logic
+        // 1. Mana Logic
         const player = this.state.players[active];
         player.maxMana = Math.min(10, player.maxMana + 1);
         player.mana = player.maxMana;
+
+        // 2. Regeneration Logic (at start of turn)
+        player.field.forEach(u => {
+            if (u.keywords.includes('Regeneration')) {
+                u.currentHealth = u.maxHealth;
+            }
+        });
 
         this.state.phase = 'Draw';
         this.drawCard(active);
 
         this.state.phase = 'Main';
 
-        // Reset unit states
-        this.state.players[active].field.forEach(u => {
+        // 3. Reset unit states
+        player.field.forEach(u => {
             u.hasAttacked = false;
             u.summoningSickness = false;
         });
@@ -207,19 +255,79 @@ export class CoreEngine {
         // Move Card
         player.hand.splice(index, 1);
 
-        if ((card.type as any) === 'Unit' || (card.type as any) === 'Champion') {
+        if ((card.type as any) === 'Unit' || (card.type as any) === 'Champion' || card.type === 'Legend' as any) {
             card.summoningSickness = !card.keywords?.includes('Rush');
             player.field.push(card);
+            this.state.log.push(`${action.playerId} played unit: ${card.name}`);
         } else if (card.type === 'Spell') {
-            player.graveyard.push(card);
-            this.resolveSpell(card, action.targetId);
+            const speed = (card as any).speed || 'Slow';
+
+            if (speed === 'Burst') {
+                this.state.log.push(`${action.playerId} cast Burst spell: ${card.name}`);
+                player.graveyard.push(card);
+                this.resolveSpell(card, action.targetId);
+            } else {
+                this.state.log.push(`${action.playerId} added ${speed} spell to stack: ${card.name}`);
+                this.state.stack.push({
+                    id: crypto.randomUUID(),
+                    playerId: action.playerId,
+                    cardId: card.instanceId,
+                    targetId: action.targetId,
+                    resolved: false
+                });
+                // Pass priority after casting a Fast/Slow spell
+                this.state.priority = action.playerId === 'player' ? 'opponent' : 'player';
+            }
+        }
+    }
+
+    private handlePass(playerId: PlayerId) {
+        if (this.state.priority !== playerId) return;
+
+        const otherPlayer = playerId === 'player' ? 'opponent' : 'player';
+
+        if (this.state.stack.length > 0) {
+            // If there's a stack, passing resolves it
+            this.state.log.push(`${playerId} passed. Resolving stack...`);
+            this.resolveStack();
+            this.state.priority = this.state.activePlayer; // Priority back to active player
+        } else {
+            // No stack, passing might end turn or pass priority
+            if (this.state.priority === this.state.activePlayer) {
+                // Active player passes, priority to opponent
+                this.state.priority = otherPlayer;
+                this.state.log.push(`${playerId} passes priority to ${otherPlayer}`);
+            } else {
+                // Non-active player passes after active player passed (both pass) -> End Turn
+                this.state.log.push(`Both players passed. Ending turn.`);
+                this.handleEndTurn();
+            }
+        }
+    }
+
+    private resolveStack() {
+        // LIFO order (Last In First Out)
+        while (this.state.stack.length > 0) {
+            const item = this.state.stack.pop();
+            if (!item) break;
+
+            const player = this.state.players[item.playerId];
+            // Find the runtime card (it might be in a temporary "limbo" if we want to be strict,
+            // but for now let's assume it was just cast and we can find it by its instanceId
+            // in the player's potential source of spell data).
+            // Simplified: we'll just log and apply a generic effect for the prototype.
+            this.state.log.push(`Stack: Resolving spell from ${item.playerId}`);
+
+            // In a real implementation we would get the Card logic here
+            // this.resolveSpell(card, item.targetId);
         }
     }
 
     private resolveSpell(card: RuntimeCard, targetId?: string) {
         if (targetId) {
             if (targetId === 'opponent' || targetId === 'player') {
-                this.state.players[targetId as PlayerId].health -= 2; // Flat 2 dmg mock
+                this.state.players[targetId as PlayerId].health -= 2;
+                this.state.log.push(`Spell dealt 2 damage to ${targetId}`);
             }
         }
     }
@@ -268,7 +376,7 @@ export class CoreEngine {
 
         const result = CombatResolver.resolveCombat(this.state, this.state.combat);
 
-        // Apply Damage Events
+        // 1. Apply Damage Events
         result.damageEvents.forEach(evt => {
             if (evt.targetId === 'player' || evt.targetId === 'opponent') {
                 this.state.players[evt.targetId as PlayerId].health -= evt.amount;
@@ -283,7 +391,28 @@ export class CoreEngine {
             }
         });
 
-        // Clean Dead Units
+        // 2. Popped Barriers
+        result.poppedBarriers.forEach(instanceId => {
+            ['player', 'opponent'].forEach(pid => {
+                const p = this.state.players[pid as PlayerId];
+                const unit = p.field.find(u => u.instanceId === instanceId);
+                if (unit) {
+                    unit.isBarrierActive = false;
+                    this.state.log.push(`${unit.name}'s Barrier popped!`);
+                }
+            });
+        });
+
+        // 3. Lifesteal Healing
+        Object.entries(result.lifestealHeal).forEach(([pid, amount]) => {
+            if (amount > 0) {
+                const player = this.state.players[pid as PlayerId];
+                player.health = Math.min(player.maxHealth, player.health + amount);
+                this.state.log.push(`${pid} healed ${amount} from Lifesteal!`);
+            }
+        });
+
+        // 4. Clean Dead Units
         ['player', 'opponent'].forEach(pid => {
             const p = this.state.players[pid as PlayerId];
             p.field = p.field.filter(u => u.currentHealth > 0);
@@ -298,6 +427,7 @@ export class CoreEngine {
         this.state.phase = 'Main';
         this.state.priority = this.state.activePlayer;
     }
+
 
     private handleEndTurn() {
         this.state.activePlayer = this.state.activePlayer === 'player' ? 'opponent' : 'player';

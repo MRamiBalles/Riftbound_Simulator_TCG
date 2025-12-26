@@ -8,15 +8,17 @@ interface DamageEvent {
     isOverwhelm?: boolean;
 }
 
-interface CombatResult {
+export interface CombatResult {
     damageEvents: DamageEvent[];
     deadUnits: string[]; // IDs of units that died
+    poppedBarriers: string[]; // IDs of units whose barrier was consumed
     nexusDamage: Record<PlayerId, number>; // Damage to players
+    lifestealHeal: Record<PlayerId, number>; // Healing from lifesteal
 }
 
 /**
  * Utility for resolving combat interactions between units and the Nexus.
- * Handles keyword mechanics such as Barrier, Quick Attack, and Overwhelm.
+ * Handles keyword mechanics such as Barrier, Quick Attack, Overwhelm, and Lifesteal.
  */
 export class CombatResolver {
     /**
@@ -34,7 +36,9 @@ export class CombatResolver {
         const result: CombatResult = {
             damageEvents: [],
             deadUnits: [],
-            nexusDamage: { player: 0, opponent: 0 }
+            poppedBarriers: [],
+            nexusDamage: { player: 0, opponent: 0 },
+            lifestealHeal: { player: 0, opponent: 0 }
         };
 
         const activePlayerId = state.activePlayer;
@@ -58,7 +62,7 @@ export class CombatResolver {
                 // Unit Combat
                 this.resolveUnitCombat(attacker, blocker, result, defenderId);
             } else {
-                // Direct Hit (unless Ghost blocker etc, kept simple for MVP)
+                // Direct Hit
                 this.resolveDirectHit(attacker, result, defenderId);
             }
         });
@@ -69,12 +73,7 @@ export class CombatResolver {
     /**
      * Resolves combat between a single attacker and its blocker.
      * Implements the logic for Barrier (negation), Quick Attack (strike order), 
-     * and Overwhelm (excess damage).
-     * 
-     * @param attacker - The unit initiating the attack.
-     * @param blocker - The unit declared as a blocker.
-     * @param result - The accumulator for combat results.
-     * @param defenderId - The ID of the player being attacked.
+     * Overwhelm (excess damage), and Lifesteal.
      */
     private static resolveUnitCombat(
         attacker: RuntimeCard,
@@ -83,7 +82,8 @@ export class CombatResolver {
         defenderId: PlayerId
     ) {
         const attackerId = attacker.ownerId as PlayerId;
-        const attackerHasQuickAttack = attacker.keywords.includes('Quick Attack');
+        const blockerId = blocker.ownerId as PlayerId;
+
         const attackerDamage = this.calculateStrikingDamage(attacker);
         const blockerDamage = this.calculateStrikingDamage(blocker);
 
@@ -91,56 +91,84 @@ export class CombatResolver {
         let blockerDiedToQuickAttack = false;
 
         // Apply Attacker Damage to Blocker
-        const actualAttackDamage = blocker.isBarrierActive ? 0 : attackerDamage;
-        if (blocker.isBarrierActive && attackerDamage > 0) {
-            result.damageEvents.push({
-                sourceId: attacker.instanceId,
-                targetId: blocker.instanceId,
-                amount: 0, // Visual feedback of barrier pop
-            });
-            // Note: In a real engine, we'd clear the barrier flag here.
-            // For the resolver, we just don't deal damage.
-        } else if (attackerDamage > 0) {
-            result.damageEvents.push({
-                sourceId: attacker.instanceId,
-                targetId: blocker.instanceId,
-                amount: attackerDamage
-            });
-            if (blocker.currentHealth <= attackerDamage) {
-                blockerDiedToQuickAttack = true;
-                result.deadUnits.push(blocker.instanceId);
+        if (attackerDamage > 0) {
+            if (blocker.isBarrierActive) {
+                result.damageEvents.push({
+                    sourceId: attacker.instanceId,
+                    targetId: blocker.instanceId,
+                    amount: 0, // Visual feedback of barrier pop
+                });
+                result.poppedBarriers.push(blocker.instanceId);
+            } else {
+                // Check for Tough (reduces dmg by 1)
+                const finalDamage = blocker.keywords.includes('Tough') ? Math.max(0, attackerDamage - 1) : attackerDamage;
 
-                // Overwhelm Logic
-                if (attacker.keywords.includes('Overwhelm')) {
-                    const excess = attackerDamage - blocker.currentHealth;
-                    if (excess > 0) {
-                        result.nexusDamage[defenderId] += excess;
-                        result.damageEvents.push({
-                            sourceId: attacker.instanceId,
-                            targetId: defenderId,
-                            amount: excess,
-                            isOverwhelm: true
-                        });
+                result.damageEvents.push({
+                    sourceId: attacker.instanceId,
+                    targetId: blocker.instanceId,
+                    amount: finalDamage
+                });
+
+                // Lifesteal
+                if (attacker.keywords.includes('Lifesteal')) {
+                    result.lifestealHeal[attackerId] += finalDamage;
+                }
+
+                if (blocker.currentHealth <= finalDamage) {
+                    blockerDiedToQuickAttack = true;
+                    result.deadUnits.push(blocker.instanceId);
+
+                    // Overwhelm Logic
+                    if (attacker.keywords.includes('Overwhelm')) {
+                        const excess = attackerDamage - blocker.currentHealth;
+                        if (excess > 0) {
+                            result.nexusDamage[defenderId] += excess;
+                            result.damageEvents.push({
+                                sourceId: attacker.instanceId,
+                                targetId: defenderId,
+                                amount: excess,
+                                isOverwhelm: true
+                            });
+                            // Overwhelm also triggers Lifesteal
+                            if (attacker.keywords.includes('Lifesteal')) {
+                                result.lifestealHeal[attackerId] += excess;
+                            }
+                        }
                     }
                 }
             }
         }
 
         // 2. BLOCKER STRIKES BACK
-        // Only strikes if it didn't die to a Quick Attack and it has attack power
+        // Only strikes if it didn't die to a Quick Attack (and attacker doesn't have Quick Attack)
+        // Note: Quick Attack only applies when ATTACKING.
         const canBlockerStrike = !blockerDiedToQuickAttack && blockerDamage > 0;
 
         if (canBlockerStrike) {
-            const actualBlockDamage = attacker.isBarrierActive ? 0 : blockerDamage;
+            if (attacker.isBarrierActive) {
+                result.damageEvents.push({
+                    sourceId: blocker.instanceId,
+                    targetId: attacker.instanceId,
+                    amount: 0,
+                });
+                result.poppedBarriers.push(attacker.instanceId);
+            } else {
+                const finalDamage = attacker.keywords.includes('Tough') ? Math.max(0, blockerDamage - 1) : blockerDamage;
 
-            result.damageEvents.push({
-                sourceId: blocker.instanceId,
-                targetId: attacker.instanceId,
-                amount: actualBlockDamage
-            });
+                result.damageEvents.push({
+                    sourceId: blocker.instanceId,
+                    targetId: attacker.instanceId,
+                    amount: finalDamage
+                });
 
-            if (!attacker.isBarrierActive && attacker.currentHealth <= blockerDamage) {
-                result.deadUnits.push(attacker.instanceId);
+                // Lifesteal
+                if (blocker.keywords.includes('Lifesteal')) {
+                    result.lifestealHeal[blockerId] += finalDamage;
+                }
+
+                if (attacker.currentHealth <= finalDamage) {
+                    result.deadUnits.push(attacker.instanceId);
+                }
             }
         }
     }
@@ -151,16 +179,22 @@ export class CombatResolver {
         defenderId: PlayerId
     ) {
         const damage = this.calculateStrikingDamage(attacker);
+        const attackerId = attacker.ownerId as PlayerId;
+
         result.nexusDamage[defenderId] += damage;
         result.damageEvents.push({
             sourceId: attacker.instanceId,
             targetId: defenderId,
             amount: damage
         });
+
+        // Lifesteal on face
+        if (attacker.keywords.includes('Lifesteal')) {
+            result.lifestealHeal[attackerId] += damage;
+        }
     }
 
     private static calculateStrikingDamage(card: RuntimeCard): number {
-        // Here we could check for 'Weak' or other debuffs
         return Math.max(0, card.currentAttack);
     }
 }
