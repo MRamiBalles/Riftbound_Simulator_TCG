@@ -10,6 +10,9 @@ export class EncodingService {
     /**
      * Encodes a GameState into a flat float array for RL.
      * Vector size: ~200
+     * @param state - The current game state.
+     * @param playerId - The ID of the player for whom to encode the state.
+     * @returns A numeric vector representing the game state.
      */
     public static encode(state: SerializedGameState, playerId: PlayerId): number[] {
         const vector: number[] = [];
@@ -61,7 +64,12 @@ export class EncodingService {
         return vector;
     }
 
-    private static encodeCard(card: any): number[] {
+    /**
+     * Encodes a standard or runtime card into a numeric vector.
+     * @param card - The card instance to encode.
+     * @returns A float array representing card features.
+     */
+    private static encodeCard(card: RuntimeCard): number[] {
         return [
             (card.cost || 0) / 10,
             (card.attack || 0) / 10,
@@ -85,6 +93,11 @@ export class EncodingService {
         ];
     }
 
+    /**
+     * Converts a list of keywords into a normalized bitmask.
+     * @param keywords - Array of keyword strings.
+     * @returns A normalized [0, 1] float.
+     */
     private static encodeKeywords(keywords: string[]): number {
         let mask = 0;
         keywords.forEach(k => {

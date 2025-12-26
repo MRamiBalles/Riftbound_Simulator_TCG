@@ -1,7 +1,7 @@
 import { getCards } from '@/services/card-service';
 import { CardGrid } from '@/components/CardGrid';
 import Link from 'next/link';
-import { Search, Camera, Scan, Sparkles, BookOpen, Repeat, Eye, Box } from 'lucide-react';
+import { Search, Camera, Scan, Sparkles, BookOpen, Repeat, Eye, Box, Zap, Scroll, Wand2, Sword, ShieldCheck, Tv, ShoppingBag } from 'lucide-react';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import MissionWidget from '@/components/layout/MissionWidget';
 import clsx from 'clsx';
@@ -59,11 +59,26 @@ export default async function Home() {
         <Link href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
           <Box className="w-4 h-4" /> PACKS
         </Link>
-        <Link href="/scanner" className="btn-hextech border-[#c8aa6e] text-[#c8aa6e] hover:shadow-[0_0_20px_rgba(200,170,110,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Scan className="w-4 h-4" /> SCAN
+        <Link href="/live" className="btn-hextech border-amber-400 text-amber-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <Zap className="w-4 h-4" /> HORIZON
         </Link>
-        <Link href="/social/trade" className="btn-hextech border-[#ff4500] text-[#ff4500] hover:shadow-[0_0_20px_rgba(255,69,0,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Repeat className="w-4 h-4" /> TRADE
+        <Link href="/genesis" className="btn-hextech border-purple-400 text-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <Scroll className="w-4 h-4" /> GENESIS
+        </Link>
+        <Link href="/forge" className="btn-hextech border-cyan-400 text-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <Wand2 className="w-4 h-4" /> FORGE
+        </Link>
+        <Link href="/raid" className="btn-hextech border-red-500 text-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <Sword className="w-4 h-4" /> RAID
+        </Link>
+        <Link href="/vault" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4" /> VAULT
+        </Link>
+        <Link href="/tv" className="btn-hextech border-red-600 text-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <Tv className="w-4 h-4" /> APEX TV
+        </Link>
+        <Link href="/shop" className="btn-hextech border-amber-400 text-amber-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
+          <ShoppingBag className="w-4 h-4" /> SHOP
         </Link>
       </div>
 

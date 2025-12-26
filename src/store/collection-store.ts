@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Card } from '@/lib/database.types';
+import { CloudService } from '@/services/cloud-service';
 
 export type CollectionSource = 'REAL' | 'VIRTUAL';
 
@@ -50,9 +51,7 @@ export const useCollectionStore = create<CollectionState>()(
     persist(
         (set, get) => ({
             inventory: {},
-            showcase: Array(9).fill(null), // Init 9 empty slots
-            activeDeck: null,
-            decks: [], // Initialize decks array
+            showcase: Array(9).fill(null),
 
             addCard: (cardId, source) => {
                 set((state) => {
@@ -120,21 +119,27 @@ export const useCollectionStore = create<CollectionState>()(
                     if (index >= 0 && index < 9) {
                         newShowcase[index] = cardId;
                     }
+
+                    // Cloud Sync
+                    CloudService.saveDeck('local-user', {
+                        showcase: newShowcase
+                    }).catch(e => console.warn('[Showcase] Cloud sync deferred.', e));
+
                     return { showcase: newShowcase };
                 });
             },
 
-            activeDeck: null,
-            setActiveDeck: (deck) => set({ activeDeck: deck }),
+            activeDeck: null as string[] | null,
+            setActiveDeck: (deck: string[]) => set({ activeDeck: deck }),
 
-            decks: [],
-            addDeck: (deck) => set((state) => ({
+            decks: [] as Deck[],
+            addDeck: (deck: Omit<Deck, 'id'>) => set((state) => ({
                 decks: [...state.decks, { ...deck, id: Math.random().toString(36).substr(2, 9) }]
             })),
-            updateDeck: (id, cards) => set((state) => ({
+            updateDeck: (id: string, cards: string[]) => set((state) => ({
                 decks: state.decks.map((d) => (d.id === id ? { ...d, cards } : d))
             })),
-            deleteDeck: (id) => set((state) => ({
+            deleteDeck: (id: string) => set((state) => ({
                 decks: state.decks.filter((d) => d.id !== id)
             })),
         }),

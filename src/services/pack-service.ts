@@ -1,59 +1,50 @@
 import { Card, Rarity } from '@/lib/database.types';
-import { MOCK_CARDS } from './card-service';
 
-// Drop Rates (Cumulative)
-// Common: 0-60
-// Rare: 60-90
-// Epic: 90-98
-// Legendary: 98-99.8
-// God Roll: 99.8-100
-const DROP_RATES = {
-    COMMON: 60,
-    RARE: 90,
-    EPIC: 98,
-    LEGENDARY: 99.8
-};
+export class PackService {
+    /**
+     * Simulation of weighted pack opening (Phase 25)
+     * Inspired by TCGP: 5 cards per pack.
+     */
+    public static openPack(pool: Card[], packType: 'alpha' | 'omega' | 'void'): Card[] {
+        const pack: Card[] = [];
 
-export interface PackResult {
-    cards: Card[];
-    godRoll: boolean;
-}
-
-export const openPack = async (): Promise<PackResult> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    const pack: Card[] = [];
-    let godRoll = false;
-
-    // Standard Pack: 5 Cards
-    for (let i = 0; i < 5; i++) {
-        const roll = Math.random() * 100;
-        let rarity: Rarity = 'Common';
-
-        if (roll > 99.8) {
-            rarity = 'Champion'; // God Roll maps to Champion for now, but implies special art
-            godRoll = true;
-        } else if (roll > 98) {
-            rarity = 'Champion';
-        } else if (roll > 90) {
-            rarity = 'Epic';
-        } else if (roll > 60) {
-            rarity = 'Rare';
+        // Slots 1-3: Commons (80%), Rare (20%)
+        for (let i = 0; i < 3; i++) {
+            pack.push(this.pullCard(pool, ['Common', 'Rare'], packType));
         }
 
-        // Find cards of this rarity
-        const pool = MOCK_CARDS.filter(c => c.rarity === rarity);
+        // Slot 4: Epic or better (Probability based on rarity)
+        pack.push(this.pullCard(pool, ['Epic', 'Legendary'], packType));
 
-        // Fallback if pool empty (shouldn't happen with full DB)
-        const fallbackPool = MOCK_CARDS;
+        // Slot 5: The "HYPE" slot (Legendary or Champion focus)
+        pack.push(this.pullCard(pool, ['Epic', 'Legendary', 'Champion'], packType));
 
-        const selectedPool = pool.length > 0 ? pool : fallbackPool;
-        const card = selectedPool[Math.floor(Math.random() * selectedPool.length)];
-
-        // Clone to ensure unique instance if we track newness
-        pack.push({ ...card });
+        return pack;
     }
 
-    return { cards: pack, godRoll };
-};
+    private static pullCard(pool: Card[], rarities: Rarity[], packType: string): Card {
+        const filtered = pool.filter(c => rarities.includes(c.rarity));
+
+        // Boost featured regions based on pack type
+        // alpha -> Demacia/Ionia | omega -> Noxus/Freljord | void -> Void/Shadow Isles
+        const featuredRegions: Record<string, string[]> = {
+            'alpha': ['Demacia', 'Ionia'],
+            'omega': ['Noxus', 'Freljord'],
+            'void': ['Void', 'Shadow Isles']
+        };
+
+        const targetRegions = featuredRegions[packType] || [];
+
+        // Weighted selection: Featured cards are 3x more likely
+        const weights = filtered.map(c => targetRegions.includes(c.region) ? 3 : 1);
+        const totalWeight = weights.reduce((a, b) => a + b, 0);
+        let random = Math.random() * totalWeight;
+
+        for (let i = 0; i < filtered.length; i++) {
+            random -= weights[i];
+            if (random <= 0) return filtered[i];
+        }
+
+        return filtered[0];
+    }
+}

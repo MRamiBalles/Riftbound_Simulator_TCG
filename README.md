@@ -1,54 +1,48 @@
-# Riftbound Simulator TCG
+# ⚔️ Riftbound Simulator TCG (Sovereign Release)
 
-A high-fidelity simulation and training environment for the **Riftbound TCG**, featuring a deterministic game engine, AI training capabilities, and a modern card management interface.
+**Riftbound Simulator** is an enterprise-grade TCG ecosystem designed for both players and AI researchers. It features a high-fidelity, sensory-rich web interface powered by a deterministic game engine, integrated with a Deep Reinforcement Learning pipeline.
 
-## 🚀 Overview
+## 🌟 Sovereign Features
+- **Deterministic Game Engine**: 100% serializable state, enabling bit-perfect replays and AI training.
+- **Neural AI Hub**: Real-time in-browser ONNX inference with "AI Vision" strategic heatmaps.
+- **Hybrid Persistence**: Cloud-synced decks and collections (Supabase) with seamless offline fallback.
+- **Rift Arena**: Live WebSocket PvP with global matchmaking and spectator modes.
+- **RL Data Pipeline**: Headless simulation harness capable of 500+ games per minute.
+- **Sensory Excellence**: Hextech glassmorphism, region-reactive weather VFX, and 3D card physics.
 
-Riftbound Simulator is designed to bridge the gap between competitive play and advanced AI development. It provides a pixel-perfect React frontend for playtesting and a Python-powered backend for training reinforcement learning agents using current industry-standard frameworks.
-
-### Key Features
-- **Deterministic Game Engine**: Built from the ground up to ensure state parity between TypeScript (UI) and Python (AI).
-- **Intelligent AI Opponents**: Includes both a rule-based Heuristic Bot and hooks for Stable-Baselines3 RL agents.
-- **Card Management**: Full-featured Deck Builder with advanced filtering, Pack Simulator, and Physical Card Scanner (OCR-ready).
-- **Architecture**: Modern Next.js 15+ stack with Zustand for lean state management and Tailwind CSS for a premium "Hextech" aesthetic.
+## 🗺️ The 13-Phase Evolution
+1.  **Phase 1**: Core Deterministic Engine & Mechanics.
+2.  **Phase 2-3**: High-Fidelity Hextech UI & Audio.
+3.  **Phase 4**: Persistence & Collection Hub (LocalStorage).
+4.  **Phase 5-6**: Multi-Protocol AI & Visual transitions.
+5.  **Phase 7**: RL Data Factory & State Vectorization.
+6.  **Phase 8**: Replay Theater & URL Serialization.
+7.  **Phase 9**: Neural Evolution (In-browser ONNX).
+8.  **Phase 10**: The Cloud Armory (Supabase Scaling).
+9.  **Phase 11**: Rift Arena (Live WebSocket PvP).
+10. **Phase 12**: Galactic Expansion (Weather VFX & Personality).
+11. **Phase 13**: Sovereign Release (Mobile & Optimization).
 
 ## 🛠️ Tech Stack
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4, Framer Motion.
+- **Backend**: Supabase (PostgreSQL, Auth, RLS, Realtime).
+- **AI/ML**: Python (Stable Baselines3), ONNX Runtime, FastAPI.
+- **State Management**: Zustand (Multi-store architecture).
 
-### Frontend (Next.js)
-- **Framework**: React 19, Next.js 15 (App Router)
-- **State Management**: Zustand (Global Store)
-- **Styling**: Tailwind CSS 4, Lucide React
-- **Logic**: TypeScript 5, CoreEngine (Deterministic State Machine)
+## 🚀 Getting Started
+```bash
+# Clone the repository
+git clone https://github.com/Manu/resonant-curie.git
 
-### Backend (Python)
-- **Framework**: FastAPI (Inference Server)
-- **AI/ML**: PyTorch, Gymnasium, Stable-Baselines3
-- **Schema**: Shared SerializedGameState for cross-language parity
+# Install dependencies
+npm install
 
-## 🚦 Getting Started
+# Start the lab
+npm run dev
+```
 
-### Prerequisites
-- **Node.js**: 18.x or higher
-- **Python**: 3.10+ (for AI/Backend)
-
-### Installation
-1.  **Clone & Install Dependencies**:
-    ```bash
-    npm install
-    cd backend && pip install -r requirements.txt
-    ```
-2.  **Run Development Server**:
-    ```bash
-    npm run dev
-    ```
-3.  **Run AI Backend** (Optional):
-    ```bash
-    cd backend && uvicorn api.main:app --reload
-    ```
-
-## 📚 Documentation
-
-For detailed technical insights into the game mechanics, AI integration, and data flow, please refer to the [Technical Guide](./TECHNICAL_GUIDE.md).
+## 🧪 AI Research Guide
+The `backend/agent/` directory contains the RL training scripts. You can export current game states as tensors to train your own models using the `HeadlessSimulator`.
 
 ---
-*Developed for the Riftbound community by Advanced Agentic Coding.*
+*Developed by Antigravity & Peer Collaborators. Ascended to Version 1.0.0 (Alpha-Omega)* 🌌✨🏁

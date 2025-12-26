@@ -1,5 +1,4 @@
-'use client';
-
+import React, { memo } from 'react';
 import { Card as CardType } from '@/lib/database.types';
 import clsx from 'clsx';
 import { Shield, Sword, Sparkles } from 'lucide-react';
@@ -11,7 +10,7 @@ interface CardProps {
     onClick?: () => void;
 }
 
-export function Card({ card, onClick }: CardProps) {
+export const Card = memo(({ card, onClick }: CardProps) => {
     const isChampion = card.rarity === 'Champion';
 
     return (
@@ -19,7 +18,7 @@ export function Card({ card, onClick }: CardProps) {
             onClick={onClick}
             className={clsx(
                 "group relative w-64 aspect-[2/3] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(200,170,110,0.4)]",
-                "card-frame", // New Hextech Card Frame class
+                "card-frame",
                 isChampion && "border-[#c8aa6e] shadow-[0_0_20px_rgba(200,170,110,0.2)] prismatic-champion"
             )}
         >
@@ -27,7 +26,6 @@ export function Card({ card, onClick }: CardProps) {
             {/* Background Image Layer */}
             <div className="absolute inset-0 z-0">
                 <div className="relative w-full h-full">
-                    {/* Fallback image if remote fails, but for now we use the real URL */}
                     <img
                         src={card.image_url}
                         alt={card.name}
@@ -47,8 +45,6 @@ export function Card({ card, onClick }: CardProps) {
 
             {/* Content Layer */}
             <div className="absolute inset-0 z-10 p-4 flex flex-col justify-between">
-
-                {/* Top Header */}
                 <div className="flex justify-between items-start">
                     <div className={clsx(
                         "flex items-center justify-center w-8 h-8 rounded-full font-bold shadow-lg ring-1 ring-[#c8aa6e]",
@@ -64,7 +60,6 @@ export function Card({ card, onClick }: CardProps) {
                     )}
                 </div>
 
-                {/* Bottom Info */}
                 <div className="space-y-2">
                     <div className="text-center">
                         <h3 className={clsx(
@@ -76,7 +71,6 @@ export function Card({ card, onClick }: CardProps) {
                         <p className="text-xs text-[#a09b8c] uppercase tracking-wider font-semibold">{card.region}</p>
                     </div>
 
-                    {/* Stats for Units */}
                     {(card.attack !== undefined || card.health !== undefined) && (
                         <div className="flex justify-between px-2 pt-2 border-t border-white/10">
                             <div className="flex items-center gap-1 text-red-400 font-bold text-lg bg-black/40 rounded px-2 py-0.5 backdrop-blur-sm">
@@ -88,7 +82,6 @@ export function Card({ card, onClick }: CardProps) {
                         </div>
                     )}
 
-                    {/* Market Price */}
                     <div className="mt-2 flex justify-between items-center text-xs text-slate-400 bg-slate-950/60 p-2 rounded-md backdrop-blur-sm">
                         <span>Market Price</span>
                         <div className="flex flex-col items-end">
@@ -105,4 +98,6 @@ export function Card({ card, onClick }: CardProps) {
             </div>
         </div>
     );
-}
+});
+
+Card.displayName = 'Card';

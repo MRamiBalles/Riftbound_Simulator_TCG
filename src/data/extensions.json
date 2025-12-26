@@ -1,0 +1,42 @@
+[
+    {
+        "id": "exp-001",
+        "name": "GENETIC ORIGINS",
+        "code": "ORI",
+        "packs": [
+            {
+                "id": "pack-alpha",
+                "name": "ALPHA CORE",
+                "color": "#c8aa6e",
+                "featured": [
+                    "Lux",
+                    "Ezreal",
+                    "Ionia"
+                ],
+                "description": "Focus on tactical spells and evasive units."
+            },
+            {
+                "id": "pack-omega",
+                "name": "OMEGA STRIKE",
+                "color": "#ff4655",
+                "featured": [
+                    "Garen",
+                    "Darius",
+                    "Noxus"
+                ],
+                "description": "Heavy units and raw power dominance."
+            },
+            {
+                "id": "pack-void",
+                "name": "VOID SEER",
+                "color": "#a437ff",
+                "featured": [
+                    "Thresh",
+                    "Cho'Gath",
+                    "Shadow Isles"
+                ],
+                "description": "Corruption, removal, and late-game behemoths."
+            }
+        ]
+    }
+]

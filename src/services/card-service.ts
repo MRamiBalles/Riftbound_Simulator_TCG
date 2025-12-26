@@ -1,3 +1,4 @@
+export type { Card, Set } from '@/lib/database.types';
 import { Card, Set } from '@/lib/database.types';
 
 // RIFTBOUND TCG DATA (Manual Override for Authenticity)

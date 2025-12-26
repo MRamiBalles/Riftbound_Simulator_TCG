@@ -152,6 +152,41 @@ h6 {
   }
 }
 
+/* --- MOBILE RESPONSIVE ADAPTATIONS --- */
+@media (max-width: 1024px) {
+
+  /* Hide Large Sidebars */
+  aside,
+  .xl\:block {
+    display: none !important;
+  }
+
+  /* Compact Header */
+  header h1 {
+    font-size: 2.5rem !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  /* Scale Game Board */
+  .h-\[calc\(100vh-6rem\)\] {
+    height: auto !important;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 640px) {
+
+  /* Card Scaling for small screens */
+  .aspect-\[2\/3\] {
+    transform: scale(0.85);
+  }
+
+  /* Stacked Dashboard */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

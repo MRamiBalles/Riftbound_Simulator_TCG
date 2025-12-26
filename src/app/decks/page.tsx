@@ -7,6 +7,7 @@ import EnergyWidget from '@/components/layout/EnergyWidget';
 import { getHydratedStarterDecks } from '@/data/starter-decks';
 import { useCollectionStore } from '@/store/collection-store';
 import { DeckCodeService } from '@/services/deck-code-service';
+import { MetaDashboard } from '@/components/dashboard/MetaDashboard';
 import clsx from 'clsx';
 
 export default function DecksPage() {
@@ -45,6 +46,10 @@ export default function DecksPage() {
                         Management Hub
                     </p>
                 </header>
+
+                <div className="mb-12">
+                    <MetaDashboard />
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Create New Deck */}

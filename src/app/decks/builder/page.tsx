@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import { ManaCurveChart } from '@/components/deck-builder/ManaCurveChart';
 import { DeckCodeService } from '@/services/deck-code-service';
+import { CloudService } from '@/services/cloud-service';
 
 export default function DeckBuilderPage() {
     const router = useRouter();
@@ -55,11 +56,20 @@ export default function DeckBuilderPage() {
 
     const deckSize = Object.values(deck).reduce((a, b) => a + b, 0);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const cardList: string[] = [];
         Object.entries(deck).forEach(([id, count]) => {
             for (let i = 0; i < count; i++) cardList.push(id);
         });
+
+        const code = DeckCodeService.encode(cardList);
+
+        // Background Cloud Sync - No await to avoid blocking UI redirection
+        CloudService.saveDeck('local-user', {
+            name: deckName,
+            code: code,
+            description: `Deck created on ${new Date().toLocaleDateString()}`
+        }).catch(err => console.warn('[DeckBuilder] Cloud sync failed, using local fallback.', err));
 
         if (deckId) {
             updateDeck(deckId, cardList);

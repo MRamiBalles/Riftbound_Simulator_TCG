@@ -2,7 +2,7 @@ import { CoreEngine } from '../../game/engine/CoreEngine';
 import { HeuristicBot } from '../../game/ai/HeuristicBot';
 import { DeckFactory } from './deck-factory';
 import { EncodingService, ActionSpaceMapper } from './encoding-service';
-import { Action, PlayerId } from '../../game/engine/game.types';
+import { Action, PlayerId, SerializedGameState } from '../../game/engine/game.types';
 
 export interface GameExperience {
     state: number[];
@@ -100,20 +100,23 @@ export class HeadlessSimulator {
 
     /**
      * Heuristic back-mapping of engine action to our discrete RL index.
+     * @param action - The engine action performed.
+     * @param state - The game state at the time of the action.
+     * @returns A discrete action index (0-47).
      */
-    private static inferActionIndex(action: Action, state: any): number {
+    private static inferActionIndex(action: Action, state: SerializedGameState): number {
         if (action.type === 'PASS' || action.type === 'END_TURN') return 0;
 
         if (action.type === 'PLAY_CARD') {
             const hand = state.players[action.playerId].hand;
-            const idx = hand.findIndex((c: any) => c.instanceId === action.cardId);
+            const idx = hand.findIndex(c => c.instanceId === action.cardId);
             return idx !== -1 ? idx + 1 : 0;
         }
 
-        if (action.type === 'DECLARE_ATTACKERS') {
+        if (action.type === 'DECLARE_ATTACKERS' && action.attackers) {
             const field = state.players[action.playerId].field;
-            const firstAttackerId = action.attackers?.[0];
-            const idx = field.findIndex((c: any) => c.instanceId === firstAttackerId);
+            const firstAttackerId = action.attackers[0];
+            const idx = field.findIndex(c => c.instanceId === firstAttackerId);
             return idx !== -1 ? idx + 11 : 0;
         }
 

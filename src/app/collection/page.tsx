@@ -8,7 +8,7 @@ import { useCollectionStore } from '@/store/collection-store';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import Link from 'next/link';
 import { generateCSV, generateJSON, downloadFile } from '@/services/export-service';
-import { Download, FileText, FileCode, Library, Star } from 'lucide-react';
+import { Download, FileText, FileCode, Library, Star, Plus } from 'lucide-react';
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';
 import clsx from 'clsx';
 import CardDetailModal from '@/components/CardDetailModal';
@@ -126,21 +126,25 @@ export default function CollectionPage() {
                         return (
                             <div
                                 key={i}
-                                className="aspect-[2/3] rounded-lg border border-white/5 bg-[#091428]/40 hover:border-[#0ac8b9]/40 transition-all flex flex-col items-center justify-center group overflow-hidden relative"
+                                onClick={() => {
+                                    if (!card) {
+                                        alert("To pin a card, click a card in your collection below and select 'Pin to Showcase' (Slot " + (i + 1) + ")");
+                                    } else {
+                                        setShowcaseSlot(i, null); // Remove if clicked
+                                    }
+                                }}
+                                className="aspect-[2/3] rounded-lg border border-white/5 bg-[#091428]/40 hover:border-[#0ac8b9]/40 transition-all flex flex-col items-center justify-center group overflow-hidden relative cursor-pointer"
                             >
                                 {card ? (
-                                    <div
-                                        onClick={() => setViewingCard(card)}
-                                        className="w-full h-full cursor-pointer hover:scale-110 transition-transform duration-500"
-                                    >
+                                    <div className="w-full h-full">
                                         <img src={card.image_url} alt={card.name} className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
-                                            <span className="text-[8px] font-black uppercase text-[#0ac8b9]">{card.name}</span>
+                                        <div className="absolute inset-0 bg-red-500/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                            <span className="text-[10px] font-black uppercase text-white bg-red-600 px-2 py-1 rounded">Remove</span>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col items-center opacity-10">
-                                        <Library className="w-6 h-6 mb-2" />
+                                    <div className="flex flex-col items-center opacity-10 group-hover:opacity-40 transition-opacity">
+                                        <Plus className="w-6 h-6 mb-2" />
                                         <span className="text-[8px] font-black uppercase">Slot {i + 1}</span>
                                     </div>
                                 )}

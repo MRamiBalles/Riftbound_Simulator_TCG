@@ -42,13 +42,12 @@ export const STARTER_DECKS: StarterDeck[] = [
 
 
 // Helper to hydrate decks
-export const getHydratedStarterDecks = (): any[] => {
+export const getHydratedStarterDecks = () => {
     return STARTER_DECKS.map(deck => {
-        const hydratedCards: any[] = [];
+        const hydratedCards: { card: Card, count: number }[] = [];
         deck.cards.forEach(item => {
             const cardData = ALL_CARDS.find(c => c.name.toLowerCase() === item.name.toLowerCase());
             if (cardData) {
-                // Determine foil/normal based on count? Nah, just normal
                 hydratedCards.push({
                     card: cardData,
                     count: item.count

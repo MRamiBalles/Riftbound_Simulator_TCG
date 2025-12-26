@@ -3,80 +3,90 @@ import { persist } from 'zustand/middleware';
 
 export interface Mission {
     id: string;
+    title: string;
     description: string;
-    goal: number;
     progress: number;
+    target: number;
+    rewardXP: number;
     completed: boolean;
-    reward: number;
+}
+
+export interface PassTier {
+    level: number;
+    rewardName: string;
+    isPremium: boolean;
+    unlocked: boolean;
 }
 
 interface MissionState {
-    lastLoginDate: string;
-    dailyClaimed: boolean;
-    missions: Mission[];
+    level: number;
+    currentXP: number;
+    requiredXP: number;
+    activeMissions: Mission[];
+    passTiers: PassTier[];
 
     // Actions
-    checkDailyLogin: () => void;
-    claimDaily: () => number; // Returns reward amount
-    updateMission: (id: string, amount: number) => void;
-    completeMission: (id: string) => number; // Returns reward amount
+    updateMissionProgress: (id: string, val: number) => void;
+    claimTierReward: (level: number) => void;
 }
 
 export const useMissionStore = create<MissionState>()(
     persist(
-        (set, get) => ({
-            lastLoginDate: '',
-            dailyClaimed: false,
-            missions: [
-                { id: 'm1', description: 'Open 2 Booster Packs', goal: 2, progress: 0, completed: false, reward: 50 },
-                { id: 'm2', description: 'Trade a Card', goal: 1, progress: 0, completed: false, reward: 100 },
-                { id: 'm3', description: 'Scan a Physical Card', goal: 1, progress: 0, completed: false, reward: 200 },
+        (set) => ({
+            level: 1,
+            currentXP: 250,
+            requiredXP: 1000,
+            activeMissions: [
+                { id: 'm1', title: 'Tactical Superiority', description: 'Win 3 games against AI Hard.', progress: 1, target: 3, rewardXP: 500, completed: false },
+                { id: 'm2', title: 'Rift Explorer', description: 'Scan 5 new physical cards.', progress: 2, target: 5, rewardXP: 300, completed: false },
+                { id: 'm3', title: 'Market regular', description: 'Buy or Sell 1 card in the Bazaar.', progress: 0, target: 1, rewardXP: 200, completed: false },
             ],
+            passTiers: Array.from({ length: 50 }, (_, i) => ({
+                level: i + 1,
+                rewardName: i % 5 === 0 ? 'Foil Shard' : '50 Scraps',
+                isPremium: i % 10 === 0,
+                unlocked: i < 1
+            })),
 
-            checkDailyLogin: () => {
-                const today = new Date().toISOString().split('T')[0];
-                const { lastLoginDate } = get();
+            updateMissionProgress: (id, val) => set(state => {
+                const updatedMissions = state.activeMissions.map(m => {
+                    if (m.id === id) {
+                        const newProgress = Math.min(m.progress + val, m.target);
+                        const completed = newProgress >= m.target;
+                        return { ...m, progress: newProgress, completed };
+                    }
+                    return m;
+                });
 
-                if (lastLoginDate !== today) {
-                    // Reset Logic
-                    set({
-                        lastLoginDate: today,
-                        dailyClaimed: false,
-                        missions: get().missions.map(m => ({ ...m, progress: 0, completed: false }))
-                    });
+                // Calculate added XP
+                const mission = updatedMissions.find(m => m.id === id);
+                let addedXP = 0;
+                if (mission?.completed && !state.activeMissions.find(m => m.id === id)?.completed) {
+                    addedXP = mission.rewardXP;
                 }
-            },
 
-            claimDaily: () => {
-                const { dailyClaimed } = get();
-                if (dailyClaimed) return 0;
-                set({ dailyClaimed: true });
-                return 100; // 100 Cores Login Bonus
-            },
+                let newXP = state.currentXP + addedXP;
+                let newLevel = state.level;
+                while (newXP >= state.requiredXP) {
+                    newXP -= state.requiredXP;
+                    newLevel++;
+                }
 
-            updateMission: (id, amount) => {
-                set(state => ({
-                    missions: state.missions.map(m => {
-                        if (m.id !== id || m.completed) return m;
-                        const newProgress = Math.min(m.progress + amount, m.goal);
-                        return { ...m, progress: newProgress, completed: newProgress >= m.goal }; // Auto complete logic handling could be separate but simple here
-                    })
-                }));
-            },
+                return {
+                    activeMissions: updatedMissions,
+                    currentXP: newXP,
+                    level: newLevel,
+                    passTiers: state.passTiers.map(t => ({
+                        ...t,
+                        unlocked: t.level <= newLevel
+                    }))
+                };
+            }),
 
-            completeMission: (id) => {
-                // Just defined designed to be called when claiming, for now we auto-complete in update?
-                // Let's simplified: Claiming is automatic on update for this MVP or manual?
-                // Visual feedback is better if manual claim.
-                // For MVP, let's auto-complete state but require "Click to Claim" in UI?
-                // Keep it simple: Auto-complete state, UI shows "Claim" button if completed && !claimed.
-                // Refactoring: Add 'claimed' field to mission? 
-                // Let's stick to simple: Auto-complete = reward instantly? No, user misses the dopamine.
-                return 0;
-            }
+            claimTierReward: (level) => set(state => ({
+                passTiers: state.passTiers.map(t => t.level === level ? { ...t, unlocked: true } : t)
+            }))
         }),
-        {
-            name: 'riftbound-missions-storage',
-        }
+        { name: 'riftbound-mission-storage' }
     )
 );

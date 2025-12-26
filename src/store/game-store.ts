@@ -1,19 +1,29 @@
 import { create } from 'zustand';
 import { Card } from '@/lib/database.types';
 import { CoreEngine } from '@/game/engine/CoreEngine';
-import { Action, SerializedGameState } from '@/game/engine/game.types';
-import { AIService } from '@/services/ai-service';
+import { Action, SerializedGameState, ReplayData } from '@/game/engine/game.types';
+import { ReplayService } from '@/services/replay-service';
+import { AIService, AIMode } from '@/services/ai-service';
+import { MultiplayerService } from '@/services/multiplayer-service';
 
 interface GameStoreState extends SerializedGameState {
     engine: CoreEngine | null;
     isReplayMode: boolean;
+    isMultiplayerMode: boolean;
+    opponentReady: boolean;
     replayData: ReplayData | null;
     currentReplayIndex: number;
+    aiMode: AIMode;
+    aiThinking: Record<string, number>;
+    winRatePrediction: string | null;
 
     // Actions
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => void;
     performAction: (action: Action) => void;
+    receiveOpponentAction: (action: Action) => void;
     fetchInferenceAction: () => Promise<void>;
+    setAIMode: (mode: AIMode) => void;
+    setMultiplayerMode: (enabled: boolean, roomId?: string) => void;
 
     // Replay Actions
     loadReplay: (data: ReplayData) => void;
@@ -37,15 +47,17 @@ const INITIAL_STATE: SerializedGameState = {
     actionHistory: []
 };
 
-import { ReplayData } from '@/game/engine/game.types';
-import { ReplayService } from '@/services/replay-service';
-
 export const useGameStore = create<GameStoreState>((set, get) => ({
     ...INITIAL_STATE,
     engine: null,
     isReplayMode: false,
+    isMultiplayerMode: false,
+    opponentReady: false,
     replayData: null,
     currentReplayIndex: -1,
+    aiMode: 'Heuristic',
+    aiThinking: {},
+    winRatePrediction: null,
 
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => {
         const engine = new CoreEngine();
@@ -54,11 +66,43 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
     },
 
     performAction: (action: Action) => {
-        const { engine, isReplayMode } = get();
+        const { engine, isReplayMode, isMultiplayerMode } = get();
         if (!engine || isReplayMode) return;
+
+        // In multiplayer, we only perform local player actions directly. 
+        // Opponent actions come through receiveOpponentAction.
+        if (isMultiplayerMode) {
+            MultiplayerService.sendAction(action);
+        }
 
         const newState = engine.applyAction(action);
         set({ ...newState });
+    },
+
+    receiveOpponentAction: (action: Action) => {
+        const { engine } = get();
+        if (!engine) return;
+        const newState = engine.applyAction(action);
+        set({ ...newState });
+    },
+
+    setMultiplayerMode: (enabled: boolean, roomId?: string) => {
+        if (enabled && roomId) {
+            MultiplayerService.joinRoom(roomId, (msg) => {
+                if (msg.type === 'ACTION') {
+                    get().receiveOpponentAction(msg.payload);
+                }
+                if (msg.type === 'READY') {
+                    set({ opponentReady: true });
+                }
+            });
+        }
+        set({ isMultiplayerMode: enabled });
+    },
+
+    setAIMode: (mode: AIMode) => {
+        AIService.setMode(mode);
+        set({ aiMode: mode });
     },
 
     loadReplay: (data: ReplayData) => {

@@ -13,8 +13,15 @@ import { soundService } from '@/services/sound-service';
 const createMockDeck = () => Array.from({ length: 30 }, () => MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)]);
 
 import { ReplayOverlay } from '../game/ReplayOverlay';
+import { AIVisionOverlay } from '../game/AIVisionOverlay';
+import { SpectateOverlay } from '@/components/game/SpectateOverlay';
+import { WeatherVFX } from '@/components/game/WeatherVFX';
 import { ReplayService } from '@/services/replay-service';
+import { CoachService, StrategicAdvice } from '@/services/coach-service';
+import { VoiceService } from '@/services/voice-service';
+import { StreamerOverlay } from '../game/StreamerOverlay';
 import { useSearchParams } from 'next/navigation';
+import { Brain, Cpu, Users, GraduationCap, Info, Radio } from 'lucide-react';
 
 export const GameBoard: React.FC = () => {
     const searchParams = useSearchParams();
@@ -32,8 +39,33 @@ export const GameBoard: React.FC = () => {
         performAction,
         fetchInferenceAction,
         isReplayMode,
-        loadReplay
+        isMultiplayerMode,
+        opponentReady,
+        setMultiplayerMode,
+        loadReplay,
+        aiMode,
+        setAIMode
     } = useGameStore();
+
+    const [showCoach, setShowCoach] = useState(false);
+    const [showStreamerHUD, setShowStreamerHUD] = useState(false);
+    const [coachAdvice, setCoachAdvice] = useState<StrategicAdvice | null>(null);
+
+    // Update Coach Advice
+    useEffect(() => {
+        if (showCoach && engine) {
+            setCoachAdvice(CoachService.getAdvice(engine.getState()));
+        }
+    }, [showCoach, turn, phase]);
+
+    // Check for PvP / Multiplayer in URL
+    useEffect(() => {
+        const mode = searchParams.get('mode');
+        const room = searchParams.get('room');
+        if (mode === 'pvp' && room && !isMultiplayerMode) {
+            setMultiplayerMode(true, room);
+        }
+    }, [searchParams, isMultiplayerMode, setMultiplayerMode]);
 
     // Check for replay in URL
     useEffect(() => {
@@ -55,13 +87,13 @@ export const GameBoard: React.FC = () => {
 
     // AI Integration
     useEffect(() => {
-        if (activePlayer === 'opponent' && !winner && phase === 'Main') {
+        if (activePlayer === 'opponent' && !winner && phase === 'Main' && !isMultiplayerMode) {
             const timer = setTimeout(async () => {
                 await fetchInferenceAction();
             }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [activePlayer, fetchInferenceAction, winner, phase]);
+    }, [activePlayer, fetchInferenceAction, winner, phase, isMultiplayerMode]);
 
     // Auto-start
     useEffect(() => {
@@ -95,6 +127,12 @@ export const GameBoard: React.FC = () => {
         else if (action.type === 'END_TURN') soundService.play('HEX_UI_OPEN');
         else soundService.play('CLICK');
 
+        // Trigger Voice Lines
+        if (action.cardId) {
+            const card = MOCK_CARDS.find(c => c.id === action.cardId);
+            VoiceService.triggerForAction(action, card?.name, action.cardId);
+        }
+
         performAction(action);
     };
 
@@ -120,6 +158,8 @@ export const GameBoard: React.FC = () => {
             {/* Background */}
             <div className="absolute inset-0 z-0 bg-[url('https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt2a829e1f57fb8b78/62e0339aab625e114008778a/01PZ040-full.png')] bg-cover bg-center opacity-40 blur-sm" />
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,#010a13_90%)]" />
+
+            <WeatherVFX />
 
             <CombatOverlay />
 
@@ -242,8 +282,15 @@ export const GameBoard: React.FC = () => {
                             )}
 
                             {activePlayer === 'opponent' && (
-                                <div className="bg-red-900/40 text-red-200 px-6 py-2 rounded-full border border-red-500/50 backdrop-blur-md text-xs font-bold uppercase tracking-widest animate-pulse">
-                                    Strategic Analysis In Progress
+                                <div className="flex flex-col items-center gap-4">
+                                    <div className="bg-red-900/40 text-red-200 px-6 py-2 rounded-full border border-red-500/50 backdrop-blur-md text-xs font-bold uppercase tracking-widest animate-pulse">
+                                        Strategic Analysis In Progress
+                                    </div>
+                                    {(log[log.length - 1] as any)?.emote && (
+                                        <div className="bg-[#0ac8b9]/20 text-[#0ac8b9] text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg border border-[#0ac8b9]/40 animate-bounce">
+                                            "{(log[log.length - 1] as any).emote}"
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -355,8 +402,90 @@ export const GameBoard: React.FC = () => {
                     <BattleLog logs={log} />
                 </aside>
             </div>
+            {/* AI Vision Overlay */}
+            <AIVisionOverlay />
+
+            {/* Streamer Toolkit */}
+            {showStreamerHUD && <StreamerOverlay />}
+
+            {/* Spectate Interface */}
+            <SpectateOverlay />
+
             {/* Replay Controls */}
             <ReplayOverlay />
+
+            {/* AI Control Panel */}
+            <div className="fixed top-24 right-8 z-50 flex flex-col gap-2">
+                <button
+                    onClick={() => setAIMode(aiMode === 'Neural' ? 'Heuristic' : 'Neural')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${aiMode === 'Neural'
+                        ? 'bg-cyan-500/20 border-cyan-400 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]'
+                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                        }`}
+                >
+                    {aiMode === 'Neural' ? <Brain size={18} /> : <Cpu size={18} />}
+                    {aiMode === 'Neural' ? 'Neural AI Active' : 'Switch to Neural AI'}
+                </button>
+
+                <button
+                    onClick={() => setShowCoach(!showCoach)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${showCoach
+                        ? 'bg-amber-500/20 border-amber-400 text-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.3)]'
+                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                        }`}
+                >
+                    <GraduationCap size={18} />
+                    {showCoach ? 'Coach Active' : 'Call AI Coach'}
+                </button>
+
+                <button
+                    onClick={() => setShowStreamerHUD(!showStreamerHUD)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border ${showStreamerHUD
+                        ? 'bg-red-500/20 border-red-400 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.3)]'
+                        : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
+                        }`}
+                >
+                    <Radio size={18} />
+                    {showStreamerHUD ? 'Streamer HUD ON' : 'Streamer Toolkit'}
+                </button>
+            </div>
+
+            {/* AI STRATEGIC COACH OVERLAY */}
+            {showCoach && coachAdvice && (
+                <div className="fixed bottom-32 right-8 z-50 w-80 animate-in slide-in-from-right duration-500">
+                    <div className="bg-[#091428]/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 via-yellow-200 to-amber-500" />
+
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-amber-500/20 rounded-lg">
+                                <Info className="w-5 h-5 text-amber-400" />
+                            </div>
+                            <div>
+                                <h4 className="text-amber-100 font-bold text-xs uppercase tracking-widest">Strategic Insight</h4>
+                                <div className="text-[10px] text-amber-500/70 font-mono italic">Confidence: {(coachAdvice.confidence * 100).toFixed(0)}%</div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <div className="text-lg font-black text-white leading-tight" style={{ fontFamily: 'Beaufort' }}>
+                                {coachAdvice.suggestion}
+                            </div>
+                            <p className="text-xs text-[#a09b8c] leading-relaxed italic">
+                                "{coachAdvice.rationale}"
+                            </p>
+                        </div>
+
+                        <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-[8px] text-[#5c5b57] uppercase font-black tracking-widest">
+                            <span>NLP Analysis Engine v4.2</span>
+                            <div className="flex gap-1">
+                                <div className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
+                                <div className="w-1 h-1 rounded-full bg-amber-500 animate-pulse delay-75" />
+                                <div className="w-1 h-1 rounded-full bg-amber-500 animate-pulse delay-150" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

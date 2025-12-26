@@ -5,6 +5,10 @@ import { MOCK_CARDS } from './card-service';
 export class ReplayService {
     /**
      * Creates a playback-ready engine instance from ReplayData.
+     * Reconstructs the exact game state by re-playing actions from a fresh start.
+     * @param replay - The recorded match data.
+     * @param targetActionIdx - Optional stop point for partial playback.
+     * @returns A CoreEngine instance at the target state.
      */
     public static createPlaybackEngine(replay: ReplayData, targetActionIdx?: number): CoreEngine {
         const engine = new CoreEngine();
