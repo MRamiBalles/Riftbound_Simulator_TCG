@@ -10,11 +10,13 @@ export class HeuristicBot implements Bot {
     id: PlayerId;
     name: string;
     difficulty: 'Easy' | 'Medium' | 'Hard';
+    fastMode: boolean;
 
-    constructor(id: PlayerId = 'opponent', name: string = 'Noxian General', difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium') {
+    constructor(id: PlayerId = 'opponent', name: string = 'Noxian General', difficulty: 'Easy' | 'Medium' | 'Hard' = 'Medium', fastMode: boolean = false) {
         this.id = id;
         this.name = name;
         this.difficulty = difficulty;
+        this.fastMode = fastMode;
     }
 
     /**
@@ -24,7 +26,9 @@ export class HeuristicBot implements Bot {
      */
     async decideAction(gameState: SerializedGameState): Promise<Action | null> {
         // Delay for realism
-        await new Promise(resolve => setTimeout(resolve, 800));
+        if (!this.fastMode) {
+            await new Promise(resolve => setTimeout(resolve, 800));
+        }
 
         if (gameState.priority !== this.id) {
             console.log(`[Bot] Priority mismatch. My ID: ${this.id}, Priority: ${gameState.priority}`);

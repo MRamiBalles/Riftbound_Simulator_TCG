@@ -1,0 +1,51 @@
+{
+    "metadata": {
+        "version": "1.0.0",
+        "description": "Baseline training sets for Riftbound RL models",
+        "vector_size": 183,
+        "action_space": 48,
+        "archetypes": [
+            "Aggro",
+            "Control",
+            "Midrange",
+            "Combo"
+        ]
+    },
+    "meta_templates": {
+        "Noxus_Aggro": {
+            "focus": "Early pressure, direct damage",
+            "sample_ids": [
+                "OGN-001",
+                "OGN-002",
+                "SFD-012",
+                "SFD-013",
+                "SFD-003"
+            ]
+        },
+        "Demacia_Elite": {
+            "focus": "Stat efficiency, board presence",
+            "sample_ids": [
+                "OGN-170",
+                "OGN-171",
+                "SFD-001",
+                "SFD-002",
+                "SFD-041"
+            ]
+        },
+        "Freljord_Control": {
+            "focus": "Board clears, late game legends",
+            "sample_ids": [
+                "OGN-148",
+                "SFD-080",
+                "OGN-056",
+                "SFD-001"
+            ]
+        }
+    },
+    "batch_configuration": {
+        "mode": "Self-Play",
+        "iterations": 1000,
+        "difficulty": "Hard",
+        "headless": true
+    }
+}
