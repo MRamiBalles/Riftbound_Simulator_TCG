@@ -2,10 +2,9 @@ import { Card, Rarity } from '@/lib/database.types';
 
 export class PackService {
     /**
-     * Simulation of weighted pack opening (Phase 25)
      * Inspired by TCGP: 5 cards per pack.
      */
-    public static openPack(pool: Card[], packType: 'alpha' | 'omega' | 'void'): Card[] {
+    public static openPack(pool: Card[], packType: 'alpha' | 'omega' | 'void', pityCounter: number): Card[] {
         const pack: Card[] = [];
 
         // Slots 1-3: Commons (80%), Rare (20%)
@@ -17,9 +16,27 @@ export class PackService {
         pack.push(this.pullCard(pool, ['Epic', 'Legendary'], packType));
 
         // Slot 5: The "HYPE" slot (Legendary or Champion focus)
-        pack.push(this.pullCard(pool, ['Epic', 'Legendary', 'Champion'], packType));
+        const isPityHit = pityCounter >= 49;
+        const hypeRarities: Rarity[] = isPityHit ? ['Legendary', 'Champion'] : ['Epic', 'Legendary', 'Champion'];
+
+        pack.push(this.pullCard(pool, hypeRarities, packType));
 
         return pack;
+    }
+
+    public static openBulk(pool: Card[], packType: 'alpha' | 'omega' | 'void', pityCounter: number, count: number): Card[][] {
+        const boxes: Card[][] = [];
+        let currentPity = pityCounter;
+
+        for (let i = 0; i < count; i++) {
+            const pack = this.openPack(pool, packType, currentPity);
+            boxes.push(pack);
+
+            const hasRare = pack.some(c => ['Legendary', 'Champion'].includes(c.rarity));
+            currentPity = hasRare ? 0 : currentPity + 1;
+        }
+
+        return boxes;
     }
 
     private static pullCard(pool: Card[], rarities: Rarity[], packType: string): Card {

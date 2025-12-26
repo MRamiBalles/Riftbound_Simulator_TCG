@@ -1,90 +1,55 @@
 import { Card } from '@/lib/database.types';
-import { MOCK_CARDS } from '@/services/card-service';
 
-export type ActivityType = 'PACK' | 'DECK' | 'TRADE';
-
-interface BaseActivity {
+export interface PublicPull {
     id: string;
-    username: string;
-    avatarUrl: string;
-    timeAgo: string;
-    type: ActivityType;
+    userName: string;
+    userLevel: number;
+    cards: Card[];
+    timestamp: number;
+    packType: 'alpha' | 'omega' | 'void';
 }
 
-export interface PackActivity extends BaseActivity {
-    type: 'PACK';
-    packResult: Card[];
-}
+export class SocialService {
+    private static feed: PublicPull[] = [];
 
-export interface DeckActivity extends BaseActivity {
-    type: 'DECK';
-    deckName: string;
-    regions: string[];
-    mainChampion: string;
-}
-
-export interface TradeActivity extends BaseActivity {
-    type: 'TRADE';
-    cardName: string;
-    price: number;
-    action: 'BOUGHT' | 'SOLD';
-}
-
-export type FriendActivity = PackActivity | DeckActivity | TradeActivity;
-
-const MOCK_USERS = [
-    { name: 'Faker', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/588.png' },
-    { name: 'JinxMain01', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/3587.png' },
-    { name: 'Tyler1', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/6.png' },
-    { name: 'RiotPhreak', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/3516.png' },
-    { name: 'ArcaneFan', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/5316.png' },
-    { name: 'K3Soju', avatar: 'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/profileicon/4660.png' },
-];
-
-export const getFriendEchoes = async (): Promise<FriendActivity[]> => {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 600));
-
-    return Array.from({ length: 10 }).map((_, idx) => {
-        const user = MOCK_USERS[Math.floor(Math.random() * MOCK_USERS.length)];
-        const typeRoll = Math.random();
-
-        const base = {
-            id: `echo-${idx}`,
-            username: user.name,
-            avatarUrl: user.avatar,
-            timeAgo: `${Math.floor(Math.random() * 59) + 1}m ago`,
+    public static broadcastPull(userName: string, level: number, cards: Card[], packType: 'alpha' | 'omega' | 'void'): void {
+        const pull: PublicPull = {
+            id: Math.random().toString(36).substr(2, 9),
+            userName,
+            userLevel: level,
+            cards,
+            timestamp: Date.now(),
+            packType
         };
+        this.feed = [pull, ...this.feed].slice(0, 50); // Keep last 50
+    }
 
-        if (typeRoll > 0.6) {
-            // PACK 
-            const pack: Card[] = [];
-            for (let i = 0; i < 5; i++) {
-                const random = MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)];
-                if (random) pack.push({ ...random });
-            }
-            return { ...base, type: 'PACK', packResult: pack } as PackActivity;
-        } else if (typeRoll > 0.3) {
-            // DECK
-            const decks = ['Jinx Burn', 'Demacia Midrange', 'Ionia Control', 'Noxus Aggro', 'Shurima Movies'];
-            return {
-                ...base,
-                type: 'DECK',
-                deckName: decks[Math.floor(Math.random() * decks.length)],
-                regions: ['Noxus', 'Piltover & Zaun'], // Mock for now
-                mainChampion: 'Jinx Demolitionist'
-            } as DeckActivity;
-        } else {
-            // TRADE
-            const card = MOCK_CARDS[Math.floor(Math.random() * MOCK_CARDS.length)];
-            return {
-                ...base,
-                type: 'TRADE',
-                cardName: card?.name || 'Unknown Card',
-                price: (card?.market_price || 15) * (1 + (Math.random() * 0.2)),
-                action: Math.random() > 0.5 ? 'BOUGHT' : 'SOLD'
-            } as TradeActivity;
+    public static getFeed(): PublicPull[] {
+        // If empty, generate some mock pulls for the "Social" feel
+        if (this.feed.length === 0) {
+            return this.generateMockFeed();
         }
-    });
-};
+        return this.feed;
+    }
 
+    private static generateMockFeed(): PublicPull[] {
+        return [
+            {
+                id: 'mock1',
+                userName: 'Nova_Stellar',
+                userLevel: 42,
+                cards: [], // In a real app, we'd have full card data here
+                timestamp: Date.now() - 300000,
+                packType: 'alpha'
+            },
+            {
+                id: 'mock2',
+                userName: 'VoidWalker',
+                userLevel: 88,
+                cards: [],
+                timestamp: Date.now() - 900000,
+                packType: 'void'
+            }
+        ];
+    }
+}

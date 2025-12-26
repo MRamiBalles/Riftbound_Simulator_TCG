@@ -1,36 +1,36 @@
 'use client';
 
-import { useEnergyStore } from '@/store/energy-store';
+import { useUserStore } from '@/store/user-store';
 import { Zap, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 export default function EnergyWidget() {
-    const { energy, maxEnergy, nextRegenTime, checkRegen } = useEnergyStore();
+    const { getRefreshedEnergy, boosterEnergy, lastEnergyUpdate } = useUserStore();
+    const currentEnergy = getRefreshedEnergy();
     const [timeLeft, setTimeLeft] = useState<string>('');
 
-    // Check for regen every second and update timer
+    // Update timer every second
     useEffect(() => {
         const interval = setInterval(() => {
-            checkRegen(); // Logic check
-
-            if (nextRegenTime && energy < maxEnergy) {
+            if (currentEnergy < 24) {
                 const now = Date.now();
-                const diff = nextRegenTime - now;
+                const nextPoint = lastEnergyUpdate + 3600000;
+                const diff = nextPoint - now;
+
                 if (diff > 0) {
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                    setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+                    const minutes = Math.floor(diff / 60000);
+                    const seconds = Math.floor((diff % 60000) / 1000);
+                    setTimeLeft(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
                 } else {
-                    setTimeLeft('');
+                    setTimeLeft('Refreshing...');
                 }
             } else {
                 setTimeLeft('');
             }
         }, 1000);
         return () => clearInterval(interval);
-    }, [nextRegenTime, energy, maxEnergy, checkRegen]);
+    }, [currentEnergy, lastEnergyUpdate]);
 
     return (
         <div className="absolute top-4 right-4 z-50 flex flex-col items-end">
@@ -43,10 +43,10 @@ export default function EnergyWidget() {
             )}>
                 <Zap className={clsx(
                     "w-5 h-5 fill-current",
-                    energy > 0 ? "text-[#0ac8b9]" : "text-gray-500"
+                    currentEnergy > 0 ? "text-[#0ac8b9]" : "text-gray-500"
                 )} />
                 <span className="font-bold text-lg text-[#f0e6d2]" style={{ fontFamily: 'Beaufort' }}>
-                    {energy} / {maxEnergy}
+                    {currentEnergy} / 24
                 </span>
             </div>
 

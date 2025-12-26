@@ -89,9 +89,10 @@ export default async function Home() {
             <span className="w-1 h-6 bg-[#0ac8b9] rounded-full inline-block" />
             TRENDING CARDS
           </h2>
-          <button className="text-sm text-[#0ac8b9] hover:text-[#f0e6d2] transition-colors uppercase tracking-widest">
-            View All Market Data &rarr;
-          </button>
+          <div className="flex items-center">
+            <Link href="/social" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10 first:border-0">Social Hub</Link>
+            <Link href="/shop" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10">Market</Link>
+          </div>
         </div>
 
         <CardGrid cards={cards.slice(0, 8)} />

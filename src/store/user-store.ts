@@ -8,6 +8,11 @@ interface UserState {
     lastAdView: number | null;
     wonderShards: number;
     cardLegacies: Record<string, { wins: number; games: number; kills: number }>;
+    lastPackOpened: number | null;
+    packHourglasses: number;
+    pityCounter: number;
+    boosterEnergy: number; // 0 to 24 (12 per pack)
+    lastEnergyUpdate: number;
 
     // Actions
     useScanCredit: () => boolean;
@@ -16,6 +21,11 @@ interface UserState {
     watchAd: () => Promise<void>;
     addWonderShards: (amount: number) => void;
     updateCardLegacy: (cardId: string, stats: { win?: boolean; kill?: boolean }) => void;
+    addPackHourglasses: (amount: number) => void;
+    registerPackOpening: (hasRare: boolean, count?: number) => void;
+    consumeEnergy: (amount: number) => boolean;
+    getRefreshedEnergy: () => number;
+    useHourglass: () => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -27,6 +37,35 @@ export const useUserStore = create<UserState>()(
             lastAdView: null,
             wonderShards: 3,
             cardLegacies: {},
+            lastPackOpened: null,
+            packHourglasses: 3,
+            pityCounter: 0,
+            boosterEnergy: 12,
+            lastEnergyUpdate: Date.now(),
+
+            getRefreshedEnergy: () => {
+                const { boosterEnergy, lastEnergyUpdate } = get();
+                const now = Date.now();
+                const elapsed = now - lastEnergyUpdate;
+                const earned = Math.floor(elapsed / (3600000)); // 1 per hour
+
+                if (earned > 0) {
+                    return Math.min(24, boosterEnergy + earned);
+                }
+                return boosterEnergy;
+            },
+
+            consumeEnergy: (amount) => {
+                const current = get().getRefreshedEnergy();
+                if (current >= amount) {
+                    set({
+                        boosterEnergy: current - amount,
+                        lastEnergyUpdate: Date.now()
+                    });
+                    return true;
+                }
+                return false;
+            },
 
             useScanCredit: () => {
                 const { scanCredits, isPremium } = get();
@@ -70,7 +109,24 @@ export const useUserStore = create<UserState>()(
                         }
                     }
                 };
-            })
+            }),
+
+            addPackHourglasses: (amount) => set(state => ({ packHourglasses: state.packHourglasses + amount })),
+
+            useHourglass: () => set(state => {
+                if (state.packHourglasses > 0) {
+                    return {
+                        packHourglasses: state.packHourglasses - 1,
+                        boosterEnergy: Math.min(24, state.boosterEnergy + 1)
+                    };
+                }
+                return state;
+            }),
+
+            registerPackOpening: (hasRare, count = 1) => set(state => ({
+                lastPackOpened: Date.now(),
+                pityCounter: hasRare ? 0 : state.pityCounter + count
+            }))
         }),
         {
             name: 'riftbound-user-storage'
