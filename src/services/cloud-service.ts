@@ -15,8 +15,43 @@ export class CloudService {
         ? createClient(SUPABASE_URL, SUPABASE_KEY)
         : null;
 
-    public static isCloudEnabled(): boolean {
-        return this.supabase !== null;
+    /**
+     * Syncs the entire player progression to the cloud.
+     */
+    public static async syncPlayerData(userId: string, data: any) {
+        if (this.supabase) {
+            const { error } = await this.supabase
+                .from('player_data')
+                .upsert({
+                    rift_id: userId,
+                    state: data,
+                    updated_at: new Date().toISOString()
+                });
+
+            if (error) throw error;
+            return true;
+        }
+        // Local only "Sync" (Simulation)
+        localStorage.setItem(`rift_cloud_sync_${userId}`, JSON.stringify(data));
+        return true;
+    }
+
+    /**
+     * Fetches player progression from the cloud.
+     */
+    public static async fetchPlayerData(userId: string) {
+        if (this.supabase) {
+            const { data, error } = await this.supabase
+                .from('player_data')
+                .select('state')
+                .eq('rift_id', userId)
+                .single();
+
+            if (error) return null;
+            return data.state;
+        }
+        const local = localStorage.getItem(`rift_cloud_sync_${userId}`);
+        return local ? JSON.parse(local) : null;
     }
 
     /**

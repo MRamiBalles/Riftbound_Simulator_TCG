@@ -7,11 +7,17 @@ export interface VoiceLine {
 }
 
 /**
- * Neural Voice Service (Phase 16)
+ * Neural Voice Service (Phase 16 -> Phase 44)
  * Simulates high-fidelity Champion voices and tactical AI commentary.
  */
 export class VoiceService {
     private static isEnabled = true;
+
+    private static HERALD_LINES: Record<string, string[]> = {
+        'SEASON_START': ["A new rift has been detected in the Genetic Origins sector.", "The cycle begins anew. Champions, prepare for expansion."],
+        'HIGH_PRESTIGE': ["Your loyalty has been noted. The Genesis Eternal rank is within reach.", "Superior prestige detected. Ranking ascension imminent."],
+        'MARKET_FRENZY': ["Auction house activity is at a zenith. High stakes detected.", "Bazaar volatility is shifting. Trade wisely, Riftwalker."]
+    };
 
     private static CHAMPION_LINES: Record<string, Record<string, string[]>> = {
         'CORE_001': {
@@ -26,18 +32,23 @@ export class VoiceService {
         }
     };
 
-    public static async speak(line: string, speaker: string = 'System AI') {
+    public static async speak(line: string, speaker: string = 'The Herald', category: string = 'GENERAL') {
         if (!this.isEnabled) return;
 
-        console.log(`[VOICE_SYNTH] ${speaker}: "${line}"`);
+        console.log(`[${category}] ${speaker.toUpperCase()}: "${line}"`);
 
-        // In a real implementation, this would trigger a Web Speech API or an external TTS service
-        // For the simulator, we'll use the browser's speechSynthesis if available
         if (typeof window !== 'undefined' && window.speechSynthesis) {
             const utterance = new SpeechSynthesisUtterance(line);
-            utterance.pitch = speaker === 'System AI' ? 0.8 : 1.1;
-            utterance.rate = 1.0;
-            // window.speechSynthesis.speak(utterance); // Commented to prevent annoying the user during dev
+            utterance.pitch = speaker === 'The Herald' ? 0.7 : 1.1;
+            utterance.rate = 0.95;
+        }
+    }
+
+    public static triggerHerald(event: keyof typeof VoiceService.HERALD_LINES) {
+        const lines = this.HERALD_LINES[event];
+        if (lines) {
+            const randomLine = lines[Math.floor(Math.random() * lines.length)];
+            this.speak(randomLine, 'The Herald', 'META_COMMENTARY');
         }
     }
 
@@ -50,13 +61,13 @@ export class VoiceService {
         const lines = this.CHAMPION_LINES[cardId][category];
         if (lines) {
             const randomLine = lines[Math.floor(Math.random() * lines.length)];
-            this.speak(randomLine, cardName || 'Champion');
+            this.speak(randomLine, cardName || 'Champion', 'COMBAT');
         }
     }
 
     public static triggerLowHP(playerId: PlayerId, health: number) {
         if (health > 0 && health <= 5) {
-            this.speak("Calculated survivability is dropping. Extreme caution advised.", 'System AI');
+            this.speak("Calculated survivability is dropping. Defensive protocols failing.", 'The Herald', 'WARNING');
         }
     }
 }

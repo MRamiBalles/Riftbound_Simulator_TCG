@@ -15,6 +15,10 @@ interface UserState {
     boosterEnergy: number; // 0 to 24 (12 per pack)
     lastEnergyUpdate: number;
     prestigePoints: number; // Total points earned (Loyalty)
+    narrativeProgress: Record<string, boolean>; // Completed story nodes
+    activeChronicle: string | null;
+    userId: string; // The "Rift ID"
+    lastSyncTime: number | null;
 
     // Actions
     useScanCredit: () => boolean;
@@ -30,6 +34,10 @@ interface UserState {
     getRefreshedEnergy: () => number;
     useHourglass: () => void;
     addPrestigePoints: (amount: number) => void;
+    completeChronicleNode: (nodeId: string) => void;
+    setLastSyncTime: (time: number) => void;
+    linkAccount: (newId: string) => void;
+    loadFullState: (state: Partial<UserState>) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -48,6 +56,10 @@ export const useUserStore = create<UserState>()(
             boosterEnergy: 12,
             lastEnergyUpdate: Date.now(),
             prestigePoints: 0,
+            narrativeProgress: {},
+            activeChronicle: 'GENESIS_FLAME',
+            userId: 'RIFT-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+            lastSyncTime: null,
 
             getRefreshedEnergy: () => {
                 const { boosterEnergy, lastEnergyUpdate } = get();
@@ -149,6 +161,16 @@ export const useUserStore = create<UserState>()(
             }),
 
             addPrestigePoints: (amount) => set(state => ({ prestigePoints: state.prestigePoints + amount })),
+
+            completeChronicleNode: (nodeId) => set(state => ({
+                narrativeProgress: { ...state.narrativeProgress, [nodeId]: true }
+            })),
+
+            setLastSyncTime: (time) => set({ lastSyncTime: time }),
+
+            linkAccount: (newId) => set({ userId: newId }),
+
+            loadFullState: (newState) => set(state => ({ ...state, ...newState })),
         }),
         {
             name: 'riftbound-user-storage'
