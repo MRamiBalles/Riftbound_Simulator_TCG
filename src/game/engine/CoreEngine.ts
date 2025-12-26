@@ -5,7 +5,8 @@ import {
     PlayerId,
     SerializedGameState,
     SerializedPlayerState,
-    Phase
+    Phase,
+    ReplayData
 } from './game.types';
 import { createRuntimeCard, RuntimeCard } from './RuntimeCard';
 import { CombatResolver } from './CombatResolver';
@@ -17,12 +18,13 @@ import { CombatResolver } from './CombatResolver';
  */
 export class CoreEngine {
     private state: SerializedGameState;
-    private actionHistory: Action[] = [];
-    private randomSeed: number = Math.random();
+
+    private initialState: { p1Deck: Card[], p2Deck: Card[] } | null = null;
 
     constructor(initialState?: SerializedGameState) {
         if (initialState) {
             this.state = JSON.parse(JSON.stringify(initialState));
+            if (!this.state.actionHistory) this.state.actionHistory = [];
         } else {
             this.state = this.createInitialState();
         }
@@ -36,21 +38,29 @@ export class CoreEngine {
      * 
      * @param playerDeck - Array of cards for the human player.
      * @param opponentDeck - Array of cards for the AI opponent.
-     * @param seed - Optional random seed for deterministic replays.
      */
-    public initGame(playerDeck: Card[], opponentDeck: Card[], seed?: number) {
-        if (seed !== undefined) this.randomSeed = seed;
-        this.actionHistory = [];
+    public initGame(playerDeck: Card[], opponentDeck: Card[]) {
+        this.initialState = { p1Deck: [...playerDeck], p2Deck: [...opponentDeck] };
         this.state = this.createInitialState();
+        this.state.actionHistory = [];
 
         // Initialize Players
         this.initializePlayer('player', playerDeck);
         this.initializePlayer('opponent', opponentDeck);
 
         // Start Game
-        this.state.log.push('Game Initialized' + (seed ? ` (Seed: ${seed})` : ''));
+        this.state.log.push('Game Initialized');
         this.drawInitialHands();
         this.state.phase = 'Mulligan';
+    }
+
+    /**
+     * Resets the game to its starting point with the same decks.
+     */
+    public resetGame() {
+        if (this.initialState) {
+            this.initGame(this.initialState.p1Deck, this.initialState.p2Deck);
+        }
     }
 
     private createInitialState(): SerializedGameState {
@@ -66,7 +76,8 @@ export class CoreEngine {
             winner: null,
             log: [],
             combat: null,
-            stack: []
+            stack: [],
+            actionHistory: []
         };
     }
 
@@ -85,21 +96,11 @@ export class CoreEngine {
     }
 
     private initializePlayer(id: PlayerId, deck: Card[]) {
-        // Deterministic Shuffle
-        const shuffled = [...deck];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(this.nextRandom() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-
+        // Shuffle deck
+        const shuffled = [...deck].sort(() => Math.random() - 0.5);
         const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
-    }
-
-    private nextRandom(): number {
-        const x = Math.sin(this.randomSeed++) * 10000;
-        return x - Math.floor(x);
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -123,7 +124,10 @@ export class CoreEngine {
     public applyAction(action: Action): SerializedGameState {
         if (this.state.winner) return this.state;
 
-        this.actionHistory.push(action);
+        // Record for replay
+        if (!this.state.actionHistory) this.state.actionHistory = [];
+        this.state.actionHistory.push({ ...action });
+
         this.state.log.push(`[${action.playerId}] ${action.type}`);
 
         switch (action.type) {
@@ -153,10 +157,6 @@ export class CoreEngine {
         }
 
         return this.getState();
-    }
-
-    public getActionHistory(): Action[] {
-        return [...this.actionHistory];
     }
 
     public getState(): SerializedGameState {
@@ -448,6 +448,23 @@ export class CoreEngine {
         this.state.priority = this.state.activePlayer;
     }
 
+
+    public exportReplay(p1Name: string = 'Player 1', p2Name: string = 'Player 2'): ReplayData {
+        return {
+            metadata: {
+                date: new Date().toISOString(),
+                p1Name,
+                p2Name,
+                winner: this.state.winner,
+                engineVersion: '1.0.0-PRO'
+            },
+            initialState: {
+                p1Deck: this.initialState?.p1Deck.map(c => c.id) || [],
+                p2Deck: this.initialState?.p2Deck.map(c => c.id) || []
+            },
+            actions: this.state.actionHistory || []
+        };
+    }
 
     private handleEndTurn() {
         this.state.activePlayer = this.state.activePlayer === 'player' ? 'opponent' : 'player';

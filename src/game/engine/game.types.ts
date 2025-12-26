@@ -28,6 +28,23 @@ export interface SerializedGameState {
     log: string[];
     combat: CombatState | null;
     stack: StackItem[]; // Spell/Ability stack
+    actionHistory?: Action[]; // For replays
+}
+
+export interface ReplayData {
+    metadata: {
+        date: string;
+        p1Name: string;
+        p2Name: string;
+        winner: PlayerId | null;
+        engineVersion: string;
+    };
+    initialState: {
+        p1Deck: string[]; // Card IDs
+        p2Deck: string[]; // Card IDs
+        seed?: string;
+    };
+    actions: Action[];
 }
 
 export interface StackItem {

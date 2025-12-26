@@ -1,71 +1,57 @@
-import { Action, PlayerId } from '../game/engine/game.types';
-import { Card } from '@/lib/database.types';
-
-export interface ReplayData {
-    id: string;
-    version: string;
-    date: string;
-    seed: number;
-    playerDeck: string[]; // Card IDs
-    opponentDeck: string[]; // Card IDs
-    actions: Action[];
-    winner: PlayerId | null;
-}
+import { ReplayData, Action } from '../game/engine/game.types';
+import { CoreEngine } from '../game/engine/CoreEngine';
+import { MOCK_CARDS } from './card-service';
 
 export class ReplayService {
-    private static STORAGE_KEY = 'riftbound_replays';
-
     /**
-     * Serializes a game session into a ReplayData object.
+     * Creates a playback-ready engine instance from ReplayData.
      */
-    public static createReplay(
-        seed: number,
-        playerDeck: Card[],
-        opponentDeck: Card[],
-        history: Action[],
-        winner: PlayerId | null
-    ): ReplayData {
-        return {
-            id: crypto.randomUUID(),
-            version: '1.0.0',
-            date: new Date().toISOString(),
-            seed,
-            playerDeck: playerDeck.map(c => c.id),
-            opponentDeck: opponentDeck.map(c => c.id),
-            actions: history,
-            winner
-        };
+    public static createPlaybackEngine(replay: ReplayData, targetActionIdx?: number): CoreEngine {
+        const engine = new CoreEngine();
+
+        const restoreDeck = (ids: string[]) => ids.map(id => MOCK_CARDS.find(c => c.id === id)).filter(Boolean) as any[];
+
+        const p1Deck = restoreDeck(replay.initialState.p1Deck);
+        const p2Deck = restoreDeck(replay.initialState.p2Deck);
+
+        engine.initGame(p1Deck, p2Deck);
+
+        const limit = targetActionIdx !== undefined ? targetActionIdx + 1 : replay.actions.length;
+
+        // Re-apply actions without recording them (to avoid infinite loops)
+        const actionsToApply = replay.actions.slice(0, limit);
+
+        // We override applyAction recording temporarily if needed, 
+        // or just accept that the new engine state will have its own actionHistory.
+        actionsToApply.forEach(action => {
+            engine.applyAction(action);
+        });
+
+        return engine;
     }
 
     /**
-     * Saves a replay to LocalStorage.
+     * Serializes replay data to a compressed base64 string for sharing.
      */
-    public static saveToLibrary(replay: ReplayData) {
-        const existing = this.getLibrary();
-        existing.unshift(replay);
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(existing.slice(0, 50))); // Keep last 50
+    public static serialize(replay: ReplayData): string {
+        const json = JSON.stringify(replay);
+        return btoa(json); // Simple base64 for now
     }
 
     /**
-     * Retrieves the replay library.
+     * Deserializes a replay string.
      */
-    public static getLibrary(): ReplayData[] {
-        if (typeof window === 'undefined') return [];
-        const data = localStorage.getItem(this.STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
+    public static deserialize(data: string): ReplayData {
+        const json = atob(data);
+        return JSON.parse(json);
     }
 
     /**
-     * Exports a replay as a Base64 string for sharing.
+     * Generates a shareable URL for a replay.
      */
-    public static exportReplay(replay: ReplayData): string {
-        return btoa(JSON.stringify(replay));
-    }
-
-    /**
-     * Imports a replay from a Base64 string.
-     */
-    public static importReplay(data: string): ReplayData {
-        return JSON.parse(atob(data));
+    public static getShareUrl(replay: ReplayData): string {
+        const serialized = this.serialize(replay);
+        const baseUrl = window.location.origin;
+        return `${baseUrl}/game?replay=${serialized}`;
     }
 }
