@@ -1,248 +1,4945 @@
-[
+﻿[
+    {
+        "id": "OGN-041",
+        "name": "A Solitary Life",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-041.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Channel 1 rune exhausted. Draw 1."
+    },
+    {
+        "id": "OGN-023",
+        "name": "Abyssal Eye",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-023.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD-001",
+        "name": "Acolyte",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-001.webp",
+        "text": "When I move to a battlefield, you may pay :rb_rune_rainbow:. If you do, buff me. (If I don't have a buff, I get a +1 :rb_might: buff.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-207",
+        "name": "Adherent's Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-207.webp",
+        "text": "When you defend here, you may exhaust a unit here to channel 1 rune exhausted."
+    },
+    {
+        "id": "OGN-024",
+        "name": "Admiral Shelly",
+        "cost": "7",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-024.webp",
+        "text": "When you play another unit, buff it. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)Other buffed friendly units have +1 :rb_might:.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-205",
+        "name": "Aftershock",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-205.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Choose one â€”Deal 3 to an enemy unit at a battlefield.Kill a gear."
+    },
+    {
+        "id": "OGN-123",
+        "name": "Aheah of the Pack",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-123.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 1 for each of your Poros. If you have no Poros, draw 1."
+    },
+    {
+        "id": "OGN-218",
+        "name": "Akshan - Righteous",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-218.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Reveal the top 3 cards of your Main Deck. You may play a gear from among them. Its Energy cost is reduced by :rb_energy_3:. Recycle the rest.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-218a",
+        "name": "Akshan - Righteous",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-218a.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Reveal the top 3 cards of your Main Deck. You may play a gear from among them. Its Energy cost is reduced by :rb_energy_3:. Recycle the rest.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-255",
+        "name": "Akshan - Rogue Sentinel",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-255.webp",
+        "text": "When you play a gear, draw 1."
+    },
+    {
+        "id": "OGN-255-P",
+        "name": "Akshan - Rogue Sentinel",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-255-P.webp",
+        "text": "When you play a gear, draw 1."
+    },
+    {
+        "id": "OGN-302",
+        "name": "Akshan - Rogue Sentinel",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-302.webp",
+        "text": "When you play a gear, draw 1."
+    },
+    {
+        "id": "OGN-302-STAR",
+        "name": "Akshan - Rogue Sentinel",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-302-STAR.webp",
+        "text": "When you play a gear, draw 1."
+    },
+    {
+        "id": "OGN-187",
+        "name": "Akshan - Vigilante",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-187.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)When I conquer, you may play a gear from your trash without paying its Energy cost. Then recycle it. (You must still pay its Power cost.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-187a",
+        "name": "Akshan - Vigilante",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-187a.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)When I conquer, you may play a gear from your trash without paying its Energy cost. Then recycle it. (You must still pay its Power cost.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-002",
+        "name": "Alpha Wildclaw",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-002.webp",
+        "text": "When you conquer, give all other friendly units +1 :rb_might: this turn.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-031",
+        "name": "Always Ready",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-031.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Ready a unit. It can't be chosen by enemy spells and abilities this turn."
+    },
+    {
+        "id": "OGN-064",
+        "name": "Ambitious Cultist",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-064.webp",
+        "text": "When you play me, play a spell with Energy cost 2 or less from your trash, ignoring its Energy cost. Recycle it after it resolves. (You must still pay its Power cost.)",
+        "attack": 3
+    },
+    {
+        "id": "OGS-016",
+        "name": "Annie - Child of Fire - Starter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-022.webp",
+        "text": "When you play a spell that deals damage, deal that much damage to another unit."
+    },
+    {
+        "id": "OGS-011",
+        "name": "Annie - Hastened",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-011.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 1
+    },
     {
         "id": "OGS-001",
-        "name": "Annie Fiery",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-001.webp",
-        "set_code": "OGS",
-        "cost": 1,
-        "attack": 0,
-        "health": 2,
+        "name": "Annie - Prodigy",
+        "cost": "5",
         "type": "Unit",
-        "rarity": "Common"
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-001.webp",
+        "text": "When you play a unit, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-082",
+        "name": "Anticipation",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-082.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Look at the top 3 cards of your Main Deck. Put 1 in your hand and the rest on top of your Main Deck in any order."
+    },
+    {
+        "id": "OGN-035",
+        "name": "Arachnoid Horror",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-035.webp",
+        "text": "[Assault] (+1 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-131",
+        "name": "Ashe - Coldshot",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-131.webp",
+        "text": "When I move to a battlefield, give an enemy unit there -2 :rb_might: this turn.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-131A",
+        "name": "Ashe - Coldshot",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-131A.webp",
+        "text": "When I move to a battlefield, give an enemy unit there -2 :rb_might: this turn.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-194",
+        "name": "Ashe - Frost Archer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-194.webp",
+        "text": "When you use an ability of a card with [Mundane], give a unit -1 :rb_might: this turn, to a minimum of 1 :rb_might:.When you conquer, you may pay :rb_energy_1: to ready me."
+    },
+    {
+        "id": "SFD-247",
+        "name": "Ashe - Frost Archer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-247.webp",
+        "text": "When you use an ability of a card with [Mundane], give a unit -1 :rb_might: this turn, to a minimum of 1 :rb_might:.When you conquer, you may pay :rb_energy_1: to ready me."
+    },
+    {
+        "id": "SFD-032",
+        "name": "Ashe - Huntress",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-032.webp",
+        "text": "[Accelerate]_ _(You may pay :rb_energy_1::rb_rune_calm: as an additional cost to have me enter ready.)When I conquer, you may return a spell from your trash to your hand.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-032A",
+        "name": "Ashe - Huntress",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-032A.webp",
+        "text": "[Accelerate]_ _(You may pay :rb_energy_1::rb_rune_calm: as an additional cost to have me enter ready.)When I conquer, you may return a spell from your trash to your hand.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-146",
+        "name": "Aspect of the Dragon",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-146.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Give a unit [Unique] and \"When I attack, deal damage equal to my Might to another unit here.\" this turn. Attach a friendly Equipment to that unit. Draw 1."
+    },
+    {
+        "id": "OGN-258",
+        "name": "Aurelion Sol - Star-Forger",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-258.webp",
+        "text": "When you play a Dragon, channel 1 rune exhausted."
+    },
+    {
+        "id": "OGN-258-P",
+        "name": "Aurelion Sol - Star-Forger",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-258-P.webp",
+        "text": "When you play a Dragon, channel 1 rune exhausted."
+    },
+    {
+        "id": "OGN-305",
+        "name": "Aurelion Sol - Star-Forger",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-305.webp",
+        "text": "When you play a Dragon, channel 1 rune exhausted."
+    },
+    {
+        "id": "OGN-305-STAR",
+        "name": "Aurelion Sol - Star-Forger",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-305-STAR.webp",
+        "text": "When you play a Dragon, channel 1 rune exhausted."
+    },
+    {
+        "id": "OGN-157",
+        "name": "Aurelion Sol - Stellar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-157.webp",
+        "text": "When you play me, you may pay :rb_rune_rainbow:. If you do, draw 1 for each of your Dragons.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-157a",
+        "name": "Aurelion Sol - Stellar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-157a.webp",
+        "text": "When you play me, you may pay :rb_rune_rainbow:. If you do, draw 1 for each of your Dragons.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-076",
+        "name": "Aurelion Sol - True Form",
+        "cost": "10",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-076.webp",
+        "text": "When you play me, create two 10 :rb_might: Dragon unit tokens and play them into your base. (They don't have secondary effect text.)",
+        "attack": 10
+    },
+    {
+        "id": "OGN-076a",
+        "name": "Aurelion Sol - True Form",
+        "cost": "10",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-076a.webp",
+        "text": "When you play me, create two 10 :rb_might: Dragon unit tokens and play them into your base. (They don't have secondary effect text.)",
+        "attack": 10
+    },
+    {
+        "id": "SFD-116",
+        "name": "Avarosan Outriders",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-116.webp",
+        "text": "When I move to a battlefield, you may pay :rb_energy_1:. If you do, look at the top 3 cards of your Main Deck and put one in your hand. Recycle the rest.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-138",
+        "name": "Avenging Spirit",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-138.webp",
+        "text": "[Deathknell] â€” Give an enemy unit -4 :rb_might: this turn, to a minimum of 1 :rb_might:. (When I die, get the effect.)",
+        "attack": 5
+    },
+    {
+        "id": "OGN-228",
+        "name": "Avoid",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-228.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Change a unit chosen by an enemy spell or ability to another legal unit."
+    },
+    {
+        "id": "OGN-083",
+        "name": "Azir - Emperor",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-083.webp",
+        "text": "When I attack, you may pay :rb_rune_order: to play a 2 :rb_might: Sand Soldier unit token here.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-083a",
+        "name": "Azir - Emperor",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-083a.webp",
+        "text": "When I attack, you may pay :rb_rune_order: to play a 2 :rb_might: Sand Soldier unit token here.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-199",
+        "name": "Azir - Emperor of the Sands",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-199.webp",
+        "text": "When you play a Sand Soldier unit token, you may exhaust me to ready it."
+    },
+    {
+        "id": "SFD-248",
+        "name": "Azir - Emperor of the Sands",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-248.webp",
+        "text": "When you play a Sand Soldier unit token, you may exhaust me to ready it."
+    },
+    {
+        "id": "OGN-231",
+        "name": "Azir - Rise of Ascended",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-231.webp",
+        "text": "If you control 3+ Sand Soldier unit tokens, I have [Shield 2]. (+2 :rb_might: while I'm a defender.)When you play a Sand Soldier unit token, give me +1 :rb_might: this turn.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-231a",
+        "name": "Azir - Rise of Ascended",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-231a.webp",
+        "text": "If you control 3+ Sand Soldier unit tokens, I have [Shield 2]. (+2 :rb_might: while I'm a defender.)When you play a Sand Soldier unit token, give me +1 :rb_might: this turn.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-107",
+        "name": "Back to the Future",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-107.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a gear to its owner's hand. If it was yours, draw 1."
+    },
+    {
+        "id": "OGN-025",
+        "name": "Back-Alley Barkeep",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-025.webp",
+        "text": "When you play me, draw 1. Then discard 1.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-175",
+        "name": "Backfire",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-175.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Give a unit [Temporary]. (Kill it at the start of its controller's Beginning Phase, before scoring.)If that unit is an enemy, its controller draws 2."
+    }
+,
+    {
+        "id": "OGN-219",
+        "name": "Bait and Switch",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-219.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Swap two friendly units at battlefields. You may ready one of them if it's exhausted."
+    },
+    {
+        "id": "OGN-084",
+        "name": "Ballistic Bot",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-084.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 1 to an enemy unit here.",
+        "attack": 2
+    },
+    {
+        "id": "OGN-124",
+        "name": "Barkbeast",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-124.webp",
+        "text": "[Deathknell] â€” Give another friendly unit +1 :rb_might:. (When I die, get the effect.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-276",
+        "name": "Basalt Monolith",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-276.webp",
+        "text": "When you defend here, buff a unit here. (To buff a unit, give it a +1 :rb_might: buff if it doesn't already have one.)"
+    },
+    {
+        "id": "OGN-276/298",
+        "name": "Basalt Monolith (Oversized)",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-276/298.webp",
+        "text": "When you defend here, buff a unit here. (To buff a unit, give it a +1 might buff if it doesn't already have one.)"
+    },
+    {
+        "id": "OGN-145",
+        "name": "Battle Fury",
+        "cost": "5",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-145.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +3 :rb_might: and [Assault 2] this turn. (+2 :rb_might: while it's an attacker.)"
+    },
+    {
+        "id": "SFD-003",
+        "name": "Battlefield Training",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-003.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +2 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-224",
+        "name": "Beast within",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-224.webp",
+        "text": "[Equip] [rune] ([rune]: Attach this to a unit you control.)"
+    },
+    {
+        "id": "SFD-041",
+        "name": "Beast Within",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-041.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-099",
+        "name": "Beer Delivery",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-099.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a unit you own to your base and ready it."
+    },
+    {
+        "id": "OGN-096",
+        "name": "Benevolent Fairy",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-096.webp",
+        "text": "When you play me, buff me. Then draw 1. (If I don't have a buff, I get a +1 :rb_might: buff.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-100",
+        "name": "Berserker's Greaves",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-100.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)The first time equipped unit moves each turn, ready it.",
+        "attack": 1
+    },
+    {
+        "id": "SFD-018",
+        "name": "Blade's Edge",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-018.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Deal 2 to a unit at a battlefield."
+    },
+    {
+        "id": "OGN-026",
+        "name": "Bladescout",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/Bladescout.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "OGS-005",
+        "name": "Blast Zone",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-005.webp",
+        "text": "[Reaction]_ (Play any time, even before spells and abilities resolve.)_Deal 3 to an attacking unit."
+    },
+    {
+        "id": "OGN-027",
+        "name": "Blinding Assault",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-027.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Stun a unit. Its owner recycles 2 from their trash."
+    },
+    {
+        "id": "OGN-036",
+        "name": "Bloodthirsty Marauder",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-036.webp",
+        "text": "[Assault 2]_ (+2 :rb_might: while I'm an attacker.)_",
+        "attack": 1
+    },
+    {
+        "id": "OGN-001",
+        "name": "Blue Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-001.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-001a",
+        "name": "Blue Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-001a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-001b",
+        "name": "Blue Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-001b.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-125",
+        "name": "Body Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-125.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-125a",
+        "name": "Body Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-125a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-125b",
+        "name": "Body Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-125b.webp",
+        "text": ""
+    },
+    {
+        "id": "SFD-101",
+        "name": "Bonesaw",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-101.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "OGN-146",
+        "name": "Booster Pulse",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-146.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Ready a friendly gear. If that gear has an :rb_exhaust: ability, you may use it without paying its costs."
+    },
+    {
+        "id": "OGN-126",
+        "name": "Boom Baboon",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-126.webp",
+        "text": "When you play me, discard 1.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-151",
+        "name": "Booty Hunt",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-151.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Look at the top 3 cards of your Main Deck and put one in your hand. Recycle the rest. If the card you put in hand is a unit or gear, you may reveal it to play a Gold gear token exhausted."
+    },
+    {
+        "id": "OGN-229",
+        "name": "Braum - Heart of the Freljord",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-229.webp",
+        "text": "When you play a Poro, buff it. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-303",
+        "name": "Braum - Heart of the Freljord",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-303.webp",
+        "text": "When you play a Poro, buff it. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-303-STAR",
+        "name": "Braum - Heart of the Freljord",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-303-STAR.webp",
+        "text": "When you play a Poro, buff it. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-158",
+        "name": "Braum - Mighty",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-158.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_[Tank] (I must be assigned combat damage first.)Other friendly Poros have [Shield] and [Tank].",
+        "attack": 5
+    },
+    {
+        "id": "OGN-158a",
+        "name": "Braum - Mighty",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-158a.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_[Tank] (I must be assigned combat damage first.)Other friendly Poros have [Shield] and [Tank].",
+        "attack": 5
+    },
+    {
+        "id": "OGN-065",
+        "name": "Braum - Stalwart",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-065.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_When I defend, play a 2 :rb_might: Poro unit token at my battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-065a",
+        "name": "Braum - Stalwart",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-065a.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_When I defend, play a 2 :rb_might: Poro unit token at my battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-166",
+        "name": "Briar - Ravenous",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-166.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)When I kill a unit, heal me and you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-242",
+        "name": "Briar - Ravenous",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-242.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)When I kill a unit, heal me and you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-242-STAR",
+        "name": "Briar - Ravenous",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-242-STAR.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)When I kill a unit, heal me and you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-147",
+        "name": "Brightsteel Protector",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-147.webp",
+        "text": "When you play me, buff an ally unit. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-055",
+        "name": "Built to Last",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-055.webp",
+        "text": "A unit attached with this gear has [Shield 2]. (+2 :rb_might: while it's a defender.)"
+    },
+    {
+        "id": "OGN-167",
+        "name": "Buried in Ice",
+        "cost": "9",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-167.webp",
+        "text": "Choose up to three units. Banish them. (They're sent to a special zone, and their owners can play them from there.)"
+    },
+    {
+        "id": "OGN-220",
+        "name": "Burn it Down",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-220.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Deal 2 to an enemy unit at a battlefield. If it is destroyed this turn, draw 1."
+    },
+    {
+        "id": "OGN-066",
+        "name": "Burst of Energy",
+        "cost": "5",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-066.webp",
+        "text": "Each player draws 4. Banish any number of cards from your hand. Ready 1 rune for each card you banished."
+    },
+    {
+        "id": "OGN-002",
+        "name": "Caitlyn - Enforcer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-002.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-002a",
+        "name": "Caitlyn - Enforcer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-002a.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-246",
+        "name": "Caitlyn - Investigator",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-246.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-246-P",
+        "name": "Caitlyn - Investigator",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-246-P.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-298",
+        "name": "Caitlyn - Investigator",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-298.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-298-STAR",
+        "name": "Caitlyn - Investigator",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-298-STAR.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "ARC-001",
+        "name": "Caitlyn - Sheriff",
+        "cost": "6",
+        "type": "Champion",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-001.webp",
+        "text": "When you recycle a card, give me +1 [might] this turn. When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-110",
+        "name": "Caitlyn - Sheriff",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-110.webp",
+        "text": "When you recycle a card, give me +1 :rb_might: this turn.When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    }
+,
+    {
+        "id": "OGN-067",
+        "name": "Calamity",
+        "cost": "5",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-067.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill all units."
+    },
+    {
+        "id": "OGN-003",
+        "name": "Calm Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-003.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-003a",
+        "name": "Calm Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-003a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-003b",
+        "name": "Calm Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-003b.webp",
+        "text": ""
+    },
+    {
+        "id": "SFD-132",
+        "name": "Can't Get Past Me",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-132.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Other friendly units here have +2 :rb_might: and [Tank] this turn."
+    },
+    {
+        "id": "SFD-132A",
+        "name": "Can't Get Past Me",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-132A.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Other friendly units here have +2 :rb_might: and [Tank] this turn."
+    },
+    {
+        "id": "SFD-133",
+        "name": "Captain Indari",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-133.webp",
+        "text": "[Accelerate]_ _(You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)When I move to a battlefield, ready another friendly unit there.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-127",
+        "name": "Careful Preparation",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-127.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Look at the top choice of your Main Deck. You may recycle it. Then recycle 2 from your trash."
+    },
+    {
+        "id": "SFD-117",
+        "name": "Caustic Cask",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-117.webp",
+        "text": "[Quick-Draw] (This has [Reaction]. When you play it, attach it to a unit you control.)[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)[Deathknell] â€” Deal 4 to all units here. (When the unit this is attached to dies, get the effect.)"
+    },
+    {
+        "id": "OGN-206",
+        "name": "Caught in the Crossfire",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-206.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill any number of units with total Might 4 or less."
+    },
+    {
+        "id": "SFD-164",
+        "name": "Chain Vest",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-164.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-004",
+        "name": "Challenger's Pendant",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-004.webp",
+        "text": "Equipped unit has [Assault 2]. (+2 :rb_might: while it's an attacker.)"
+    },
+    {
+        "id": "SFD-203",
+        "name": "Champion's Mark",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-203.webp",
+        "text": "[Unique] (Your deck can have only 1 card with this name.)Equipped unit is [Legendary]. (It counts as a Legend.)"
+    },
+    {
+        "id": "OGN-207",
+        "name": "Channel the Storm",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-207.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Choose a battlefield. Reveal the top card of your Main Deck. If it's a spell, deal its Energy cost as damage to an enemy unit there. Then recycle it."
+    },
+    {
+        "id": "OGN-148",
+        "name": "Chaos Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-148.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-148a",
+        "name": "Chaos Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-148a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-148b",
+        "name": "Chaos Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-148b.webp",
+        "text": ""
+    },
+    {
+        "id": "SFD-102",
+        "name": "Chemballista",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-102.webp",
+        "text": "When you play a gear, deal 2 to an enemy unit at a battlefield.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-165",
+        "name": "Chemtech Pickaxe",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-165.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-134",
+        "name": "Cihir - Ascetic",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-134.webp",
+        "text": "[Mundane] (I don't have effects, but other cards give me effects based on my Might.)While my Might is 5+, I have [Barrier]. (The first time I would take damage each turn, I don't.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD-134A",
+        "name": "Cihir - Ascetic",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-134A.webp",
+        "text": "[Mundane] (I don't have effects, but other cards give me effects based on my Might.)While my Might is 5+, I have [Barrier]. (The first time I would take damage each turn, I don't.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD-081",
+        "name": "Clockling",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-081.webp",
+        "text": "When I'm played, recycle up to 4 from your trash. For each card you recycled, you may place a +1 :rb_might: buff on me.",
+        "attack": 1
+    },
+    {
+        "id": "OGN-149",
+        "name": "Cloud Drake",
+        "cost": "10",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-149.webp",
+        "text": "",
+        "attack": 11
+    },
+    {
+        "id": "SFD-033",
+        "name": "Cloud Drinker",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-033.webp",
+        "text": "While I'm at a battlefield, friendly spells cost :rb_energy_1: or :rb_rune_rainbow: less.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-068",
+        "name": "Concentrated Strike",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-068.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Choose two friendly units. They each deal damage equal to their Might to the same enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-128",
+        "name": "Concussive Palm",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-128.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Stun an enemy unit at a battlefield. If you do, play a 2 :rb_might: Tail-Clapper unit token at its base."
+    },
+    {
+        "id": "OGN-159",
+        "name": "Corsair Handlight",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-159.webp",
+        "text": "At the start of your Beginning Phase, if you have no cards in hand, draw 1."
+    },
+    {
+        "id": "SFD-103",
+        "name": "Counterfeit Copies",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-103.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Choose a non-token unit or gear. Play four copies of it into your base exhausted."
+    },
+    {
+        "id": "OGN-004",
+        "name": "Crash through",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-004.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +3 :rb_might: this turn. If it conquers, draw 1."
+    },
+    {
+        "id": "OGN-188",
+        "name": "Criminal Outlaw",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-188.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve, including to a battlefield you control.)I enter ready.",
+        "attack": 2
+    },
+    {
+        "id": "SFD-104",
+        "name": "Cull the Weak",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-104.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill any number of units with total Might 3 or less."
+    },
+    {
+        "id": "OGN-085",
+        "name": "Daring Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-085.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 1
+    },
+    {
+        "id": "OGN-160",
+        "name": "Dark Shield",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-160.webp",
+        "text": "A unit attached with this gear has [Barrier]. (The first time it would take damage each turn, it doesn't.)"
+    },
+    {
+        "id": "SFD-147",
+        "name": "Decisive Maneuver",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-147.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Stun an enemy unit at a battlefield. Ready a friendly unit at that battlefield."
+    },
+    {
+        "id": "OGN-015",
+        "name": "Decisive Strike",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-015.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +3 :rb_might: this turn and ready it."
+    },
+    {
+        "id": "SFD-005",
+        "name": "Defensive Stance",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-005.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a unit +3 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-006",
+        "name": "Demacian Soldier",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-006.webp",
+        "text": "Other friendly units here have +1 :rb_might:.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-034",
+        "name": "Desert Naturalist",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-034.webp",
+        "text": "When you play me, you may kill an enemy gear. If you do, play a 3:rb_might: Mech unit token to your base.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-027",
+        "name": "Dexterous Blades",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-027.webp",
+        "text": "[Quick-Draw] (This has [Reaction]. When you play it, attach it to a unit you control.)[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "OGN-005",
+        "name": "Discarded Scrap",
+        "cost": "1",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-005.webp",
+        "text": "[Deathknell] â€” Draw 1. (When this is killed or discarded, get the effect.)"
+    },
+    {
+        "id": "SFD-135",
+        "name": "Divine Shield",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-135.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a friendly unit [Barrier] this turn. (The first time it would take damage current turn, it doesn't.)"
+    },
+    {
+        "id": "ARC-002",
+        "name": "Doran's Blade",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-002.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-021",
+        "name": "Doran's Blade",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-021.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "OGN-108",
+        "name": "Doran's Ring",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-108.webp",
+        "text": "When you play a spell, ready 1 rune."
+    },
+    {
+        "id": "SFD-050",
+        "name": "Doran's Shield",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-050.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-013",
+        "name": "Dragon Chow",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-013.webp",
+        "text": "When you play a Dragon, you may kill me. If you do, buff that unit and draw 1. (To buff a unit, give it a +1 :rb_might: buff if it doesn't already have one.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-082",
+        "name": "Draven - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-082.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-082A",
+        "name": "Draven - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-082A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-182",
+        "name": "Draven - Glorious Executioner",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-182.webp",
+        "text": "When you conquer, you may exhaust me to play a Spinning Axe gear token to your base."
+    },
+    {
+        "id": "SFD-235",
+        "name": "Draven - Glorious Executioner",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-235.webp",
+        "text": "When you conquer, you may exhaust me to play a Spinning Axe gear token to your base."
+    },
+    {
+        "id": "SFD-108",
+        "name": "Draven - Host",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-108.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When I'm played, play 2 Spinning Axe gear tokens to your base.",
+        "attack": 4
+    }
+,
+    {
+        "id": "SFD-108A",
+        "name": "Draven - Host",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-108A.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When I'm played, play 2 Spinning Axe gear tokens to your base.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-232",
+        "name": "Dreadway Chase",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-232.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Look at the top choice of your Main Deck. You may play it, ignoring its Energy cost. If you don't, recycle it. (You must still pay its Power cost.)"
+    },
+    {
+        "id": "OGN-262",
+        "name": "Durand Shield",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-262.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)Equipped unit has [Tank]. (It must be assigned combat damage first.)"
+    },
+    {
+        "id": "OGN-208",
+        "name": "Eager Apprentice",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-208.webp",
+        "text": "When you play me, channel 1 rune exhausted.",
+        "attack": 2
+    },
+    {
+        "id": "SFD-152",
+        "name": "Early Grave",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-152.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_If an enemy unit has died this turn, this costs :rb_energy_2: less.Return a unit from your trash to your hand."
+    },
+    {
+        "id": "SFD-035",
+        "name": "Earthshaker",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-035.webp",
+        "text": "When you play me, stun a unit. (It doesn't deal combat damage this turn.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD-070",
+        "name": "Ebb and Flow",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-070.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)[Repeat] :rb_energy_2: (You may pay the additional cost to repeat this spell's effect.)Give a unit +1 :rb_might: or -1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-083",
+        "name": "Echoes of Helia",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-083.webp",
+        "text": "When you play a spectral unit, deal 2 to an enemy unit at its battlefield."
+    },
+    {
+        "id": "SFD-121",
+        "name": "Ekko - Ingenious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121.webp",
+        "text": "When I move from a battlefield, ready each friendly gear.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-121A",
+        "name": "Ekko - Ingenious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121A.webp",
+        "text": "When I move from a battlefield, ready each friendly gear.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-197",
+        "name": "Ekko - The Boy Who Shattered Time",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-197.webp",
+        "text": "[Reaction] â€” :rb_energy_1:, :rb_exhaust:: Draw 1, then discard 1.When you conquer, ready me."
+    },
+    {
+        "id": "SFD-249",
+        "name": "Ekko - The Boy Who Shattered Time",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-249.webp",
+        "text": "[Reaction] â€” :rb_energy_1:, :rb_exhaust:: Draw 1, then discard 1.When you conquer, ready me."
+    },
+    {
+        "id": "SFD-148",
+        "name": "Ekko - Timewinder",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-148.webp",
+        "text": "When I move to a battlefield, deal 2 to each enemy unit there.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-148A",
+        "name": "Ekko - Timewinder",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-148A.webp",
+        "text": "When I move to a battlefield, deal 2 to each enemy unit there.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-019",
+        "name": "Elixir of Iron",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-019.webp",
+        "text": "[Reaction]_ (Play any time, even before spells and abilities resolve.)_Give a unit [Tank] and +2 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-129",
+        "name": "Elixir of Wrath",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-129.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +2 :rb_might: this turn. Ready 1 rune."
+    },
+    {
+        "id": "SFD-208",
+        "name": "Empty Monument",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-208.webp",
+        "text": "When this enters the board, draw 1.Friendly legends have +1 :rb_might:."
+    },
+    {
+        "id": "SFD-091",
+        "name": "Enchanted Crystal Arrow",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-091.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Stun all enemy units at a battlefield."
+    },
+    {
+        "id": "OGN-209",
+        "name": "Evergreen Elder",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-209.webp",
+        "text": "When you play a unit with [Mundane], buff it. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-139",
+        "name": "Everpuff Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-139.webp",
+        "text": "When I'm played, you may discard 1 to draw 1.",
+        "attack": 1
+    },
+    {
+        "id": "OGN-242",
+        "name": "Evolutionary Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-242.webp",
+        "text": "As you play me, you may [ADD] :rb_rune_rainbow::rb_rune_rainbow:. Spend only for me. (Abilities that add resources can't be reacted to.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-020",
+        "name": "Excited Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-020.webp",
+        "text": "When you play a spell, ready me.",
+        "attack": 2
+    },
+    {
+        "id": "OGN-109",
+        "name": "Experimental Gear",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-109.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Look at the top choice of your Main Deck and you may recycle it. If you do, ready 1 rune."
+    },
+    {
+        "id": "OGN-042",
+        "name": "Ezreal - Explorer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-042.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-042a",
+        "name": "Ezreal - Explorer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-042a.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-259",
+        "name": "Ezreal - Prodigal Explorer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-259.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-259-P",
+        "name": "Ezreal, Prodigal Explorer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-259-P.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-300",
+        "name": "Ezreal - Prodigal Explorer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-300.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-300-STAR",
+        "name": "Ezreal - Prodigal Explorer",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-300-STAR.webp",
+        "text": "When you recycle a card, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "ARC-004",
+        "name": "Ezreal - Rebel",
+        "cost": "6",
+        "type": "Champion",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-004.webp",
+        "text": "When you recycle a card, give me +1 [might] this turn. When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-117",
+        "name": "Ezreal - Rebel",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-117.webp",
+        "text": "When you recycle a card, give me +1 :rb_might: this turn.When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-117-P",
+        "name": "Ezreal - Rebel Pilot",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-117-P.webp",
+        "text": "When you recycle a card, give me +1 [might] this turn. When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-117a",
+        "name": "Ezreal - Rebel",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-117a.webp",
+        "text": "When you recycle a card, give me +1 :rb_might: this turn.When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-167",
+        "name": "Faefolk",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-167.webp",
+        "text": "",
+        "attack": 3
+    },
+    {
+        "id": "SFD-042",
+        "name": "Fallen Hero",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-042.webp",
+        "text": "[Deathknell] â€” Create a 5:rb_might: Hero Spirit unit token and play it here exhausted.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-084",
+        "name": "Fancy Booty",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-084.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Look at the top 3 cards of your Main Deck and put one in your hand. Recycle the rest. If the card you put in hand is a unit or gear, its owner channels 1 rune exhausted."
+    },
+    {
+        "id": "OGN-210",
+        "name": "Fasting Monk",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-210.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-118",
+        "name": "Feeble Spirit",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-118.webp",
+        "text": "[Deathknell] â€” Give a unit -2 :rb_might: this turn. (When I die, get the effect.)",
+        "attack": 3
+    },
+    {
+        "id": "OGN-211",
+        "name": "Fellowship",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-211.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 1 for each of your Poros. If you have no Poros, draw 1."
+    },
+    {
+        "id": "OGN-119",
+        "name": "Ferros Academy Student",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-119.webp",
+        "text": "When you play a gear, channel 1 rune exhausted.",
+        "attack": 1
+    },
+    {
+        "id": "SFD-138",
+        "name": "Fiora - Challenger",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-138.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_order: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-138A",
+        "name": "Fiora - Challenger",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-138A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_order: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-176",
+        "name": "Fiora - Defender of the Wall",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-176.webp",
+        "text": "[Deflect] (Opponents must pay :rb_rune_rainbow: to choose me with a spell or ability.)While I'm at a battlefield, other friendly units there have [Deflect].",
+        "attack": 4
+    },
+    {
+        "id": "SFD-176A",
+        "name": "Fiora - Defender of the Wall",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-176A.webp",
+        "text": "[Deflect] (Opponents must pay :rb_rune_rainbow: to choose me with a spell or ability.)While I'm at a battlefield, other friendly units there have [Deflect].",
+        "attack": 4
+    },
+    {
+        "id": "SFD-050",
+        "name": "Fiora - Grand Duelist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-050.webp",
+        "text": "When one of your units becomes [Mighty], you may exhaust me to channel 1 rune exhausted. (A unit is Mighty while it has 5+ :rb_might:.)"
+    },
+    {
+        "id": "SFD-050-P",
+        "name": "Fiora, Grand Duelist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-050-P.webp",
+        "text": "When one of your units becomes MIGHTY, you may exhaust me to channel 1 rune exhausted. (A unit is Mighty while it has 5+ might.)"
+    },
+    {
+        "id": "SFD-251",
+        "name": "Fiora - Grand Duelist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-251.webp",
+        "text": "When one of your units becomes [Mighty], you may exhaust me to channel 1 rune exhausted. (A unit is Mighty while it has 5+ :rb_might:.)"
+    },
+    {
+        "id": "SFD-110",
+        "name": "Fiora - Peerless",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-110.webp",
+        "text": "When I attack or defend one on one, double my Might this combat.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-110A",
+        "name": "Fiora - Peerless",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-110A.webp",
+        "text": "When I attack or defend one on one, double my Might this combat.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-232",
+        "name": "Fiora - Victorious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-232.webp",
+        "text": "While I'm [Mighty], I have [Deflect], [Ganking], and [Shield]. (I'm Mighty while I have 5+ :rb_might:.)",
+        "attack": 4
+    }
+,
+    {
+        "id": "SFD-180",
+        "name": "Fiora - Worthy",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-180.webp",
+        "text": "When a unit you control becomes [Mighty], you may pay :rb_rune_order: to ready it. (A unit is Mighty while it has 5+ :rb_might:.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-180A",
+        "name": "Fiora - Worthy",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-180A.webp",
+        "text": "When a unit you control becomes [Mighty], you may pay :rb_rune_order: to ready it. (A unit is Mighty while it has 5+ :rb_might:.)",
+        "attack": 3
     },
     {
         "id": "OGS-002",
         "name": "Firestorm",
+        "cost": "6",
+        "type": "Spell",
+        "rarity": "Uncommon",
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-002.webp",
-        "set_code": "OGS",
-        "cost": 3,
-        "type": "Spell",
-        "rarity": "Common"
+        "text": "Deal 3 to all enemy units at a battlefield."
     },
     {
-        "id": "OGS-003",
-        "name": "Incinerate",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-003.webp",
-        "set_code": "OGS",
-        "cost": 1,
-        "type": "Spell",
-        "rarity": "Common"
-    },
-    {
-        "id": "OGS-004",
-        "name": "Master Yi Meditative",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-004.webp",
-        "set_code": "OGS",
-        "cost": 2,
-        "attack": 2,
-        "health": 2,
+        "id": "OGN-132",
+        "name": "First Mate",
+        "cost": "3",
         "type": "Unit",
-        "rarity": "Common"
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-132.webp",
+        "text": "When you play me, ready another unit.",
+        "attack": 3
     },
     {
-        "id": "OGS-005",
-        "name": "Zephyr Sage",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-005.webp",
-        "set_code": "OGS",
-        "cost": 2,
-        "attack": 1,
-        "health": 3,
+        "id": "SFD-140",
+        "name": "Fizz - Trickster",
+        "cost": "3",
         "type": "Unit",
-        "rarity": "Common"
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-140.webp",
+        "text": "When you play me, you may play a spell from your trash with Energy cost no more than :rb_energy_3:, ignoring its Energy cost. Recycle that spell after you play it. (You must still pay its Power cost.)",
+        "attack": 3
     },
     {
-        "id": "OGS-006",
-        "name": "Lux Illuminated",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-006.webp",
-        "set_code": "OGS",
-        "cost": 3,
-        "attack": 2,
-        "health": 3,
+        "id": "OGN-006",
+        "name": "Flame Chompers",
+        "cost": "3",
         "type": "Unit",
-        "rarity": "Rare"
-    },
-    {
-        "id": "OGS-007",
-        "name": "Garen Rugged",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-007.webp",
-        "set_code": "OGS",
-        "cost": 3,
-        "attack": 3,
-        "health": 3,
-        "type": "Unit",
-        "rarity": "Rare"
-    },
-    {
-        "id": "OGS-008",
-        "name": "Gentlemens Duel",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-008.webp",
-        "set_code": "OGS",
-        "cost": 2,
-        "type": "Spell",
-        "rarity": "Common"
-    },
-    {
-        "id": "OGS-009",
-        "name": "Master Yi Honed",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-009.webp",
-        "set_code": "OGS",
-        "cost": 3,
-        "attack": 3,
-        "health": 2,
-        "type": "Unit",
-        "rarity": "Rare"
-    },
-    {
-        "id": "OGS-010",
-        "name": "Annie Stubborn",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-010.webp",
-        "set_code": "OGS",
-        "cost": 2,
-        "attack": 1,
-        "health": 3,
-        "type": "Unit",
-        "rarity": "Common"
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-006.webp",
+        "text": "When you discard me, you may pay :rb_rune_fury: to play me.",
+        "attack": 3
     },
     {
         "id": "OGS-011",
         "name": "Flash",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-011.webp",
-        "set_code": "OGS",
-        "cost": 1,
+        "cost": "2",
         "type": "Spell",
-        "rarity": "Common"
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-011.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Move up to 2 friendly units to base."
     },
     {
-        "id": "OGS-012",
-        "name": "Blast Of Power",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-012.webp",
-        "set_code": "OGS",
-        "cost": 4,
+        "id": "OGN-133",
+        "name": "Flurry of Blades",
+        "cost": "1",
         "type": "Spell",
-        "rarity": "Rare"
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-133.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Deal 1 to all units at battlefields."
+    },
+    {
+        "id": "SFD-065",
+        "name": "Forecaster",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-065.webp",
+        "text": "Your Mechs have [Vision]. (When you play us, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-208",
+        "name": "Forge of the Fluft",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-208.webp",
+        "text": "While you control this battlefield, friendly legends have \":rb_exhaust:: Attach an Equipment you control to a unit you control.\""
+    },
+    {
+        "id": "OGN-212",
+        "name": "Forge of the Future",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-212.webp",
+        "text": "When you play this, play a 1 :rb_might: Recruit unit token at your base.Kill this: Recycle up to 4 cards from trashes."
+    },
+    {
+        "id": "SFD-190",
+        "name": "Forgefire Cape",
+        "cost": "4",
+        "type": "Gear",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-190.webp",
+        "text": "[Unique]** **(Your deck can have only 1 card with this name.)[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-209",
+        "name": "Forgotten Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-209.webp",
+        "text": "Players can't score here until their third turn."
+    },
+    {
+        "id": "OGN-279",
+        "name": "Fortified Position",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-279.webp",
+        "text": "When you defend here, choose a unit. It gains [Shield 2] this combat. (+2 :rb_might: while it's a defender.)"
+    },
+    {
+        "id": "OGN-279/298",
+        "name": "Fortified Position (Oversized)",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-279/298.webp",
+        "text": "When you defend here, choose a unit. It gains SHIELD 2 this combat. (+2 might while It's a defender.)"
+    },
+    {
+        "id": "OGN-256",
+        "name": "Fox-Fire",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-256.webp",
+        "text": "[Hidden] (Hide now for :rb_rune_rainbow: to react with later for :rb_energy_0:.)[Action] (Play on your turn or in showdowns.)Kill any number of units at a battlefield with total Might 4 or less."
+    },
+    {
+        "id": "SFD-066",
+        "name": "Frigid Touch",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-066.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)[Repeat] :rb_energy_2: (You may pay the additional cost to repeat this spell's effect.)Give a unit -2 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-067",
+        "name": "Frostcoat Cub",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-067.webp",
+        "text": "You may pay :rb_rune_mind: as an additional cost to play me.When you play me, if you paid the additional cost, give a unit -2 :rb_might: this turn.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-007",
+        "name": "Fury Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-007.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-007a",
+        "name": "Fury Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-007a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-007b",
+        "name": "Fury Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-007b.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-099",
+        "name": "Garbage Grabber",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-099.webp",
+        "text": "Recycle 3 from your trash, :rb_energy_1:, :rb_exhaust:: Draw 1."
     },
     {
         "id": "OGS-013",
-        "name": "Garen Commander",
+        "name": "Garen - Commander",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-013.webp",
-        "set_code": "OGS",
-        "cost": 4,
-        "attack": 4,
-        "health": 4,
-        "type": "Unit",
-        "rarity": "Rare"
-    },
-    {
-        "id": "OGS-014",
-        "name": "Lux Crownguard",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-014.webp",
-        "set_code": "OGS",
-        "cost": 4,
-        "attack": 3,
-        "health": 4,
-        "type": "Unit",
-        "rarity": "Rare"
-    },
-    {
-        "id": "OGS-015",
-        "name": "Recruit The Vanguard",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-015.webp",
-        "set_code": "OGS",
-        "cost": 3,
-        "type": "Spell",
-        "rarity": "Common"
-    },
-    {
-        "id": "OGS-016",
-        "name": "Vanguard Attendant",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-016.webp",
-        "set_code": "OGS",
-        "cost": 2,
-        "attack": 2,
-        "health": 2,
-        "type": "Unit",
-        "rarity": "Common"
-    },
-    {
-        "id": "OGS-017",
-        "name": "Annie Dark Child",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-017.webp",
-        "set_code": "OGS",
-        "cost": 4,
-        "attack": 2,
-        "health": 4,
-        "type": "Champion",
-        "rarity": "Champion"
-    },
-    {
-        "id": "OGS-018",
-        "name": "Tibbers",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-018.webp",
-        "set_code": "OGS",
-        "cost": 5,
-        "attack": 5,
-        "health": 5,
-        "type": "Unit",
-        "rarity": "Epic"
-    },
-    {
-        "id": "OGS-019",
-        "name": "Master Yi Wuju Bladesman",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-019.webp",
-        "set_code": "OGS",
-        "cost": 5,
-        "attack": 4,
-        "health": 4,
-        "type": "Champion",
-        "rarity": "Champion"
-    },
-    {
-        "id": "OGS-020",
-        "name": "Highlander",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-020.webp",
-        "set_code": "OGS",
-        "cost": 4,
-        "type": "Spell",
-        "rarity": "Epic"
-    },
-    {
-        "id": "OGS-021",
-        "name": "Lux Lady Of Luminosity",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-021.webp",
-        "set_code": "OGS",
-        "cost": 6,
-        "attack": 4,
-        "health": 5,
-        "type": "Champion",
-        "rarity": "Champion"
-    },
-    {
-        "id": "OGS-022",
-        "name": "Final Spark",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-022.webp",
-        "set_code": "OGS",
-        "cost": 6,
-        "type": "Spell",
-        "rarity": "Epic"
+        "text": "Other friendly units have +1 :rb_might: here.",
+        "attack": 5
     },
     {
         "id": "OGS-023",
-        "name": "Garen Might Of Demacia",
+        "name": "Garen - Might of Demacia - Starter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-023.webp",
-        "set_code": "OGS",
-        "cost": 6,
-        "attack": 5,
-        "health": 6,
-        "type": "Champion",
-        "rarity": "Champion"
+        "text": "When you conquer, if you have 4+ units at that battlefield, draw 2."
     },
     {
-        "id": "OGS-024",
-        "name": "Decisive Strike",
-        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-024.webp",
-        "set_code": "OGS",
-        "cost": 5,
+        "id": "OGS-007",
+        "name": "Garen - Rugged",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-007.webp",
+        "text": "[Assault 2], [Shield 2] (+2 :rb_might: while I'm an attacker or defender.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD-068",
+        "name": "Gearhead",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-068.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_mind: as an additional cost to have me enter ready.)Each Equipment attached to me gives double its base Might bonus.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-007",
+        "name": "Gem Jammer",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-007.webp",
+        "text": "When you play me, give a unit [Ganking] this turn. (It can move from battlefield to battlefield.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-100",
+        "name": "Gemcraft Seer",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-100.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)Other friendly units have [Vision].",
+        "attack": 3
+    },
+    {
+        "id": "OGS-008",
+        "name": "Gentlemen's Duel",
+        "cost": "6",
         "type": "Spell",
-        "rarity": "Epic"
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-008.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a friendly unit +3 :rb_might: this turn. Then choose an enemy unit. They deal damage equal to their Mights to each other."
+    },
+    {
+        "id": "OGN-008",
+        "name": "Get Excited!",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-008.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Discard 1. Deal its Energy cost as damage to a unit at a battlefield. (Ignore its Power cost.)"
+    },
+    {
+        "id": "SFD-165",
+        "name": "Glasc Mixologist",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-165.webp",
+        "text": "[Deathknell] \u2014 You may play a unit with cost no more than :rb_energy_3: and no more than :rb_rune_rainbow: from your trash, ignoring its cost. (When I die, get the effect.)",
+        "attack": 5
+    },
+    {
+        "id": "SFD",
+        "name": "Gold",
+        "cost": null,
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD.webp",
+        "text": "Kill this, :rb_exhaust:: [Reaction] \u2014 [Add] :rb_rune_rainbow:. (Abilities that add resources can't be reacted to.)"
+    },
+    {
+        "id": "SFD-T03",
+        "name": "Gold",
+        "cost": "",
+        "type": "Token",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-T03.webp",
+        "text": "Kill this: [tap]: REACTION: ADD [rune]. (Abilities that add resources can't be reacted to.)"
+    },
+    {
+        "id": "OGN-233",
+        "name": "Grand Strategem",
+        "cost": "6",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-233.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give friendly units +5 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-280",
+        "name": "Grove of the God-Willow",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-280.webp",
+        "text": "When you hold here, draw 1."
+    },
+    {
+        "id": "SFD-051",
+        "name": "Guardian Angel",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-051.webp",
+        "text": "[Equip] :rb_rune_calm: (:rb_rune_calm:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-035",
+        "name": "Guardian of the Passage",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-035.webp",
+        "text": "When I hold, you may return a unit or gear from your trash to your hand.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-154",
+        "name": "Guards!",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-154.webp",
+        "text": "[Hidden]_ (Hide now for :rb_rune_rainbow: to react with later for :rb_energy_0:.)_Play a 2 :rb_might: Sand Soldier unit token. You may pay :rb_rune_order: to ready it."
+    },
+    {
+        "id": "OGN-264",
+        "name": "Guerilla Warfare",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-264.webp",
+        "text": "Return up to two cards with [Hidden] from your trash to your hand. You can hide cards ignoring costs this turn."
+    },
+    {
+        "id": "OGN-169",
+        "name": "Gust",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-169.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a unit at a battlefield with 3 :rb_might: or less to its owner's hand."
+    },
+    {
+        "id": "SFD-210",
+        "name": "Hall of Legends",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-210.webp",
+        "text": "When you conquer here, you may pay :rb_energy_1: to ready your legend."
+    },
+    {
+        "id": "OGN-281",
+        "name": "Hallowed Tomb",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-281.webp",
+        "text": "When you hold here, you may return your Chosen Champion from your trash to your Champion Zone if it is empty."
+    },
+    {
+        "id": "SFD-136",
+        "name": "Hard Bargain",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-136.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)[Repeat] :rb_energy_2: (You may pay the additional cost to repeat this spell's effect.)Counter a spell unless its controller pays :rb_energy_2:."
+    },
+    {
+        "id": "OGN-234",
+        "name": "Harnessed Dragon",
+        "cost": "8",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-234.webp",
+        "text": "When you play me, kill an enemy unit.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-137",
+        "name": "Harpoon Squad",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-137.webp",
+        "text": "When I move from a battlefield, give me +2 :rb_might: this turn.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-052",
+        "name": "Heart of Dark Ice",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-052.webp",
+        "text": ":rb_exhaust:: Give a unit +3 :rb_might: this turn."
+    },
+    {
+        "id": "ARC-003",
+        "name": "Heimerdinger - Inventor",
+        "cost": "3",
+        "type": "Champion",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-003.webp",
+        "text": "I have all [tap] abilities of all friendly legends, units, and gears.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-111",
+        "name": "Heimerdinger - Inventor",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-111.webp",
+        "text": "I have all :rb_exhaust: abilities of all friendly legends, units, and gear.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-111-P",
+        "name": "Heimerdinger - Inventor Judge",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-111-P.webp",
+        "text": "I have all [tap] abilities of all friendly legends, units, and gears.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-140",
+        "name": "Herald of Scales",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-140.webp",
+        "text": "Your Dragons' Energy costs are reduced by :rb_energy_2:, to a minimum of :rb_energy_1:.",
+        "attack": 3
+    }
+,
+    {
+        "id": "SFD-215",
+        "name": "Hextech Crystal",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-215.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Look at the top choice of your Main Deck and you may recycle it. If you do, ready 1 rune."
+    },
+    {
+        "id": "SFD-043",
+        "name": "Hextech Industry",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-043.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 1. You may play a gear from your hand, ignoring its Energy cost. (You must still pay its Power cost.)"
+    },
+    {
+        "id": "OGN-120",
+        "name": "Hextech Transmogrificator",
+        "cost": "4",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-120.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Choose a battlefield. Transform an enemy unit there into a 2 :rb_might: Recruit unit token. This gear doesn't ready during your Beginning Phase as long as that token is on the board."
+    },
+    {
+        "id": "SFD-022",
+        "name": "Hidden Dagger",
+        "cost": "1",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-022.webp",
+        "text": "[Quick-Draw] (This has [Reaction]. When you play it, attach it to a unit you control.)[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-105",
+        "name": "Honeyfruit",
+        "cost": "1",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-105.webp",
+        "text": "Kill this: [Add] :rb_energy_2:. Spend only to play units and gears."
+    },
+    {
+        "id": "OGN-134",
+        "name": "Honed Blade",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-134.webp",
+        "text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-138",
+        "name": "Humble Monument",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-138.webp",
+        "text": "When this enters the board, draw 1.Friendly legends have +1 :rb_might:."
+    },
+    {
+        "id": "OGN-141",
+        "name": "Hunting Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-141.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-282",
+        "name": "Ice Pillar",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-282.webp",
+        "text": "When you defend here, stun an enemy unit here."
+    },
+    {
+        "id": "SFD-069",
+        "name": "Iceborne Legacy",
+        "cost": "5",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-069.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Choose a unit. Give for all units with the same name everywhere [Mundane] and +1:rb_might: permanently."
+    },
+    {
+        "id": "SFD-023",
+        "name": "Icy Strike",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-023.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Deal 2 to an enemy unit at a battlefield. It has -1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-036",
+        "name": "Identify the Guilty",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-036.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 1. Ready each friendly gear."
+    },
+    {
+        "id": "SFD-037",
+        "name": "Immortal Fire",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-037.webp",
+        "text": "When I'm played, you may kill me. If you do, play a copy of me into your base exhausted.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-024",
+        "name": "Impactful Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-024.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-106",
+        "name": "In Command",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-106.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Move a unit you control to a battlefield."
+    },
+    {
+        "id": "SFD-111",
+        "name": "Inspired Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-111.webp",
+        "text": "When you play a legend, ready me.",
+        "attack": 2
+    },
+    {
+        "id": "OGN-087",
+        "name": "Insight of Ages",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-087.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Reveal the top choice of your Main Deck. If it's a spell or legend, put it in your hand. Otherwise, you may recycle it."
+    },
+    {
+        "id": "SFD-044",
+        "name": "Intrepid Mariner",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-044.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)Other friendly units have [Barrier] while I'm at the same battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-025",
+        "name": "Ion Beam",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-025.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Deal 4 to a unit at a battlefield. If it is destroyed this turn, ready 1 rune."
+    },
+    {
+        "id": "OGN-283",
+        "name": "Ionian Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-283.webp",
+        "text": "When you conquer here, look at the top choice of your Main Deck. Put it into your hand or recycle it."
+    },
+    {
+        "id": "OGN-086",
+        "name": "Ionian Shield",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-086.webp",
+        "text": "A unit attached with this gear has [Barrier]. (The first time it would take damage each turn, it doesn't.)"
+    },
+    {
+        "id": "OGN-043",
+        "name": "Ioni-Flux Battery",
+        "cost": "3",
+        "type": "Field",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-043.webp",
+        "text": "When you play a spell, you may pay :rb_energy_1:. If you do, deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "SFD-112",
+        "name": "Irelia - Blade Dancer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-112.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)When I move to a battlefield, you may play a 1 :rb_might: Blade unit token there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-112A",
+        "name": "Irelia - Blade Dancer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-112A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)When I move to a battlefield, you may play a 1 :rb_might: Blade unit token there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-183",
+        "name": "Irelia - Dancer of Blades",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-183.webp",
+        "text": "When you play a Blade unit token, reveal the top 3 cards of your Main Deck. You may play an [Action] or [Reaction] from among them. It costs :rb_energy_2: and :rb_rune_rainbow: less. Recycle the rest."
+    },
+    {
+        "id": "SFD-236",
+        "name": "Irelia - Dancer of Blades",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-236.webp",
+        "text": "When you play a Blade unit token, reveal the top 3 cards of your Main Deck. You may play an [Action] or [Reaction] from among them. It costs :rb_energy_2: and :rb_rune_rainbow: less. Recycle the rest."
+    },
+    {
+        "id": "SFD-149",
+        "name": "Irelia - Swift",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-149.webp",
+        "text": "When you play a unit, you may pay :rb_rune_rainbow:. If you do, move it to a battlefield. If it is a Blade unit token, its Energy cost is reduced to :rb_energy_0:.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-149A",
+        "name": "Irelia - Swift",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-149A.webp",
+        "text": "When you play a unit, you may pay :rb_rune_rainbow:. If you do, move it to a battlefield. If it is a Blade unit token, its Energy cost is reduced to :rb_energy_0:.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-221",
+        "name": "Iron Ballista",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-221.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-045",
+        "name": "Isolde - Unraveler",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-045.webp",
+        "text": "When I move to a battlefield, look at the top choice of your Main Deck. You may put it into your hand or recycle it.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-044",
+        "name": "It's Personal",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-044.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill each enemy unit at my battlefield that has no Equipment attached."
+    },
+    {
+        "id": "OGN-247",
+        "name": "Ivern - Friend of the Forest",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-247.webp",
+        "text": "When you play a unit with [Mundane], you may pay :rb_rune_mind: to give it +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-252",
+        "name": "Ivern - Friend of the Forest",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-252.webp",
+        "text": "When you play a unit with [Mundane], you may pay :rb_rune_mind: to give it +1 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-135",
+        "name": "Jagged Butcher",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-135.webp",
+        "text": "When I move to a battlefield, you may discard 1. If you do, give me +2 :rb_might: this turn.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-235",
+        "name": "Jarvan IV - Exemplar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-235.webp",
+        "text": "[Shield 2]_ (+2 :rb_might: while I'm a defender.)_When I defend, reveal the top 3 cards of your Main Deck. You may play a unit from among them. Its Energy cost is reduced by :rb_energy_2:. Recycle the rest.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-235a",
+        "name": "Jarvan IV - Exemplar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-235a.webp",
+        "text": "[Shield 2]_ (+2 :rb_might: while I'm a defender.)_When I defend, reveal the top 3 cards of your Main Deck. You may play a unit from among them. Its Energy cost is reduced by :rb_energy_2:. Recycle the rest.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-243",
+        "name": "Jarvan IV - Prince of Demacia",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-243.webp",
+        "text": "When you defend, you may exhaust me to ready an ally unit here."
+    },
+    {
+        "id": "SFD-254",
+        "name": "Jarvan IV - Prince of Demacia",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-254.webp",
+        "text": "When you defend, you may exhaust me to ready an ally unit here."
+    },
+    {
+        "id": "OGN-171",
+        "name": "Jarvan IV - Royal",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-171.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)Friendly Elite units have [Shield]. (+1 :rb_might: while it's a defender.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-171a",
+        "name": "Jarvan IV - Royal",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-171a.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)Friendly Elite units have [Shield]. (+1 :rb_might: while it's a defender.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-113",
+        "name": "Jax - Grandmaster",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-113.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When you play a gear, give me [Barrier] this turn.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-113A",
+        "name": "Jax - Grandmaster",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-113A.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When you play a gear, give me [Barrier] this turn.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-237",
+        "name": "Jax - Weapons Specialist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-237.webp",
+        "text": "When you play a gear, give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-255",
+        "name": "Jax - Weapons Specialist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-255.webp",
+        "text": "When you play a gear, give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-112",
+        "name": "Jeweled Protector",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-112.webp",
+        "text": "When I'm played, you may discard 1 to draw 1.Friendly Dragons have [Barrier]. (The first time they would take damage each turn, they don't.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-222",
+        "name": "Jinx - Loose Cannon",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-222.webp",
+        "text": "When you play a spell, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-222-P",
+        "name": "Jinx, Loose Cannon",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-222-P.webp",
+        "text": "When you play a spell, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-301",
+        "name": "Jinx - Loose Cannon",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-301.webp",
+        "text": "When you play a spell, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-301-STAR",
+        "name": "Jinx - Loose Cannon",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-301-STAR.webp",
+        "text": "When you play a spell, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-069",
+        "name": "Jinx - Psycho",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-069.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, deal 2 to an enemy unit here.",
+        "attack": 4
+    }
+,
+    {
+        "id": "ARC-005",
+        "name": "Jinx - Punk",
+        "cost": "6",
+        "type": "Champion",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-005.webp",
+        "text": "When you recycle a card, give me +1 [might] this turn. When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-113",
+        "name": "Jinx - Punk",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-113.webp",
+        "text": "When you recycle a card, give me +1 :rb_might: this turn.When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-113-P",
+        "name": "Jinx - Punk Pilot",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-113-P.webp",
+        "text": "When you recycle a card, give me +1 [might] this turn. When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-113a",
+        "name": "Jinx - Punk",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-113a.webp",
+        "text": "When you recycle a card, give me +1 :rb_might: this turn.When I attack or defend, if you've recycled 3+ cards this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-114",
+        "name": "Kai'Sa - Daughter of the Void",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-114.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_void: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-114A",
+        "name": "Kai'Sa - Daughter of the Void",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-114A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_void: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-115",
+        "name": "Kai'Sa - Second Skin",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-115.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)I have keyword abilities of all keywords present on units in all trashes.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-115A",
+        "name": "Kai'Sa - Second Skin",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-115A.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)I have keyword abilities of all keywords present on units in all trashes.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-184",
+        "name": "Kai'Sa - Void Spawn",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-184.webp",
+        "text": "When you play a unit with [Mundane], you may pay :rb_rune_void: to give it +1 :rb_might: and [Assault 1] this turn."
+    },
+    {
+        "id": "SFD-238",
+        "name": "Kai'Sa - Void Spawn",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-238.webp",
+        "text": "When you play a unit with [Mundane], you may pay :rb_rune_void: to give it +1 :rb_might: and [Assault 1] this turn."
+    },
+    {
+        "id": "OGN-172",
+        "name": "Kallista - Spear of Vengeance",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-172.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When I conquer, you may return a unit from your trash to your hand.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-244",
+        "name": "Kallista - Spear of Vengeance",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-244.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When I conquer, you may return a unit from your trash to your hand.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-244-STAR",
+        "name": "Kallista - Spear of Vengeance",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-244-STAR.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When I conquer, you may return a unit from your trash to your hand.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-142",
+        "name": "Kindly Barkeep",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-142.webp",
+        "text": "When you play me, deal 2 to an enemy unit here.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-122",
+        "name": "Kindred - Eternal Hunters",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-122.webp",
+        "text": "When I move to a battlefield, you may kill an enemy unit there with 3 :rb_might: or less.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-122A",
+        "name": "Kindred - Eternal Hunters",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-122A.webp",
+        "text": "When I move to a battlefield, you may kill an enemy unit there with 3 :rb_might: or less.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-185",
+        "name": "Kindred - The Eternal Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-185.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "SFD-239",
+        "name": "Kindred - The Eternal Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-239.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "SFD-155",
+        "name": "Kinku Lifeblade",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-155.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)Other units here have [Barrier].",
+        "attack": 4
+    },
+    {
+        "id": "OGN-101",
+        "name": "Ki-Guardian",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-101.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a friendly unit [Barrier] this turn. Draw 1."
+    },
+    {
+        "id": "SFD-061",
+        "name": "LeBlanc - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-061.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-061A",
+        "name": "LeBlanc - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-061A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_rainbow: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-186",
+        "name": "LeBlanc - Deceiver",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-186.webp",
+        "text": "When one of your units becomes [Mighty], you may exhaust me to choose an enemy unit. Give it -2 :rb_might: this turn. (A unit is Mighty while it has 5+ :rb_might:.)"
+    },
+    {
+        "id": "SFD-240",
+        "name": "LeBlanc - Deceiver",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-240.webp",
+        "text": "When one of your units becomes [Mighty], you may exhaust me to choose an enemy unit. Give it -2 :rb_might: this turn. (A unit is Mighty while it has 5+ :rb_might:.)"
+    },
+    {
+        "id": "SFD-118",
+        "name": "Lee Sin - Dragon's Rage",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-118.webp",
+        "text": "[Barrier] (The first time I would take damage each turn, I don't.)When I attack, deal damage equal to my Might to an enemy unit at another battlefield.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-118A",
+        "name": "Lee Sin - Dragon's Rage",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-118A.webp",
+        "text": "[Barrier] (The first time I would take damage each turn, I don't.)When I attack, deal damage equal to my Might to an enemy unit at another battlefield.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-187",
+        "name": "Lee Sin - The Blind Monk",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-187.webp",
+        "text": "When you play a unit with Energy cost 4+, you may exhaust me to ready it."
+    },
+    {
+        "id": "SFD-241",
+        "name": "Lee Sin - The Blind Monk",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-241.webp",
+        "text": "When you play a unit with Energy cost 4+, you may exhaust me to ready it."
+    },
+    {
+        "id": "OGN-284",
+        "name": "Lethal Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-284.webp",
+        "text": "When you conquer here, you may kill an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-136",
+        "name": "Life of the Party",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-136.webp",
+        "text": "When I'm played, recycle up to 4 from your trash. For each card you recycled, you may place a +1 :rb_might: buff on me.",
+        "attack": 1
+    },
+    {
+        "id": "OGN-102",
+        "name": "Lightning Bolt",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-102.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 2 to a unit at a battlefield."
+    },
+    {
+        "id": "OGN-010",
+        "name": "Line of Fire",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-010.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Deal 3 to an attacking unit."
+    },
+    {
+        "id": "ARC-006",
+        "name": "Lissandra - Ice Empress",
+        "cost": "6",
+        "type": "Champion",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/ARC-006.webp",
+        "text": "Enemy units here have -2 [might] this turn. When I attack or defend, stun all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-114",
+        "name": "Lissandra - Ice Empress",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-114.webp",
+        "text": "Enemy units here have -2 :rb_might: this turn.When I attack or defend, stun all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-114-P",
+        "name": "Lissandra - Ice Empress Pilot",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-114-P.webp",
+        "text": "Enemy units here have -2 [might] this turn. When I attack or defend, stun all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-114a",
+        "name": "Lissandra - Ice Empress",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-114a.webp",
+        "text": "Enemy units here have -2 :rb_might: this turn.When I attack or defend, stun all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-223",
+        "name": "Longtooth",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-223.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)",
+        "attack": 4
+    },
+    {
+        "id": "OGN-045",
+        "name": "Looking for Trouble",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-045.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 2. Then discard 2 cards."
+    },
+    {
+        "id": "SFD-063",
+        "name": "Luck of the Draw",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-063.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Each player chooses a card in hand. Reveal them. If yours has a higher Energy cost, you may play it ignoring its Energy cost. (You must still pay its Power cost.)"
+    },
+    {
+        "id": "OGN-011",
+        "name": "Lucky Find",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-011.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Look at the top 3 cards of your Main Deck and put one in your hand. Recycle the rest."
+    },
+    {
+        "id": "SFD-211",
+        "name": "Luminous Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-211.webp",
+        "text": "When you conquer here, you may pay :rb_energy_1: to draw 1."
+    },
+    {
+        "id": "SFD-085",
+        "name": "Lunari Cultist",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-085.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-123",
+        "name": "Lux - Final Spark",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-123.webp",
+        "text": "When you play a spell, deal 3 to an enemy unit at a battlefield.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-123A",
+        "name": "Lux - Final Spark",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-123A.webp",
+        "text": "When you play a spell, deal 3 to an enemy unit at a battlefield.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-198",
+        "name": "Lux - Lady of Luminosity",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-198.webp",
+        "text": "When you play a spell, you may exhaust me to ready a unit."
+    },
+    {
+        "id": "SFD-250",
+        "name": "Lux - Lady of Luminosity",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-250.webp",
+        "text": "When you play a spell, you may exhaust me to ready a unit."
+    },
+    {
+        "id": "SFD-156",
+        "name": "Lux - Radiant",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-156.webp",
+        "text": "[Barrier] (The first time I would take damage each turn, I don't.)[Ganking] (I can move from battlefield to battlefield.)Friendly spells cost :rb_energy_1: less.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-156A",
+        "name": "Lux - Radiant",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-156A.webp",
+        "text": "[Barrier] (The first time I would take damage each turn, I don't.)[Ganking] (I can move from battlefield to battlefield.)Friendly spells cost :rb_energy_1: less.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-103",
+        "name": "Mageseeker Inciter",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-103.webp",
+        "text": "When I'm played, you may discard 1 to draw 1.Friendly spells cost :rb_energy_1: less.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-008",
+        "name": "Make It Rain",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-008.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 2 to each enemy unit at a battlefield."
+    }
+,
+    {
+        "id": "SFD-086",
+        "name": "Malphite - Unstoppable Force",
+        "cost": "7",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-086.webp",
+        "text": "When you play me, stun all enemy units at my battlefield. (They don't deal combat damage this turn.)",
+        "attack": 7
+    },
+    {
+        "id": "SFD-086A",
+        "name": "Malphite - Unstoppable Force",
+        "cost": "7",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-086A.webp",
+        "text": "When you play me, stun all enemy units at my battlefield. (They don't deal combat damage this turn.)",
+        "attack": 7
+    },
+    {
+        "id": "SFD-107",
+        "name": "Mana Potion",
+        "cost": "1",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-107.webp",
+        "text": "Kill this: [Add] :rb_energy_2:. Spend only to play spells."
+    },
+    {
+        "id": "OGN-121",
+        "name": "Manual Labor",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-121.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Look at the top choice of your Main Deck and you may recycle it. If you do, ready each friendly gear."
+    },
+    {
+        "id": "SFD-009",
+        "name": "Martial Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-009.webp",
+        "text": "[Assault 1], [Shield 1] (+1 :rb_might: while I'm an attacker or defender.)",
+        "attack": 1
+    },
+    {
+        "id": "OGN-088",
+        "name": "Mask Mother",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-088.webp",
+        "text": "When you play me, you may kill another friendly unit. If you do, draw 2.",
+        "attack": 2
+    },
+    {
+        "id": "SFD-038",
+        "name": "Massive Mech",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-038.webp",
+        "text": "[Tank] (I must be assigned combat damage first.)",
+        "attack": 6
+    },
+    {
+        "id": "SFD-121",
+        "name": "Master Yi - Wuju Stylist",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121.webp",
+        "text": "When I move to a battlefield, deal 2 to all enemy units there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-121A",
+        "name": "Master Yi - Wuju Stylist",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121A.webp",
+        "text": "When I move to a battlefield, deal 2 to all enemy units there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-197",
+        "name": "Master Yi - Wuju Swordsman",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-197.webp",
+        "text": "When you play a unit with [Accelerate], give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-249",
+        "name": "Master Yi - Wuju Swordsman",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-249.webp",
+        "text": "When you play a unit with [Accelerate], give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-148",
+        "name": "Master Yi - Zealous",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-148.webp",
+        "text": "[Accelerate]_ _(You may pay :rb_energy_1::rb_rune_ rainbows: as an additional cost to have me enter ready.)When I conquer, you may recycle up to 4 from your trash. Then draw 1.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-148A",
+        "name": "Master Yi - Zealous",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-148A.webp",
+        "text": "[Accelerate]_ _(You may pay :rb_energy_1::rb_rune_ rainbows: as an additional cost to have me enter ready.)When I conquer, you may recycle up to 4 from your trash. Then draw 1.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-053",
+        "name": "Masterwork Steel",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-052.webp",
+        "text": "Equipped unit has +1 :rb_might: for each other friendly unit here."
+    },
+    {
+        "id": "SFD-039",
+        "name": "Mech Mechanic",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-039.webp",
+        "text": "When I move from a battlefield, ready each friendly gear there.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-139",
+        "name": "Meditation",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-139.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Draw 2. Then discard 1. Ready 1 rune."
+    },
+    {
+        "id": "SFD-108",
+        "name": "Meteoric Shot",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-108.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Deal 3 to an enemy unit at a battlefield. It has -1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-153",
+        "name": "Mighty Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-153.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-089",
+        "name": "Mind Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-089.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-089a",
+        "name": "Mind Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-089a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-089b",
+        "name": "Mind Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-089b.webp",
+        "text": ""
+    },
+    {
+        "id": "SFD-166",
+        "name": "Minion",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-166.webp",
+        "text": "",
+        "attack": 2
+    },
+    {
+        "id": "OGN-151",
+        "name": "Mirror Image",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-151.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Play a copy of a friendly non-token unit into your base exhausted."
+    },
+    {
+        "id": "OGN-152",
+        "name": "Miss Fortune - Bounty Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-152.webp",
+        "text": "When you play an Equipment, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-152-P",
+        "name": "Miss Fortune, Bounty Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-152-P.webp",
+        "text": "When you play an Equipment, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-296",
+        "name": "Miss Fortune - Bounty Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-296.webp",
+        "text": "When you play an Equipment, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-296-STAR",
+        "name": "Miss Fortune - Bounty Hunter",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-296-STAR.webp",
+        "text": "When you play an Equipment, you may exhaust me to deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "SFD-245",
+        "name": "Miss Fortune - Captain",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-245.webp",
+        "text": "When you play a gear, give me +1 [might] this turn. When I attack or defend, if you've played 3+ gears this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-173",
+        "name": "Miss Fortune - Captain",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-173.webp",
+        "text": "When you play a gear, give me +1 :rb_might: this turn.When I attack or defend, if you've played 3+ gears this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-173-P",
+        "name": "Miss Fortune - Captain Pilot",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-173-P.webp",
+        "text": "When you play a gear, give me +1 [might] this turn. When I attack or defend, if you've played 3+ gears this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-173a",
+        "name": "Miss Fortune - Captain",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-173a.webp",
+        "text": "When you play a gear, give me +1 :rb_might: this turn.When I attack or defend, if you've played 3+ gears this turn, deal 3 to all enemy units here.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-063",
+        "name": "Miss Fortune - Gunslinger",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-063.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you play a gear, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-063a",
+        "name": "Miss Fortune - Gunslinger",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-063a.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you play a gear, deal 2 to an enemy unit here.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-153",
+        "name": "Mist's Call",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-153.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)If a friendly unit has died this turn, play a copy of it into your base exhausted."
+    },
+    {
+        "id": "OGN-154",
+        "name": "Misty Poro",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-154.webp",
+        "text": "[Assault 1], [Shield 1] (+1 :rb_might: while I'm an attacker or defender.)",
+        "attack": 1
+    },
+    {
+        "id": "SFD-246",
+        "name": "Mordekaiser - Iron Revenant",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-246.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "SFD-256",
+        "name": "Mordekaiser - Iron Revenant",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-256.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "SFD-124",
+        "name": "Mordekaiser - Lord of Death",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-124.webp",
+        "text": "When I kill a unit, you may pay :rb_rune_rainbow:. If you do, draw 2.",
+        "attack": 6
+    },
+    {
+        "id": "SFD-124A",
+        "name": "Mordekaiser - Lord of Death",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-124A.webp",
+        "text": "When I kill a unit, you may pay :rb_rune_rainbow:. If you do, draw 2.",
+        "attack": 6
+    },
+    {
+        "id": "OGN-224",
+        "name": "Morellonomicon",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-224.webp",
+        "text": "[Unique] (Your deck can have only 1 card with this name.)When you play a spell, deal 1 to all enemy units at a battlefield."
+    },
+    {
+        "id": "SFD-064",
+        "name": "Mystic Shot",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-064.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Deal 2 to an enemy unit at a battlefield. Draw 1."
+    },
+    {
+        "id": "OGN-213",
+        "name": "Nami - Tidecaller",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-213.webp",
+        "text": "When you play a spell, you may exhaust me to buff a unit. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-213-P",
+        "name": "Nami, Tidecaller",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-213-P.webp",
+        "text": "When you play a spell, you may exhaust me to buff a unit. (If it doesn't have a buff, it gets a +1 might buff.)"
+    },
+    {
+        "id": "OGN-297",
+        "name": "Nami - Tidecaller",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-297.webp",
+        "text": "When you play a spell, you may exhaust me to buff a unit. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-297-STAR",
+        "name": "Nami - Tidecaller",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-297-STAR.webp",
+        "text": "When you play a spell, you may exhaust me to buff a unit. (If it doesn't have a buff, it gets a +1 :rb_might: buff.)"
+    },
+    {
+        "id": "OGN-174",
+        "name": "Nami - Victorious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-174.webp",
+        "text": "While I'm [Mighty], I have [Deflect], [Ganking], and [Shield]. (I'm Mighty while I have 5+ :rb_might:.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-247",
+        "name": "Nami - Victorious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-247.webp",
+        "text": "While I'm [Mighty], I have [Deflect], [Ganking], and [Shield]. (I'm Mighty while I have 5+ :rb_might:.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-247-STAR",
+        "name": "Nami - Victorious",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-247-STAR.webp",
+        "text": "While I'm [Mighty], I have [Deflect], [Ganking], and [Shield]. (I'm Mighty while I have 5+ :rb_might:.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-125",
+        "name": "Nasus - Ascended",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-125.webp",
+        "text": "When you play a unit with [Assault], give me +1 :rb_might: this turn.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-125A",
+        "name": "Nasus - Ascended",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-125A.webp",
+        "text": "When you play a unit with [Assault], give me +1 :rb_might: this turn.",
+        "attack": 5
+    }
+,
+    {
+        "id": "SFD-253",
+        "name": "Nasus - Curator of the Sands",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-253.webp",
+        "text": "When one of your units becomes [Mighty], you may exhaust me to deal 1 to an enemy unit at a battlefield. (A unit is Mighty while it has 5+ :rb_might:.)"
+    },
+    {
+        "id": "SFD-126",
+        "name": "Nautilus - Titan of the Depths",
+        "cost": "10",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-126.webp",
+        "text": "When I'm played, you may discard any number of cards. For each card you discarded, deal 2 to an enemy unit at my battlefield.",
+        "attack": 10
+    },
+    {
+        "id": "SFD-126A",
+        "name": "Nautilus - Titan of the Depths",
+        "cost": "10",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-126A.webp",
+        "text": "When I'm played, you may discard any number of cards. For each card you discarded, deal 2 to an enemy unit at my battlefield.",
+        "attack": 10
+    },
+    {
+        "id": "SFD-065",
+        "name": "Noxian Fervor",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-065.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Kill a friendly unit to deal damage equal to its Might to an enemy unit at a battlefield."
+    },
+    {
+        "id": "SFD-026",
+        "name": "Noxian Guillotine",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-026.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Kill an enemy unit at a battlefield that has taken damage this turn."
+    },
+    {
+        "id": "SFD-010",
+        "name": "Noxian Might",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-010.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a unit +3 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-285",
+        "name": "Noxian Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-285.webp",
+        "text": "When you conquer here, you may play a 2 :rb_might: Recruit unit token here."
+    },
+    {
+        "id": "SFD-109",
+        "name": "Nullification Sphere",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-109.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Counter a spell."
+    },
+    {
+        "id": "SFD-141",
+        "name": "Olaf - Berserker",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-141.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-141A",
+        "name": "Olaf - Berserker",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-141A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "SFD-142",
+        "name": "Olaf - Ragnarok",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-142.webp",
+        "text": "When I kill a unit, heal me and you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-142A",
+        "name": "Olaf - Ragnarok",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-142A.webp",
+        "text": "When I kill a unit, heal me and you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-188",
+        "name": "Olaf - The Berserker",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-188.webp",
+        "text": "When you play a unit with [Assault], give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-242",
+        "name": "Olaf - The Berserker",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-242.webp",
+        "text": "When you play a unit with [Assault], give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-119",
+        "name": "Old-Timer",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-119.webp",
+        "text": "When you play a gear, draw 1.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-011",
+        "name": "Omen Hawk",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-011.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)Other units here have [Vision].",
+        "attack": 1
+    },
+    {
+        "id": "OGN-175",
+        "name": "On the Hunt",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-175.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Choose an enemy unit at a battlefield. It has -3 :rb_might: this turn. Friendly units at that battlefield have +1 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-012",
+        "name": "Order Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-012.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-012a",
+        "name": "Order Rune",
+        "cost": null,
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-012a.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-012b",
+        "name": "Order Rune",
+        "cost": "",
+        "type": "Rune",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-012b.webp",
+        "text": ""
+    },
+    {
+        "id": "OGN-046",
+        "name": "Pale Cascade",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-046.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a friendly unit [Barrier] this turn. Draw 1."
+    },
+    {
+        "id": "OGS-004",
+        "name": "Parakeet",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGS-004.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)",
+        "attack": 2
+    },
+    {
+        "id": "OGN-013",
+        "name": "Poro Snax",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-013.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give all friendly Poros +1 :rb_might: permanently."
+    },
+    {
+        "id": "SFD-027",
+        "name": "Portmaker",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-027.webp",
+        "text": "When you play a unit or gear from your hand, ready 1 rune.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-176",
+        "name": "Prepare for Battle",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-176.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Look at the top 3 cards of your Main Deck and put one in your hand. Recycle the rest. If you have 10 or less health, draw 1."
+    },
+    {
+        "id": "OGN-071",
+        "name": "Preservation",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-071.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Give a unit +3 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-092",
+        "name": "Prowling Projectile",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-092.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Deal 2 to a unit at a battlefield. If it is an enemy, give it -1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-046",
+        "name": "Puffcap Peddler",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-046.webp",
+        "text": "When you play a spell, deal 1 to an enemy unit at a battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-137",
+        "name": "Punching Bag",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-137.webp",
+        "text": "When I move to a battlefield, you may discard 1. If you do, give me [Shield 2] this turn.",
+        "attack": 1
+    },
+    {
+        "id": "OGN-104",
+        "name": "Purify",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-104.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Remove all text and buffs from a unit."
+    },
+    {
+        "id": "SFD-087",
+        "name": "Radiant Guardian",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-087.webp",
+        "text": "When I'm played, if a friendly unit died this turn, I have [Barrier] and [Shield 2].",
+        "attack": 5
+    },
+    {
+        "id": "SFD-012",
+        "name": "Rain of Arrows",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-012.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 3 to all enemy units at a battlefield."
+    },
+    {
+        "id": "SFD-143",
+        "name": "Rammus - Armordillo",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-143.webp",
+        "text": "[Shield 2]_ (+2 :rb_might: while I'm a defender.)_When I take combat damage, deal that much damage to the unit that dealt it damage.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-143A",
+        "name": "Rammus - Armordillo",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-143A.webp",
+        "text": "[Shield 2]_ (+2 :rb_might: while I'm a defender.)_When I take combat damage, deal that much damage to the unit that dealt it damage.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-189",
+        "name": "Rammus - The Armordillo",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-189.webp",
+        "text": "When one of your units is chosen by an enemy spell or ability, give it [Barrier] this turn."
+    },
+    {
+        "id": "SFD-243",
+        "name": "Rammus - The Armordillo",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-243.webp",
+        "text": "When one of your units is chosen by an enemy spell or ability, give it [Barrier] this turn."
+    },
+    {
+        "id": "SFD-047",
+        "name": "Ranger-Knight Defector",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-047.webp",
+        "text": "[Tank] (I must be assigned combat damage first.)I havekeyword abilities of all friendly units here.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-116",
+        "name": "Ravenbloom Conservatory",
+        "cost": "3",
+        "type": "Gear",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-116.webp",
+        "text": "When you play a spell, deal 1 to an enemy unit at a battlefield."
+    },
+    {
+        "id": "OGN-143",
+        "name": "Ravenous Flesheater",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-143.webp",
+        "text": "When I kill a unit, you may pay :rb_rune_fury:. If you do, ready me.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-161",
+        "name": "Recolor",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-161.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Change a unit's type to any other type permanently."
+    },
+    {
+        "id": "SFD-122",
+        "name": "Recruit",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-122.webp",
+        "text": "",
+        "attack": 2
+    },
+    {
+        "id": "SFD-T01",
+        "name": "Recruit",
+        "cost": "",
+        "type": "Token",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-T01.webp",
+        "text": "",
+        "attack": 2
+    },
+    {
+        "id": "OGN-225",
+        "name": "Recall",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-225.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a friendly unit at a battlefield to its owner's base and ready it."
+    },
+    {
+        "id": "OGN-177",
+        "name": "Reckoning",
+        "cost": "6",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-177.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill all enemy units with Might less than a friendly unit's Might."
+    },
+    {
+        "id": "OGN-090",
+        "name": "Recovery",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-090.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Return a unit from your trash to your hand."
+    },
+    {
+        "id": "SFD-028",
+        "name": "Recycled Scrap",
+        "cost": "1",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-028.webp",
+        "text": "[Deathknell] \u2014 Draw 1. (When this is killed or discarded, get the effect.)"
+    },
+    {
+        "id": "OGN-214",
+        "name": "Redgeuard Lookout",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-214.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_Other friendly units here have [Shield].",
+        "attack": 3
+    },
+    {
+        "id": "SFD-048",
+        "name": "Redoubled Valor",
+        "cost": "6",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-048.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Double a unit's Might permanently."
+    },
+    {
+        "id": "SFD-127",
+        "name": "Renekton - Butcher of the Sands",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-127.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)When I kill a unit, heal me.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-127A",
+        "name": "Renekton - Butcher of the Sands",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-127A.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)When I kill a unit, heal me.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-205",
+        "name": "Renekton - curator of the Sands",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-205.webp",
+        "text": "When one of your units becomes MIGHTY, you may exhaust me to deal 1 to an enemy unit at a battlefield. (A unit is Mighty while it has 5+ might.)"
+    }
+,
+    {
+        "id": "SFD-255",
+        "name": "Renekton - curator of the Sands",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-255.webp",
+        "text": "When one of your units becomes MIGHTY, you may exhaust me to deal 1 to an enemy unit at a battlefield. (A unit is Mighty while it has 5+ might.)"
+    },
+    {
+        "id": "OGN-182",
+        "name": "Renekton - Dominant",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-182.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)When I conquer, give me +3 :rb_might: this turn and heal me.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-182a",
+        "name": "Renekton - Dominant",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-182a.webp",
+        "text": "[Assault 3] (+3 :rb_might: while I'm an attacker.)When I conquer, give me +3 :rb_might: this turn and heal me.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-128",
+        "name": "Renata Glasc - Chem-Baroness",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-128.webp",
+        "text": "When I move to a battlefield, you may kill a friendly unit. If you do, deal 4 to an enemy unit there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-128A",
+        "name": "Renata Glasc - Chem-Baroness",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-128A.webp",
+        "text": "When I move to a battlefield, you may kill a friendly unit. If you do, deal 4 to an enemy unit there.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-129",
+        "name": "Renata Glasc - Hostile Takeover",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-129.webp",
+        "text": "When I move to a battlefield, deal 2 to all units. For each unit killed this way, draw 1.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-129A",
+        "name": "Renata Glasc - Hostile Takeover",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-129A.webp",
+        "text": "When I move to a battlefield, deal 2 to all units. For each unit killed this way, draw 1.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-191",
+        "name": "Renata Glasc - The Alchemist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-191.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "SFD-244",
+        "name": "Renata Glasc - The Alchemist",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-244.webp",
+        "text": "When an enemy unit is killed, heal me and you may pay :rb_rune_rainbow:. If you do, draw 1."
+    },
+    {
+        "id": "OGN-183",
+        "name": "Rescue!",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-183.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a friendly unit at a battlefield to its owner's base and ready it."
+    },
+    {
+        "id": "OGN-091",
+        "name": "Research & Development",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-091.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 2. You may discard 1. If you do, ready 1 rune."
+    },
+    {
+        "id": "SFD-117",
+        "name": "Ricochet",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-117.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Deal 2 to an enemy unit at a battlefield. Repeat for each card you've recycled this turn."
+    },
+    {
+        "id": "SFD-049",
+        "name": "Riptide",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-049.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 4 to an enemy unit at a battlefield. Stun all other enemy units there."
+    },
+    {
+        "id": "SFD-093",
+        "name": "Rise of the Ascended",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-093.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Give a Legend [Mighty] this turn. (It has 5+ might.)"
+    },
+    {
+        "id": "OGN-047",
+        "name": "Risen Mists",
+        "cost": "4",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-047.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Play two 2 :rb_might: Mistwraith unit tokens to your base. Mistwraiths everywhere have +1 :rb_might: permanently."
+    },
+    {
+        "id": "SFD-029",
+        "name": "Rising Spell Force",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-029.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Give a unit +2 :rb_might: and [Assault 2] this turn."
+    },
+    {
+        "id": "OGN-072",
+        "name": "Rite of Negation",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-072.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Counter an enemy spell."
+    },
+    {
+        "id": "OGN-048",
+        "name": "Riven - Exile",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-048.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "OGN-048a",
+        "name": "Riven - Exile",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-048a.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 3
+    },
+    {
+        "id": "OGN-260",
+        "name": "Riven - Reforged",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-260.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to play a Blade Fragment gear token to your base."
+    },
+    {
+        "id": "OGN-260-P",
+        "name": "Riven, Reforged",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-260-P.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to play a Blade Fragment gear token to your base."
+    },
+    {
+        "id": "OGN-301",
+        "name": "Riven - Reforged",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-301.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to play a Blade Fragment gear token to your base."
+    },
+    {
+        "id": "OGN-301-STAR",
+        "name": "Riven - Reforged",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-301-STAR.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to play a Blade Fragment gear token to your base."
+    },
+    {
+        "id": "OGN-115",
+        "name": "Riven - Unforgiven",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-115.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When I'm played, play 3 Blade Fragment gear tokens to your base.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-115a",
+        "name": "Riven - Unforgiven",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-115a.webp",
+        "text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)When I'm played, play 3 Blade Fragment gear tokens to your base.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-105",
+        "name": "Rivershaper",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-105.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)Other friendly units have [Barrier].",
+        "attack": 3
+    },
+    {
+        "id": "OGN-286",
+        "name": "Roaming Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-286.webp",
+        "text": "When you conquer here, you may move a unit from here to another battlefield."
+    },
+    {
+        "id": "OGN-144",
+        "name": "Ruination",
+        "cost": "6",
+        "type": "Spell",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-144.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Kill all units at a battlefield."
+    },
+    {
+        "id": "SFD-212",
+        "name": "Ruined Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-212.webp",
+        "text": "When an enemy unit is killed here, draw 1."
+    },
+    {
+        "id": "SFD-129",
+        "name": "Samira - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-129.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-129A",
+        "name": "Samira - Challenger",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-129A.webp",
+        "text": "[Accelerate] (You may pay :rb_energy_1::rb_rune_fury: as an additional cost to have me enter ready.)[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+        "attack": 2
+    },
+    {
+        "id": "SFD-191",
+        "name": "Samira - Desert Rose",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-191.webp",
+        "text": "When you play a spell, give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-244",
+        "name": "Samira - Desert Rose",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-244.webp",
+        "text": "When you play a spell, give a unit +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-150",
+        "name": "Samira - Stylish",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-150.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)When I kill a unit, you may return a spell from your trash to your hand.",
+        "attack": 4
+    },
+    {
+        "id": "SFD-150A",
+        "name": "Samira - Stylish",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-150A.webp",
+        "text": "[Assault 2] (+2 :rb_might: while I'm an attacker.)When I kill a unit, you may return a spell from your trash to your hand.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-155",
+        "name": "Sand Soldier",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/Sand Soldier.webp",
+        "text": "",
+        "attack": 2
+    },
+    {
+        "id": "OGN-T01",
+        "name": "Sand Soldier",
+        "cost": "",
+        "type": "Token",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-T01.webp",
+        "text": "",
+        "attack": 2
+    },
+    {
+        "id": "OGN-092",
+        "name": "Scales of the Dragon",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-092.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When I'm played, give all friendly units +1 :rb_might: this turn.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-236",
+        "name": "Scattered Pod",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-236.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you recycle one or more cards, buff me. (If I don't have a buff, I get a +1 :rb_might: buff.)",
+        "attack": 4
+    },
+    {
+        "id": "SFD-030",
+        "name": "Scrapheap",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-030.webp",
+        "text": "[Deathknell] \u2014 Draw 1. (When this is killed or discarded, get the effect.)"
+    },
+    {
+        "id": "OGN-073",
+        "name": "Screeching Dragon",
+        "cost": "5",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-073.webp",
+        "text": "[Challenger] (I can choose which unit blocks me.)When I kill a unit, heal me.",
+        "attack": 4
+    },
+    {
+        "id": "OGN-184",
+        "name": "Sentinel Snare",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-184.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Stun an enemy unit at a battlefield. Draw 1."
+    },
+    {
+        "id": "SFD-094",
+        "name": "Seraphine - Idols Cheer",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-094.webp",
+        "text": "When you play a spell, heal me and draw 1.",
+        "attack": 2
+    },
+    {
+        "id": "SFD-094A",
+        "name": "Seraphine - Idols Cheer",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-094A.webp",
+        "text": "When you play a spell, heal me and draw 1.",
+        "attack": 2
+    },
+    {
+        "id": "SFD-192",
+        "name": "Seraphine - Starry-Eyed Songstress",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-192.webp",
+        "text": "When you play a spell, you may exhaust me to choose a unit. It has -1 :rb_might: or +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-245",
+        "name": "Seraphine - Starry-Eyed Songstress",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-245.webp",
+        "text": "When you play a spell, you may exhaust me to choose a unit. It has -1 :rb_might: or +1 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-121",
+        "name": "Seraphine - Superstar",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121.webp",
+        "text": "When you play a spell, deal 2 to an enemy unit at a battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "SFD-121A",
+        "name": "Seraphine - Superstar",
+        "cost": "4",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-121A.webp",
+        "text": "When you play a spell, deal 2 to an enemy unit at a battlefield.",
+        "attack": 3
+    },
+    {
+        "id": "OGN-049",
+        "name": "Shadow Assassin",
+        "cost": "3",
+        "type": "Unit",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-049.webp",
+        "text": "[Vision] (When you play me, look at the top card of your Main Deck. You may recycle it.)When you play me, draw 1.",
+        "attack": 2
+    },
+    {
+        "id": "OGN-287",
+        "name": "Shadow Isles Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-287.webp",
+        "text": "When a unit is killed here, its owner recycles it."
+    }
+,
+    {
+        "id": "OGN-050",
+        "name": "Shadowshift",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-050.webp",
+        "text": "[Reaction] (Play any time, even before spells and abilities resolve.)Return a friendly unit at a battlefield to its owner's base and ready it. Play a 2 :rb_might: Shadow unit token into combat there."
+    },
+    {
+        "id": "OGN-093",
+        "name": "Sharpsight",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-093.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Give a unit +2 :rb_might: and [Vision] this turn. Draw 1."
+    },
+    {
+        "id": "OGN-185",
+        "name": "Shatter",
+        "cost": "1",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-185.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 4 to a stunned unit. If it's an enemy, stun all other enemy units here."
+    },
+    {
+        "id": "SFD-014",
+        "name": "Shifting Sands",
+        "cost": "3",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-014.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 3 to an enemy unit at a battlefield. It has -1 :rb_might: this turn."
+    },
+    {
+        "id": "OGN-037",
+        "name": "Shuriman Carapax",
+        "cost": "2",
+        "type": "Gear",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-037.webp",
+        "text": "A unit attached with this gear has [Shield 2]. (+2 :rb_might: while it's a defender.)"
+    },
+    {
+        "id": "OGN-288",
+        "name": "Shuriman Monument",
+        "cost": null,
+        "type": "Battlefield",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-288.webp",
+        "text": "When you defend here, you may pay :rb_rune_order: to buff a unit here."
+    },
+    {
+        "id": "SFD-160",
+        "name": "Single Combat",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Uncommon",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-160.webp",
+        "text": "[Action]_ (Play on your turn or in showdowns.)_Choose a friendly unit and an enemy unit. They deal damage equal to their Mights to each other."
+    },
+    {
+        "id": "SFD-095",
+        "name": "Sion - Awakened",
+        "cost": "7",
+        "type": "Unit",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-095.webp",
+        "text": "When I'm played, stun an enemy unit. When I kill a unit, ready me.",
+        "attack": 7
+    },
+    {
+        "id": "SFD-095A",
+        "name": "Sion - Awakened",
+        "cost": "7",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-095A.webp",
+        "text": "When I'm played, stun an enemy unit. When I kill a unit, ready me.",
+        "attack": 7
+    },
+    {
+        "id": "SFD-193",
+        "name": "Sion - The Undead Juggernaut",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-193.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to choose a unit. It has -2 :rb_might: or +2 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-246",
+        "name": "Sion - The Undead Juggernaut",
+        "cost": null,
+        "type": "Legend",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-246.webp",
+        "text": "When you play a unit with [Assault], you may exhaust me to choose a unit. It has -2 :rb_might: or +2 :rb_might: this turn."
+    },
+    {
+        "id": "SFD-130",
+        "name": "Sion - Unstoppable",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-130.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)I have keyword abilities of all friendly units here.",
+        "attack": 5
+    },
+    {
+        "id": "SFD-130A",
+        "name": "Sion - Unstoppable",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-130A.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)I have keyword abilities of all friendly units here.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-051",
+        "name": "Siphoning Strike",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-051.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Deal 2 to an enemy unit at a battlefield. If it is destroyed this turn, draw 1."
+    },
+    {
+        "id": "OGN-156",
+        "name": "Skar-Skar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Epic",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-156.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)The first time each turn an enemy unit would be moved, stun it instead.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-156a",
+        "name": "Skar-Skar",
+        "cost": "6",
+        "type": "Unit",
+        "rarity": "Showcase",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-156a.webp",
+        "text": "[Shield 2] (+2 :rb_might: while I'm a defender.)The first time each turn an enemy unit would be moved, stun it instead.",
+        "attack": 5
+    },
+    {
+        "id": "OGN-074",
+        "name": "Slay",
+        "cost": "2",
+        "type": "Spell",
+        "rarity": "Rare",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-074.webp",
+        "text": "[Action] (Play on your turn or in showdowns.)Draw 1. You may discard 1. If you do, kill an enemy unit with 3 :rb_might: or less."
+    },
+    {
+        "id": "OGN-034",
+        "name": "Solari Soldier",
+        "cost": "2",
+        "type": "Unit",
+        "rarity": "Common",
+        "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-034.webp",
+        "text": "[Shield]_ (+1 :rb_might: while I'm a defender.)_",
+        "attack": 2
     }
 ]
