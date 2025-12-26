@@ -1,70 +1,101 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface Guild {
+export interface GuildMember {
     id: string;
     name: string;
-    tag: string;
-    description: string;
-    memberCount: number;
-    level: number;
-    xp: number;
-    sharedLibrarySize: number;
+    role: 'LEADER' | 'OFFICER' | 'VETERAN' | 'RECRUIT';
+    contribution: number;
+    joinedAt: number;
 }
 
 interface GuildState {
-    userGuild: Guild | null;
-    availableGuilds: Guild[];
+    guild: {
+        id: string;
+        name: string;
+        tag: string;
+        level: number;
+        xp: number;
+        motd: string;
+        members: GuildMember[];
+        vault: { shards: number; dust: number };
+    } | null;
 
     // Actions
+    createGuild: (name: string, tag: string) => void;
     joinGuild: (guildId: string) => void;
     leaveGuild: () => void;
-    createGuild: (name: string, tag: string, description: string) => void;
-    contributeXP: (val: number) => void;
+    updateMotd: (motd: string) => void;
+    contribute: (shards: number, dust: number) => void;
 }
 
 export const useGuildStore = create<GuildState>()(
     persist(
         (set) => ({
-            userGuild: null,
-            availableGuilds: [
-                { id: 'g1', name: 'Nexus Sentinels', tag: 'NXS', description: 'Defenders of the core.', memberCount: 45, level: 12, xp: 4500, sharedLibrarySize: 1240 },
-                { id: 'g2', name: 'Shadow Syndicate', tag: 'SHD', description: 'We strike from the dark.', memberCount: 120, level: 25, xp: 12000, sharedLibrarySize: 5600 },
-                { id: 'g3', name: 'Rift Walkers', tag: 'RFT', description: 'Exploring the unknown.', memberCount: 22, level: 5, xp: 1200, sharedLibrarySize: 850 },
-            ],
+            guild: null,
 
-            joinGuild: (guildId) => set(state => ({
-                userGuild: state.availableGuilds.find(g => g.id === guildId) || null
-            })),
-
-            leaveGuild: () => set({ userGuild: null }),
-
-            createGuild: (name, tag, description) => set(state => {
-                const newGuild: Guild = {
-                    id: `guild-${Date.now()}`,
+            createGuild: (name, tag) => set({
+                guild: {
+                    id: Math.random().toString(36).substr(2, 9),
                     name,
                     tag,
-                    description,
-                    memberCount: 1,
                     level: 1,
                     xp: 0,
-                    sharedLibrarySize: 0
-                };
-                return {
-                    userGuild: newGuild,
-                    availableGuilds: [...state.availableGuilds, newGuild]
-                };
+                    motd: "Welcome to the Riftbound Alliance!",
+                    members: [{ id: 'user_1', name: 'User', role: 'LEADER', contribution: 0, joinedAt: Date.now() }],
+                    vault: { shards: 0, dust: 0 }
+                }
             }),
 
-            contributeXP: (val) => set(state => {
-                if (!state.userGuild) return state;
-                const newXP = state.userGuild.xp + val;
-                const newLevel = Math.floor(newXP / 1000) + 1;
+            joinGuild: (guildId) => {
+                // Mock join logic
+                set({
+                    guild: {
+                        id: guildId,
+                        name: "DIMENSIONAL OVERLORDS",
+                        tag: "VOID",
+                        level: 42,
+                        xp: 850000,
+                        motd: "FOR THE RIFT!",
+                        members: [
+                            { id: 'user_x', name: 'VoidWalker', role: 'LEADER', contribution: 9999, joinedAt: Date.now() },
+                            { id: 'user_1', name: 'User', role: 'RECRUIT', contribution: 0, joinedAt: Date.now() }
+                        ],
+                        vault: { shards: 12500, dust: 50000 }
+                    }
+                });
+            },
+
+            leaveGuild: () => set({ guild: null }),
+
+            updateMotd: (motd) => set(state => {
+                if (!state.guild) return state;
+                return { guild: { ...state.guild, motd } };
+            }),
+
+            contribute: (shards, dust) => set(state => {
+                if (!state.guild) return state;
+                const userIndex = state.guild.members.findIndex(m => m.name === 'User');
+                if (userIndex === -1) return state;
+
+                const newMembers = [...state.guild.members];
+                newMembers[userIndex].contribution += (shards + (dust * 2));
+
                 return {
-                    userGuild: { ...state.userGuild, xp: newXP, level: newLevel }
+                    guild: {
+                        ...state.guild,
+                        vault: {
+                            shards: state.guild.vault.shards + shards,
+                            dust: state.guild.vault.dust + dust
+                        },
+                        members: newMembers,
+                        xp: state.guild.xp + (shards * 10)
+                    }
                 };
             })
         }),
-        { name: 'riftbound-guild-storage' }
+        {
+            name: 'riftbound-guild-storage'
+        }
     )
 );

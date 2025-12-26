@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { Card } from '@/lib/database.types';
 import { LegacyService } from '@/services/legacy-service';
 import { useUserStore } from '@/store/user-store';
+import { useCosmeticStore } from '@/store/cosmetic-store';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { Trophy, Swords, Zap } from 'lucide-react';
+import clsx from 'clsx';
 
 interface ImmersiveCardProps {
     card: Card;
@@ -43,13 +45,38 @@ export function ImmersiveCard({ card, size = 'md', className, onClick, showStats
         y.set(0);
     };
 
+    const { equippedSkins } = useCosmeticStore();
+    const skin = equippedSkins[card.id] || 'DEFAULT';
+
     return (
         <motion.div
             style={{ rotateX, rotateY, perspective: 1000 }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative w-64 h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
+            className={clsx(
+                "relative w-64 h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer border-2 transition-all duration-500",
+                skin === 'GOLD_BORDER' ? "border-[#c8aa6e] shadow-[0_0_30px_rgba(200,170,110,0.3)]" : "border-transparent",
+                className
+            )}
         >
+            {/* Prism Overlay (Phase 40) */}
+            {skin === 'PRISM' && (
+                <motion.div
+                    className="absolute inset-0 z-40 mix-blend-color-dodge opacity-30 pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff)',
+                        filter: 'hue-rotate(0deg)',
+                    }}
+                    animate={{ filter: 'hue-rotate(360deg)' }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                />
+            )}
+
+            {/* Void Static (Phase 40) */}
+            {skin === 'VOID_STATIC' && (
+                <div className="absolute inset-0 z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(139,92,246,0.1)_100%)] pointer-events-none animate-pulse" />
+            )}
+
             {/* Background Layer (Parallax 1) */}
             <div className="absolute inset-0 bg-black">
                 <img

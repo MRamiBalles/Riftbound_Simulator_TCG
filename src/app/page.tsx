@@ -1,7 +1,7 @@
 import { getCards } from '@/services/card-service';
 import { CardGrid } from '@/components/CardGrid';
 import Link from 'next/link';
-import { Search, Camera, Scan, Sparkles, BookOpen, Repeat, Eye, Box, Zap, Scroll, Wand2, Sword, ShieldCheck, Tv, ShoppingBag } from 'lucide-react';
+import { Search, Sparkles, Trophy, Zap, Sword, Crown, Medal, Shield, BookOpen, Box, Scroll, Wand2, ShieldCheck, Tv, ShoppingBag } from 'lucide-react';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import MissionWidget from '@/components/layout/MissionWidget';
 import clsx from 'clsx';
@@ -35,6 +35,38 @@ export default async function Home() {
             League of Legends TCG Simulator
           </p>
         </header>
+
+        {/* MAIN GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <Link href="/shop" className="group">
+            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/30 transition-all text-center">
+              <Zap size={48} className="text-[#c8aa6e] mb-4 group-hover:scale-110 transition-transform" />
+              <div className="text-xl font-black text-white uppercase tracking-tighter">BOOSTER SHOP</div>
+            </div>
+          </Link>
+
+          <Link href="/arena" className="group">
+            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#0ac8b9]/30 transition-all text-center">
+              <Sword size={48} className="text-[#0ac8b9] mb-4 group-hover:scale-110 transition-transform" />
+              <div className="text-xl font-black text-white uppercase tracking-tighter">DRAFT ARENA</div>
+            </div>
+          </Link>
+
+          <Link href="/battle-pass" className="group">
+            <div className="bg-gradient-to-br from-[#c8aa6e]/10 to-transparent border border-[#c8aa6e]/20 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#f0e6d2]/50 transition-all text-center relative overflow-hidden">
+              <Crown size={48} className="text-[#c8aa6e] mb-4 group-hover:rotate-12 transition-transform" />
+              <div className="text-xl font-black text-white uppercase tracking-tighter">RIFT PASS</div>
+              <div className="absolute top-4 right-4 text-[8px] font-black text-[#c8aa6e] uppercase">S1 ACTIVE</div>
+            </div>
+          </Link>
+
+          <Link href="/collection" className="group">
+            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-white/20 transition-all text-center">
+              <Trophy size={48} className="text-[#add8e6] mb-4" />
+              <div className="text-xl font-black text-white uppercase tracking-tighter">COLLECTION</div>
+            </div>
+          </Link>
+        </div>
 
         {/* Search Bar Placeholder */}
         <div className="relative w-full max-w-md group">
@@ -84,6 +116,52 @@ export default async function Home() {
 
       {/* Main Content */}
       <section className="max-w-7xl mx-auto w-full z-10 mt-12 px-4">
+        {/* MAIN GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
+          <Link href="/shop" className="group">
+            <div className="bg-black/40 border border-white/5 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/30 transition-all text-center">
+              <Zap size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">BOOSTER SHOP</div>
+            </div>
+          </Link>
+
+          <Link href="/arena" className="group">
+            <div className="bg-black/40 border border-white/5 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#0ac8b9]/30 transition-all text-center">
+              <Sword size={32} className="text-[#0ac8b9] mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">DRAFT ARENA</div>
+            </div>
+          </Link>
+
+          <Link href="/tournaments" className="group">
+            <div className="bg-black/40 border border-white/5 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/50 transition-all text-center">
+              <Trophy size={32} className="text-[#c8aa6e] mb-3 group-hover:rotate-12 transition-transform" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">WORLD CUP</div>
+            </div>
+          </Link>
+
+          <Link href="/guilds" className="group">
+            <div className="bg-black/40 border border-white/5 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/50 transition-all text-center">
+              <Shield size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">GUILD HALL</div>
+            </div>
+          </Link>
+
+          <Link href="/battle-pass" className="group">
+            <div className="bg-gradient-to-br from-[#c8aa6e]/10 to-transparent border border-[#c8aa6e]/20 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#f0e6d2]/50 transition-all text-center relative overflow-hidden">
+              <Crown size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">RIFT PASS</div>
+            </div>
+          </Link>
+
+          <Link href="/collection" className="group">
+            <div className="bg-black/40 border border-white/5 p-6 rounded-[2rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-white/20 transition-all text-center">
+              <Medal size={32} className="text-[#add8e6] mb-3" />
+              <div className="text-[10px] font-black text-white uppercase tracking-tighter">COLLECTION</div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Search Bar Placeholder */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-[#c8aa6e] flex items-center gap-2" style={{ fontFamily: 'Beaufort' }}>
             <span className="w-1 h-6 bg-[#0ac8b9] rounded-full inline-block" />
@@ -98,6 +176,6 @@ export default async function Home() {
 
         <CardGrid cards={cards.slice(0, 8)} />
       </section>
-    </main>
+    </main >
   );
 }

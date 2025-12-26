@@ -21,6 +21,7 @@ interface UserState {
     upgradeToPremium: () => void;
     watchAd: () => Promise<void>;
     addWonderShards: (amount: number) => void;
+    addStarDust: (amount: number) => void;
     updateCardLegacy: (cardId: string, stats: { win?: boolean; kill?: boolean }) => void;
     addPackHourglasses: (amount: number) => void;
     registerPackOpening: (hasRare: boolean, count?: number, forcedPity?: number) => void;
