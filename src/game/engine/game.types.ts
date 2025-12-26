@@ -5,7 +5,7 @@ export type PlayerId = 'player' | 'opponent';
 export type Phase = 'Draw' | 'Main' | 'Combat' | 'End';
 export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End'; // More granular if needed
 
-export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration';
+export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration' | 'Quick Attack';
 export type TargetType = 'face' | 'unit' | 'any';
 export type SpellSpeed = 'Burst' | 'Fast' | 'Slow';
 

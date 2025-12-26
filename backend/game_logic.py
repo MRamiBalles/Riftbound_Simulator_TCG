@@ -7,12 +7,14 @@ PlayerId = str
 Phase = str
 
 class Card:
-    def __init__(self, id: str, cost: int, attack: int = 0, health: int = 0, type: str = "Unit"):
+    def __init__(self, id: str, cost: int, attack: int = 0, health: int = 0, type: str = "Unit", keywords: List[str] = None):
         self.id = id
         self.cost = cost
         self.attack = attack
         self.health = health
         self.type = type
+        self.keywords = keywords or []
+        self.is_barrier_active = "Barrier" in self.keywords
 
 class PlayerState:
     def __init__(self, id: PlayerId):
@@ -108,9 +110,54 @@ class PythonCoreEngine:
             card = next((c for c in player.field if c.id == card_id), None)
             if card:
                 opponent_id = "opponent" if p_id == "player" else "player"
-                self.state.players[opponent_id].health -= card.attack
-                if self.state.players[opponent_id].health <= 0:
-                    self.state.winner = p_id
+                opponent = self.state.players[opponent_id]
+                
+                # Check for blockers (simple mock: first unit can block)
+                blocker = next((c for c in opponent.field if c.health > 0), None)
+                
+                if blocker:
+                    # Resolve combat with keywords
+                    self._resolve_unit_combat(card, blocker, opponent_id)
+                else:
+                    # Direct attack
+                    opponent.health -= card.attack
+                    if opponent.health <= 0:
+                        self.state.winner = p_id
+
+    def _resolve_unit_combat(self, attacker: Card, blocker: Card, defender_id: str):
+        attacker_dmg = attacker.attack
+        blocker_dmg = blocker.attack
+
+        # Quick Attack Logic
+        if "Quick Attack" in attacker.keywords:
+            if not blocker.is_barrier_active:
+                blocker.health -= attacker_dmg
+            else:
+                blocker.is_barrier_active = False # Pop barrier
+            
+            # If blocker survives, it strikes back
+            if blocker.health > 0:
+                if not attacker.is_barrier_active:
+                    attacker.health -= blocker_dmg
+                else:
+                    attacker.is_barrier_active = False
+        else:
+            # Simultaneous strike
+            if not blocker.is_barrier_active:
+                blocker.health -= attacker_dmg
+            else:
+                blocker.is_barrier_active = False
+            
+            if not attacker.is_barrier_active:
+                attacker.health -= blocker_dmg
+            else:
+                attacker.is_barrier_active = False
+
+        # Overwhelm check
+        if "Overwhelm" in attacker.keywords and blocker.health < 0:
+            excess = abs(blocker.health)
+            self.state.players[defender_id].health -= excess
+            blocker.health = 0
 
     def _handle_end_turn(self):
         # Switch Player

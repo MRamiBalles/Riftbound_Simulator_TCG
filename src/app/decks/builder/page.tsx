@@ -15,11 +15,20 @@ export default function DeckBuilderPage() {
     const { inventory, setActiveDeck } = useCollectionStore();
     const [deck, setDeck] = useState<Record<string, number>>({});
     const [search, setSearch] = useState('');
+    const [selectedSet, setSelectedSet] = useState<string>('all');
+    const [selectedRarity, setSelectedRarity] = useState<string>('all');
+    const [selectedType, setSelectedType] = useState<string>('all');
 
     // Filter cards for library
     const library = useMemo(() => {
-        return MOCK_CARDS.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
-    }, [search]);
+        return MOCK_CARDS.filter(c => {
+            const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase());
+            const matchesSet = selectedSet === 'all' || (c as any).set_name === selectedSet || (c as any).set_code === selectedSet;
+            const matchesRarity = selectedRarity === 'all' || c.rarity === selectedRarity;
+            const matchesType = selectedType === 'all' || c.type === selectedType;
+            return matchesSearch && matchesSet && matchesRarity && matchesType;
+        }).slice(0, 100); // Limit to 100 for performance
+    }, [search, selectedSet, selectedRarity, selectedType]);
 
     const deckSize = Object.values(deck).reduce((a, b) => a + b, 0);
 
@@ -103,7 +112,7 @@ export default function DeckBuilderPage() {
             <div className="flex-1 flex overflow-hidden">
                 {/* LEFT: LIBRARY */}
                 <div className="flex-1 flex flex-col border-r border-[#7a5c29]/30 bg-[#010a13]/50 backdrop-blur">
-                    <div className="p-4 border-b border-[#7a5c29]/30">
+                    <div className="p-4 border-b border-[#7a5c29]/30 space-y-4">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a09b8c]" />
                             <input
@@ -113,6 +122,50 @@ export default function DeckBuilderPage() {
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="w-full bg-[#1e2328] border border-[#7a5c29] rounded-full py-2 pl-10 pr-4 text-sm text-[#f0e6d2] focus:outline-none focus:border-[#c8aa6e]"
                             />
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                            <select
+                                value={selectedSet}
+                                onChange={(e) => setSelectedSet(e.target.value)}
+                                className="bg-[#1e2328] border border-[#7a5c29] text-xs text-[#a09b8c] rounded px-2 py-1 outline-none focus:border-[#c8aa6e]"
+                            >
+                                <option value="all">All Sets</option>
+                                <option value="Origins">Origins</option>
+                                <option value="Spiritforged">Spiritforged</option>
+                                <option value="Proving Grounds">Proving Grounds</option>
+                            </select>
+
+                            <select
+                                value={selectedRarity}
+                                onChange={(e) => setSelectedRarity(e.target.value)}
+                                className="bg-[#1e2328] border border-[#7a5c29] text-xs text-[#a09b8c] rounded px-2 py-1 outline-none focus:border-[#c8aa6e]"
+                            >
+                                <option value="all">All Rarities</option>
+                                <option value="Common">Common</option>
+                                <option value="Rare">Rare</option>
+                                <option value="Epic">Epic</option>
+                                <option value="Champion">Champion</option>
+                            </select>
+
+                            <select
+                                value={selectedType}
+                                onChange={(e) => setSelectedType(e.target.value)}
+                                className="bg-[#1e2328] border border-[#7a5c29] text-xs text-[#a09b8c] rounded px-2 py-1 outline-none focus:border-[#c8aa6e]"
+                            >
+                                <option value="all">All Types</option>
+                                <option value="Unit">Unit</option>
+                                <option value="Spell">Spell</option>
+                                <option value="Gear">Gear</option>
+                                <option value="Battlefield">Battlefield</option>
+                            </select>
+
+                            <button
+                                onClick={() => { setSearch(''); setSelectedSet('all'); setSelectedRarity('all'); setSelectedType('all'); }}
+                                className="text-[10px] uppercase font-bold text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors"
+                            >
+                                Clear Filters
+                            </button>
                         </div>
                     </div>
 

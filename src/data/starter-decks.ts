@@ -1,7 +1,7 @@
 import { Card } from '@/lib/database.types';
-import OFFICIAL_CARDS_RAW from '@/data/official-cards.json';
+import RIFTBOUND_DATA_RAW from '@/data/riftbound-data.json';
 
-const ALL_CARDS = OFFICIAL_CARDS_RAW as unknown as Card[];
+const ALL_CARDS = RIFTBOUND_DATA_RAW as unknown as Card[];
 
 export interface StarterDeck {
     id: string;

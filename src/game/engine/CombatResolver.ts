@@ -60,47 +60,66 @@ export class CombatResolver {
         result: CombatResult,
         defenderId: PlayerId
     ) {
-        // Attacker strikes Blocker
-        const attackDamage = this.calculateStrikingDamage(attacker);
-        const blockDamage = this.calculateStrikingDamage(blocker);
+        const attackerId = attacker.ownerId as PlayerId;
+        const attackerHasQuickAttack = attacker.keywords.includes('Quick Attack');
+        const attackerDamage = this.calculateStrikingDamage(attacker);
+        const blockerDamage = this.calculateStrikingDamage(blocker);
 
-        // Barrier checks logic could go here
+        // 1. ATTACKER STRIKES FIRST (Quick Attack Logic)
+        let blockerDiedToQuickAttack = false;
 
-        // Attacker deals damage to Blocker
-        result.damageEvents.push({
-            sourceId: attacker.instanceId,
-            targetId: blocker.instanceId,
-            amount: attackDamage
-        });
+        // Apply Attacker Damage to Blocker
+        const actualAttackDamage = blocker.isBarrierActive ? 0 : attackerDamage;
+        if (blocker.isBarrierActive && attackerDamage > 0) {
+            result.damageEvents.push({
+                sourceId: attacker.instanceId,
+                targetId: blocker.instanceId,
+                amount: 0, // Visual feedback of barrier pop
+            });
+            // Note: In a real engine, we'd clear the barrier flag here.
+            // For the resolver, we just don't deal damage.
+        } else if (attackerDamage > 0) {
+            result.damageEvents.push({
+                sourceId: attacker.instanceId,
+                targetId: blocker.instanceId,
+                amount: attackerDamage
+            });
+            if (blocker.currentHealth <= attackerDamage) {
+                blockerDiedToQuickAttack = true;
+                result.deadUnits.push(blocker.instanceId);
 
-        // Blocker strikes back (unless attacker has Quick Attack and kills blocker first - simplified for now simultaneous)
-        result.damageEvents.push({
-            sourceId: blocker.instanceId,
-            targetId: attacker.instanceId,
-            amount: blockDamage
-        });
-
-        // Check death (logic should be handled by engine applying these events, but we can predict)
-        if (blocker.currentHealth <= attackDamage) {
-            result.deadUnits.push(blocker.instanceId);
-
-            // Overwhelm Check
-            if (attacker.keywords.includes('Overwhelm')) {
-                const excess = attackDamage - blocker.currentHealth;
-                if (excess > 0) {
-                    result.nexusDamage[defenderId] += excess;
-                    result.damageEvents.push({
-                        sourceId: attacker.instanceId,
-                        targetId: defenderId, // Special ID for nexus
-                        amount: excess,
-                        isOverwhelm: true
-                    });
+                // Overwhelm Logic
+                if (attacker.keywords.includes('Overwhelm')) {
+                    const excess = attackerDamage - blocker.currentHealth;
+                    if (excess > 0) {
+                        result.nexusDamage[defenderId] += excess;
+                        result.damageEvents.push({
+                            sourceId: attacker.instanceId,
+                            targetId: defenderId,
+                            amount: excess,
+                            isOverwhelm: true
+                        });
+                    }
                 }
             }
         }
 
-        if (attacker.currentHealth <= blockDamage) {
-            result.deadUnits.push(attacker.instanceId);
+        // 2. BLOCKER STRIKES BACK
+        // Only strikes if it didn't die to a Quick Attack and it has attack power
+        const canBlockerStrike = !blockerDiedToQuickAttack && blockerDamage > 0;
+
+        if (canBlockerStrike) {
+            const actualBlockDamage = attacker.isBarrierActive ? 0 : blockerDamage;
+
+            result.damageEvents.push({
+                sourceId: blocker.instanceId,
+                targetId: attacker.instanceId,
+                amount: actualBlockDamage
+            });
+
+            if (!attacker.isBarrierActive && attacker.currentHealth <= blockerDamage) {
+                result.deadUnits.push(attacker.instanceId);
+            }
         }
     }
 

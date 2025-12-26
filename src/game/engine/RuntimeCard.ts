@@ -40,6 +40,9 @@ export interface RuntimeCard extends Card {
 }
 
 export function createRuntimeCard(card: Card, ownerId: string): RuntimeCard {
+    const keywords = (card as any).keywords || [];
+    const hasBarrier = keywords.includes('Barrier');
+
     return {
         ...card,
         instanceId: crypto.randomUUID(),
@@ -49,10 +52,10 @@ export function createRuntimeCard(card: Card, ownerId: string): RuntimeCard {
         currentHealth: card.health || 0,
         maxHealth: card.health || 0,
         hasAttacked: false,
-        summoningSickness: card.type === 'Unit', // Spells don't have sickness
+        summoningSickness: card.type === 'Unit',
         isStunned: false,
-        isBarrierActive: false, // Default false, unless card has Barrier keyword conceptually
-        keywords: [], // Initialize empty or parse from text if advanced
+        isBarrierActive: hasBarrier,
+        keywords: keywords,
         enchantments: []
     };
 }
