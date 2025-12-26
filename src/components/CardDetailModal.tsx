@@ -5,6 +5,7 @@ import { Card } from '@/lib/database.types';
 import { X, ExternalLink, Heart, Share2, Info } from 'lucide-react';
 import clsx from 'clsx';
 import { Card as CardComponent } from './Card';
+import { useCollectionStore } from '@/store/collection-store';
 
 interface CardDetailModalProps {
     card: Card;
