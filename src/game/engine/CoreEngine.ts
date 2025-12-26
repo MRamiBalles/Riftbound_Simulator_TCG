@@ -195,7 +195,7 @@ export class CoreEngine {
         // Move Card
         player.hand.splice(index, 1);
 
-        if (card.type === 'Unit' || card.type === 'Champion') {
+        if ((card.type as any) === 'Unit' || (card.type as any) === 'Champion') {
             card.summoningSickness = !card.keywords?.includes('Rush');
             player.field.push(card);
         } else if (card.type === 'Spell') {

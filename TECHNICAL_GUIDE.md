@@ -1,31 +1,36 @@
 # Riftbound Simulator: Technical Guide
 
 ## 1. Game Engine Architecture
-The engine uses a deterministic, serialized state machine implemented in `CoreEngine.ts`.
+The engine is a purely functional, deterministic state machine implemented in `CoreEngine.ts`. It takes a `SerializedGameState` and an `Action`, returning a new `SerializedGameState`.
 
-### State Management
-- **Serialized State**: The entire game state can be serialized to JSON, allowing for snapshots, undo/redo, and easy sync with the Python backend.
-- **Priority System**: Follows a standard TCG priority loop. Actions can only be applied by the player who has priority.
+### State Parity & Serialization
+To facilitate cross-language AI training (TypeScript <-> Python), the state is designed to be fully serializable. Every entity (unit, player, combat instance) is a plain object. This allows the Python backend to rebuild the exact same game world from a JSON snapshot.
 
-### Mechanics Implementation
-- **Keywords**:
-  - `Rush`: Units can attack on the turn they are played.
-  - `Barrier`: Negates the next instance of damage. Pop logic is handled in `CombatResolver`.
-  - `Quick Attack`: Attacker strikes before the defender in unit combat.
-  - `Overwhelm`: Excess combat damage is dealt to the opposing Nexus.
+### Mechanics Deep-Dive
+- **Combat Resolution**: Handled by a specialized `CombatResolver`. Unlike many TCGs, Riftbound resolution considers protection keywords *sequentially* during unit trades:
+    1.  **Quick Attack Check**: If the attacker has QA, it applies damage first. If the defender dies, it cannot strike back unless it also has specific keywords.
+    2.  **Barrier Interaction**: Barrier negates only the *next* instance of damage. A 0-damage hit (from a 0-attack unit) should not consume Barrier.
+    3.  **Overwhelm Calculation**: `Overwhelm` damage accounts for the defender's current HP at the moment of strike, transmitting the remainder directly to the Nexus.
 
-## 2. AI & Backend Integration
-The project maintains parity between the TypeScript engine (`CoreEngine.ts`) and the Python logic (`game_logic.py`).
+## 2. Store Management (Zustand)
+The application uses a modular store architecture:
+- `useGameStore`: Orchestrates the `CoreEngine`. It translates React UI events into Engine Actions.
+- `useCollectionStore`: Manages persistent user data including the virtual/real inventory and deck configurations.
+- `useMissionStore`: Handles dynamic game objectives and progression tracking.
 
-### Training Workflow
-1.  **Environment**: The Python backend uses `Gymnasium` to expose the game as an RL environment.
-2.  **Learning**: `Stable-Baselines3` agents learn by playing against themselves or heuristic bots.
-3.  **Inference**: Trained models can be served via the FastAPI backend to provide intelligent opponents in the frontend.
+## 3. Intelligent Agents
+### HeuristicBot (Rule-Based)
+The heuristic bot uses a prioritized decision tree:
+1.  **Lethal Check**: Scans for any combination of unblocked units that can reach 0 opponent HP.
+2.  **Profitable Trading**: Evaluates blockers using `Barrier` and `Quick Attack` to find "free" trades where the bot unit survives but the player unit dies.
+3.  **Mana Efficiency**: Prioritizes playing cards that maximize mana usage each turn.
 
-## 3. Data Flow
-- **Scraping**: `scrape-riftbound-cards.js` pulls official data from `riftbound.gg`.
-- **Syncing**: `sync-cards.js` normalizes API data into `riftbound-data.json`.
-- **Hydration**: `starter-decks.ts` hydrates static deck definitions using the full card database.
+### RL Integration
+The `backend/game_logic.py` provides a `Gymnasium` environment. The observation space is a flattened vector of the `SerializedGameState`.
+
+## 4. Advanced Tooling
+- **Card Scanner**: Implements an immersive OCR simulation. It utilizes a multi-stage analysis pipeline to match visual inputs against the local high-fidelity database.
+- **Deck Builder**: Uses list virtualization to handle thousands of permutations while maintaining 60FPS during search and filtering.
 
 ---
-*Created by Antigravity for the Riftbound Development Team.*
+*Document Version: 1.0.4 | Last Audit: 2025-12-26*
