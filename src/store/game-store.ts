@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Card } from '@/lib/database.types';
 import { CoreEngine } from '@/game/engine/CoreEngine';
 import { Action, SerializedGameState } from '@/game/engine/game.types';
+import { AIService } from '@/services/ai-service';
 
 interface GameStoreState extends SerializedGameState {
     engine: CoreEngine | null;
@@ -57,21 +58,9 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
 
     fetchInferenceAction: async () => {
         const state = get();
-        if (state.activePlayer !== 'opponent' || state.winner) return;
-
-        try {
-            const response = await fetch('http://localhost:8000/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ state })
-            });
-
-            if (response.ok) {
-                const action = await response.json();
-                get().performAction(action);
-            }
-        } catch (error) {
-            console.error("Inference server unreachable, falling back to local heuristic.", error);
+        const action = await AIService.getAction(state);
+        if (action) {
+            get().performAction(action);
         }
     }
 }));

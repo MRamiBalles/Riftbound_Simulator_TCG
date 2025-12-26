@@ -96,15 +96,23 @@ export class HeuristicBot implements Bot {
         const opponentField = gameState.players[opponentId].field;
         const potentialAttackers = myUnits.filter((u: RuntimeCard) => !u.hasAttacked && !u.summoningSickness && !u.isStunned);
 
-        // Smart Attack: Units with Quick Attack or Barrier are more likely to attack
-        // even if there are blockers, because they might survive.
+        // Smart Attack: Units with Quick Attack, Barrier, or Lifesteal are prioritized
         const attackers = potentialAttackers.filter((u: RuntimeCard) => {
             const hasProtection = u.isBarrierActive || u.keywords.includes('Quick Attack');
+            const hasLifesteal = u.keywords.includes('Lifesteal');
+            const isTough = u.keywords.includes('Tough');
+
             const strongestOpponent = opponentField.length > 0 ? Math.max(...opponentField.map((o: RuntimeCard) => o.currentAttack)) : 0;
 
             // Attack if protected, or if we are stronger than their strongest unit,
-            // or if they have no board.
-            return hasProtection || u.currentAttack > strongestOpponent || opponentField.length === 0;
+            // or if we have lifesteal and need health, or if they have no board.
+            const needHealth = gameState.players[this.id].health < 15;
+
+            return hasProtection ||
+                (hasLifesteal && needHealth) ||
+                u.currentAttack > strongestOpponent ||
+                isTough ||
+                opponentField.length === 0;
         });
 
         if (attackers.length > 0) {
@@ -132,12 +140,19 @@ export class HeuristicBot implements Bot {
 
             // Try to find a profitable or safe block
             const bestBlocker = availableBlockers.find((b: RuntimeCard) => {
-                const canKillAttacker = b.currentAttack >= attacker.currentHealth;
-                const willSurvive = b.isBarrierActive || b.currentHealth > attacker.currentAttack;
+                const effectiveAttackerPower = Math.max(0, attacker.currentAttack - (b.keywords.includes('Tough') ? 1 : 0));
+                const effectiveBlockerPower = Math.max(0, b.currentAttack - (attacker.keywords.includes('Tough') ? 1 : 0));
+
+                const canKillAttacker = effectiveBlockerPower >= attacker.currentHealth;
+                const willSurvive = b.isBarrierActive || b.currentHealth > effectiveAttackerPower;
 
                 // Prioritize blocks where we survive or kill the attacker
                 return canKillAttacker || willSurvive;
-            }) || availableBlockers[0]; // Fallback to any blocker if we must block (or later decide to chump block)
+            }) || availableBlockers.find(b => {
+                // If we can't find a "good" block, at least minimize nexus damage 
+                // unless the attacker has Overwhelm and our blocker is too small
+                return !attacker.keywords.includes('Overwhelm') || b.currentHealth >= attacker.currentAttack;
+            });
 
             if (bestBlocker) {
                 blockers[bestBlocker.instanceId] = attackerId;

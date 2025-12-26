@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import EnergyWidget from '@/components/layout/EnergyWidget';
+import { ManaCurveChart } from '@/components/deck-builder/ManaCurveChart';
 
 export default function DeckBuilderPage() {
     const router = useRouter();
@@ -202,6 +203,10 @@ export default function DeckBuilderPage() {
                 <div className="w-80 md:w-96 bg-[#091428] flex flex-col border-l border-[#c8aa6e]/30 shadow-2xl">
                     <div className="p-4 bg-[#1e2328] border-b border-[#c8aa6e]/30">
                         <h2 className="text-[#c8aa6e] font-bold uppercase tracking-widest text-sm">Deck Contents</h2>
+                    </div>
+
+                    <div className="px-4 py-2 bg-black/20">
+                        <ManaCurveChart deck={deck} cards={MOCK_CARDS} />
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 space-y-2">

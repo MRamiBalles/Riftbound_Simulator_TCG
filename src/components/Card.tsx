@@ -4,6 +4,7 @@ import { Card as CardType } from '@/lib/database.types';
 import clsx from 'clsx';
 import { Shield, Sword, Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import { CardTooltip } from './CardTooltip';
 
 interface CardProps {
     card: CardType;
@@ -22,6 +23,7 @@ export function Card({ card, onClick }: CardProps) {
                 isChampion && "border-[#c8aa6e] shadow-[0_0_20px_rgba(200,170,110,0.2)]"
             )}
         >
+            <CardTooltip keywords={(card as any).keywords || []} />
             {/* Background Image Layer */}
             <div className="absolute inset-0 z-0">
                 <div className="relative w-full h-full">
