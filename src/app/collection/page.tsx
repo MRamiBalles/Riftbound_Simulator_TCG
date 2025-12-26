@@ -8,13 +8,13 @@ import { useCollectionStore } from '@/store/collection-store';
 import EnergyWidget from '@/components/layout/EnergyWidget';
 import Link from 'next/link';
 import { generateCSV, generateJSON, downloadFile } from '@/services/export-service';
-import { Download, FileText, FileCode } from 'lucide-react';
+import { Download, FileText, FileCode, Library, Star } from 'lucide-react';
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';
 import clsx from 'clsx';
 import CardDetailModal from '@/components/CardDetailModal';
 
 export default function CollectionPage() {
-    const { inventory, getTotalCards } = useCollectionStore();
+    const { inventory, getTotalCards, showcase, setShowcaseSlot } = useCollectionStore();
     const [filterOwned, setFilterOwned] = useState(false);
     const [selectedSet, setSelectedSet] = useState<string | 'ALL'>('ALL');
     const [viewingCard, setViewingCard] = useState<typeof MOCK_CARDS[0] | null>(null);
@@ -105,30 +105,50 @@ export default function CollectionPage() {
                             {filterOwned ? 'SHOW ALL CARDS' : 'SHOW ONLY OWNED'}
                         </button>
 
-                        {/* Export Actions */}
-                        <button
-                            onClick={() => handleExport('csv')}
-                            className="btn-hextech px-4 py-2 text-xs flex items-center gap-2"
-                            title="Export as CSV (Excel)"
-                        >
-                            <FileText className="w-4 h-4" />
-                            CSV
-                        </button>
-                        <button
-                            onClick={() => handleExport('json')}
-                            className="btn-hextech px-4 py-2 text-xs flex items-center gap-2 border-[#0ac8b9] text-[#0ac8b9]"
-                            title="Backup as JSON"
-                        >
-                            <FileCode className="w-4 h-4" />
-                            JSON
-                        </button>
-
                         <Link href="/decks" className="btn-hextech px-6 py-2 text-xs">
-                            BACK
+                            THE ARMORY
                         </Link>
                     </div>
                 </div>
             </header>
+
+            {/* SHOWCASE SECTION */}
+            <section className="max-w-7xl mx-auto px-4 py-12">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#c8aa6e]/30 to-transparent" />
+                    <h2 className="text-[#c8aa6e] text-sm font-black uppercase tracking-[0.3em]" style={{ fontFamily: 'Beaufort' }}>Pinned Showcase</h2>
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#c8aa6e]/30 to-transparent" />
+                </div>
+
+                <div className="grid grid-cols-3 md:grid-cols-9 gap-4 px-2">
+                    {showcase.map((cardId, i) => {
+                        const card = cardId ? MOCK_CARDS.find(c => c.id === cardId) : null;
+                        return (
+                            <div
+                                key={i}
+                                className="aspect-[2/3] rounded-lg border border-white/5 bg-[#091428]/40 hover:border-[#0ac8b9]/40 transition-all flex flex-col items-center justify-center group overflow-hidden relative"
+                            >
+                                {card ? (
+                                    <div
+                                        onClick={() => setViewingCard(card)}
+                                        className="w-full h-full cursor-pointer hover:scale-110 transition-transform duration-500"
+                                    >
+                                        <img src={card.image_url} alt={card.name} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+                                            <span className="text-[8px] font-black uppercase text-[#0ac8b9]">{card.name}</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center opacity-10">
+                                        <Library className="w-6 h-6 mb-2" />
+                                        <span className="text-[8px] font-black uppercase">Slot {i + 1}</span>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </section>
 
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-4 max-w-7xl mx-auto pb-24 px-2">
                 {filteredCards.map(card => {

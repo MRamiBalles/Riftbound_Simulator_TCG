@@ -125,6 +125,26 @@ export default function CardDetailModal({ card, onClose, virtualCount = 0, realC
                             <ExternalLink className="w-4 h-4" /> TCGPlayer
                         </button>
                     </div>
+
+                    <div className="pt-4 border-t border-white/5">
+                        <h4 className="text-[10px] font-black text-[#a09b8c] uppercase tracking-widest mb-3">Feature in Showcase</h4>
+                        <div className="grid grid-cols-9 gap-2">
+                            {Array.from({ length: 9 }).map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => useCollectionStore.getState().setShowcaseSlot(i, card.id)}
+                                    className={clsx(
+                                        "aspect-square rounded border text-[10px] font-bold flex items-center justify-center transition-all",
+                                        useCollectionStore.getState().showcase[i] === card.id
+                                            ? "bg-[#0ac8b9] text-[#010a13] border-[#0ac8b9]"
+                                            : "border-white/10 text-white/40 hover:border-[#c8aa6e]/50 hover:text-[#c8aa6e]"
+                                    )}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
