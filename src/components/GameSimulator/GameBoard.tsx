@@ -19,7 +19,9 @@ export function GameBoard() {
         phase,
         turn,
         initGame,
-        performAction
+        performAction,
+        log,
+        winner
     } = useGameStore();
 
     const player = players.player;
@@ -27,7 +29,7 @@ export function GameBoard() {
 
     // AI Integration
     useEffect(() => {
-        if (activePlayer === 'opponent' && !players.opponent.winner && !players.player.winner) {
+        if (activePlayer === 'opponent' && !winner) {
             const bot = new HeuristicBot('opponent');
 
             // Allow state to update and UI to render "Opponent Turn" before thinking
@@ -166,7 +168,7 @@ export function GameBoard() {
                                 onClick={() => handleCardClick(card.instanceId, 'field')}
                                 className={clsx(
                                     "w-32 transform transition-transform cursor-pointer relative group",
-                                    card.canAttack ? "hover:scale-110 ring-2 ring-yellow-500 rounded-lg" : "hover:scale-105"
+                                    (!card.summoningSickness && !card.hasAttacked) ? "hover:scale-110 ring-2 ring-yellow-500 rounded-lg" : "hover:scale-105"
                                 )}
                             >
                                 <Card card={card} />
@@ -245,6 +247,30 @@ export function GameBoard() {
                     </div>
 
                 </div>
+            </div>
+
+            {/* --- BATTLE LOG (Right Side Panel) --- */}
+            <div className="absolute top-24 right-6 w-64 max-h-[40vh] z-30 bg-black/60 backdrop-blur-md border border-[#c8aa6e]/30 rounded-xl overflow-hidden flex flex-col shadow-2xl">
+                <div className="bg-[#1e2328] px-4 py-2 border-b border-[#c8aa6e]/30 flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-[#c8aa6e] uppercase tracking-widest">Battle Log</span>
+                    <div className="flex gap-1">
+                        <div className="w-1 h-1 rounded-full bg-[#0ac8b9] animate-pulse" />
+                        <div className="w-1 h-1 rounded-full bg-[#0ac8b9] opacity-50" />
+                    </div>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-thin scrollbar-thumb-[#7a5c29]/50">
+                    {log.length === 0 && <div className="text-[#a09b8c] text-[10px] italic">Waiting for actions...</div>}
+                    {[...log].reverse().map((entry, i) => (
+                        <div key={i} className={clsx(
+                            "text-[11px] leading-relaxed border-l-2 pl-2 transition-all hover:bg-white/5",
+                            entry.includes('[player]') ? "text-cyan-400 border-cyan-700" :
+                                entry.includes('[opponent]') ? "text-red-400 border-red-700" : "text-[#a09b8c] border-[#7a5c29]"
+                        )}>
+                            {entry.replace(/\[player\]|\[opponent\]/g, '')}
+                        </div>
+                    ))}
+                </div>
+                <div className="h-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
             </div>
         </div>
     );
