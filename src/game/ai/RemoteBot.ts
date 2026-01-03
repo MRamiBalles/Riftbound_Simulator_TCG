@@ -2,8 +2,10 @@ import { Action, SerializedGameState, PlayerId } from '../engine/game.types';
 import { Bot } from './BotInterface';
 
 /**
- * A bit that communicates with an external Python inference server.
- * Default URL: http://localhost:8000
+ * A bot implementation that acts as a proxy to an external Python inference server.
+ * Default Endpoint: POST http://localhost:8000/predict
+ * 
+ * Used for interfacing with complex RL models trained via Stable-Baselines3.
  */
 export class RemoteBot implements Bot {
     id: PlayerId;
@@ -16,6 +18,12 @@ export class RemoteBot implements Bot {
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * Sends the current game state to the external server.
+     * Returns the Action dictated by the remote model.
+     * 
+     * @returns The Action object or null if the server is unreachable (triggers fallback).
+     */
     async decideAction(gameState: SerializedGameState): Promise<Action | null> {
         try {
             const response = await fetch(`${this.baseUrl}/predict`, {

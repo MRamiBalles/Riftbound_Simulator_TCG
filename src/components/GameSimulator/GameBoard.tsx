@@ -142,7 +142,33 @@ export const GameBoard: React.FC = () => {
         performAction(action);
     };
 
-    const confirmMulligan = () => {
+    const confirmMulligan = (e: React.MouseEvent) => {
+        // Visual Burst
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'absolute w-2 h-2 bg-[#c8aa6e] rounded-full pointer-events-none z-[100]';
+            particle.style.left = `${centerX}px`;
+            particle.style.top = `${centerY}px`;
+            document.body.appendChild(particle);
+
+            const angle = (i / 12) * Math.PI * 2;
+            const velocity = 100;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+
+            particle.animate([
+                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+            ], {
+                duration: 600,
+                easing: 'cubic-bezier(0, .9, .57, 1)'
+            }).onfinish = () => particle.remove();
+        }
+
         handleAction({
             type: 'SELECT_MULLIGAN',
             playerId: 'player',

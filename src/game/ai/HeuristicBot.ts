@@ -208,6 +208,15 @@ export class HeuristicBot implements Bot {
         return null;
     }
 
+    /**
+     * Intelligent Mulligan Logic:
+     * - Preserves Champions and powerful Legends (Win Conditions).
+     * - Keeps early game drops (Cost <= 3) to ensure a playable curve.
+     * - Discards high-cost units to fish for better opening options.
+     * 
+     * @param gameState - The current state of the Mulligan phase.
+     * @returns A SELECT_MULLIGAN action with the list of card instanceIds to replace.
+     */
     private decideMulligan(gameState: SerializedGameState): Action {
         const player = gameState.players[this.id];
         const hand = player.hand;

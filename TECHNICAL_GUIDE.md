@@ -26,7 +26,15 @@ The heuristic bot uses a prioritized decision tree:
 3.  **Mana Efficiency**: Prioritizes playing cards that maximize mana usage each turn.
 
 ### RL Integration
+### RL Integration
 The `backend/game_logic.py` provides a `Gymnasium` environment. The observation space is a flattened vector of the `SerializedGameState`.
+
+### 3.1 Multi-Protocol AI Interface
+The `AIService` now supports a **Hybrid-Remote** architecture allowing seamless switching between local and remote intelligence:
+
+- **Local Heuristic**: Runs entirely in-browser. Capable of evaluating "Smart Mulligan" decisions by optimizing for curve (keeping cards <= 3 Mana) while preserving Champions.
+- **Remote Neural**: Connects to a Python inference server (default: `localhost:8000`). It sends the `SerializedGameState` and receives an action.
+- **Failover Safety**: If the Remote bot fails or times out, the system automatically falls back to the Local Heuristic bot for that turn, ensuring gameplay continuity.
 
 ## 4. Advanced Tooling
 - **Card Scanner**: Implements an immersive OCR simulation. It utilizes a multi-stage analysis pipeline to match visual inputs against the local high-fidelity database.
