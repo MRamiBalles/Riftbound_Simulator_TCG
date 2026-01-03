@@ -15,8 +15,6 @@ export default function EnergyWidget() {
         setIsMounted(true);
     }, []);
 
-    if (!isMounted) return null;
-
     // Update timer every second
     useEffect(() => {
         const interval = setInterval(() => {
@@ -38,6 +36,8 @@ export default function EnergyWidget() {
         }, 1000);
         return () => clearInterval(interval);
     }, [currentEnergy, lastEnergyUpdate]);
+
+    if (!isMounted) return null;
 
     return (
         <div className="absolute top-4 right-4 z-50 flex flex-col items-end">
