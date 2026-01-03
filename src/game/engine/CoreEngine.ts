@@ -77,6 +77,7 @@ export class CoreEngine {
             log: [],
             combat: null,
             stack: [],
+            seed: Math.floor(Math.random() * 1000000), // Default random seed
             actionHistory: []
         };
     }
@@ -96,11 +97,27 @@ export class CoreEngine {
     }
 
     private initializePlayer(id: PlayerId, deck: Card[]) {
-        // Shuffle deck
-        const shuffled = [...deck].sort(() => Math.random() - 0.5);
+        // Deterministic shuffle
+        const shuffled = this.deterministicShuffle([...deck]);
         const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
+    }
+
+    private deterministicShuffle<T>(array: T[]): T[] {
+        const result = [...array];
+        for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(this.nextRandom() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+    }
+
+    private nextRandom(): number {
+        // Linear Congruential Generator (LCG)
+        // a = 1664525, c = 1013904223, m = 2^32
+        this.state.seed = (1664525 * this.state.seed + 1013904223) % 4294967296;
+        return this.state.seed / 4294967296;
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -193,8 +210,8 @@ export class CoreEngine {
             // Shuffle old ones back
             const deck = this.decks[playerId];
             deck.push(...cardsToSwap);
-            deck.sort(() => Math.random() - 0.5);
-            player.deckCount = deck.length;
+            this.decks[playerId] = this.deterministicShuffle(deck);
+            player.deckCount = this.decks[playerId].length;
         }
 
         // track which players have mulliganed
@@ -307,10 +324,18 @@ export class CoreEngine {
         const otherPlayer = playerId === 'player' ? 'opponent' : 'player';
 
         if (this.state.stack.length > 0) {
-            // If there's a stack, passing resolves it
-            this.state.log.push(`${playerId} passed. Resolving stack...`);
-            this.resolveStack();
-            this.state.priority = this.state.activePlayer; // Priority back to active player
+            // If there's a stack, passing is checking if both passed
+            if (this.state.priority === this.state.activePlayer) {
+                // Active player passes, priority to opponent to react
+                this.state.priority = otherPlayer;
+                this.state.log.push(`${playerId} passes priority on stack to ${otherPlayer}`);
+            } else {
+                // Non-active player passes after active player passed -> Resolve TOP item
+                this.state.log.push(`Both players passed. Resolving top of stack.`);
+                this.resolveStackTop();
+                // After resolution, priority returns to active player to continue or react
+                this.state.priority = this.state.activePlayer;
+            }
         } else {
             // No stack, passing might end turn or pass priority
             if (this.state.priority === this.state.activePlayer) {
@@ -325,21 +350,54 @@ export class CoreEngine {
         }
     }
 
-    private resolveStack() {
-        // LIFO order (Last In First Out)
-        while (this.state.stack.length > 0) {
-            const item = this.state.stack.pop();
-            if (!item) break;
+    private resolveStackTop() {
+        if (this.state.stack.length === 0) return;
 
-            const player = this.state.players[item.playerId];
-            // Find the runtime card (it might be in a temporary "limbo" if we want to be strict,
-            // but for now let's assume it was just cast and we can find it by its instanceId
-            // in the player's potential source of spell data).
-            // Simplified: we'll just log and apply a generic effect for the prototype.
-            this.state.log.push(`Stack: Resolving spell from ${item.playerId}`);
+        const item = this.state.stack.pop();
+        if (!item) return;
 
-            // In a real implementation we would get the Card logic here
-            // this.resolveSpell(card, item.targetId);
+        const player = this.state.players[item.playerId];
+        const card = player.hand.find(c => c.instanceId === item.cardId) ||
+            player.field.find(c => c.instanceId === item.cardId) ||
+            // Fallback check in graveyard if it was moved there already
+            player.graveyard.find(c => c.instanceId === item.cardId);
+
+        this.state.log.push(`Stack: Resolving ${item.cardId} from ${item.playerId}`);
+
+        // Find the card logic (Prototype: if 2 damage to target)
+        if (item.targetId) {
+            this.applyTargetEffect(item.cardId, item.targetId);
+        }
+
+        // Clean up: move to graveyard if it's a spell and not there already
+        // (In handlePlayCard we might have left it in a limbo state, let's assume it moves to graveyard now)
+        const spellInHandIdx = player.hand.findIndex(c => c.instanceId === item.cardId);
+        if (spellInHandIdx !== -1) {
+            const spell = player.hand.splice(spellInHandIdx, 1)[0];
+            player.graveyard.push(spell);
+        }
+    }
+
+    private applyTargetEffect(sourceId: string, targetId: string) {
+        if (targetId === 'opponent' || targetId === 'player') {
+            const targetPlayer = this.state.players[targetId as PlayerId];
+            targetPlayer.health -= 2; // Default spell damage
+            this.state.log.push(`Effect dealt 2 damage to ${targetId}`);
+        } else {
+            // Target is a unit
+            ['player', 'opponent'].forEach(pid => {
+                const p = this.state.players[pid as PlayerId];
+                const unit = p.field.find(u => u.instanceId === targetId);
+                if (unit) {
+                    unit.currentHealth -= 2;
+                    this.state.log.push(`Effect dealt 2 damage to unit: ${unit.name}`);
+                    if (unit.currentHealth <= 0) {
+                        this.state.log.push(`${unit.name} has been destroyed by spell.`);
+                        p.field = p.field.filter(u => u.instanceId !== targetId);
+                        p.graveyard.push(unit);
+                    }
+                }
+            });
         }
     }
 
@@ -383,8 +441,33 @@ export class CoreEngine {
     private handleDeclareBlockers(action: Action) {
         if (!this.state.combat || this.state.combat.step !== 'declare_blockers') return;
 
+        const defenderId = action.playerId;
+        const attackerId = defenderId === 'player' ? 'opponent' : 'player';
+        const defenderField = this.state.players[defenderId].field;
+        const attackerField = this.state.players[attackerId].field;
+
+        const validatedBlockers: Record<string, string> = {};
+
         if (action.blockers) {
-            this.state.combat.blockers = action.blockers;
+            Object.entries(action.blockers).forEach(([blockerInstanceId, attackerInstanceId]) => {
+                const blocker = defenderField.find(u => u.instanceId === blockerInstanceId);
+                const attacker = attackerField.find(u => u.instanceId === attackerInstanceId);
+
+                if (blocker && attacker) {
+                    // ELUSIVE LOGIC: Can only block Elusive if blocker is Elusive.
+                    // Non-Elusive units can be blocked by anyone.
+                    const isAttackerElusive = attacker.keywords.includes('Elusive' as any);
+                    const isBlockerElusive = blocker.keywords.includes('Elusive' as any);
+
+                    if (isAttackerElusive && !isBlockerElusive) {
+                        this.state.log.push(`Invalid block: ${blocker.name} cannot block Elusive ${attacker.name}`);
+                    } else {
+                        validatedBlockers[blockerInstanceId] = attackerInstanceId;
+                    }
+                }
+            });
+
+            this.state.combat.blockers = validatedBlockers;
         }
 
         this.state.combat.step = 'damage';

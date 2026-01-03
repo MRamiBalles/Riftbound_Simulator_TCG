@@ -1,0 +1,36 @@
+{
+    "system": "Hextech",
+    "version": "2.0.0-SOVEREIGN",
+    "tokens": {
+        "colors": {
+            "gold": {
+                "bright": "#f0e6d2",
+                "standard": "#c8aa6e",
+                "dark": "#7a5c29",
+                "deep": "#463714"
+            },
+            "blue": {
+                "magic": "#0ac8b9",
+                "deep": "#091428",
+                "action": "#1e9ec5"
+            },
+            "background": {
+                "void": "#010a13",
+                "metal": "#1e2328"
+            }
+        },
+        "typography": {
+            "heading": "Beaufort",
+            "body": "Spiegel",
+            "mono": "Space Mono"
+        },
+        "spacing": {
+            "card_aspect": "2/3",
+            "gutter": "1rem"
+        },
+        "shaders": {
+            "prismatic": "conic-gradient(from 0deg, #c8aa6e, #f0e6d2, #0ac8b9, #c8aa6e)",
+            "noxus_surge": "radial-gradient(circle, rgba(200,0,0,0.2) 0%, transparent 70%)"
+        }
+    }
+}

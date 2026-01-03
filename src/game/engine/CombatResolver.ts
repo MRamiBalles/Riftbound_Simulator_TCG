@@ -80,27 +80,33 @@ export class CombatResolver {
         const applyStrike = (striker: RuntimeCard, target: RuntimeCard, dmg: number, sId: PlayerId, tId: PlayerId) => {
             if (result.deadUnits.includes(striker.instanceId)) return;
             const targetPreHP = target.currentHealth;
+            let actualDmgToUnit = dmg;
 
             if (target.isBarrierActive || target.keywords.includes('Barrier' as any)) {
                 result.poppedBarriers.push(target.instanceId);
                 result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: 0, isCombat: true });
                 target.isBarrierActive = false;
-                return;
+                actualDmgToUnit = 0; // The unit takes 0, but we still calculate Overwhelm below
+            } else {
+                if (target.keywords.includes('Tough' as any)) actualDmgToUnit = Math.max(0, actualDmgToUnit - 1);
+                target.currentHealth -= actualDmgToUnit;
+                result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: actualDmgToUnit, isCombat: true });
             }
 
-            let actual = dmg;
-            if (target.keywords.includes('Tough' as any)) actual = Math.max(0, actual - 1);
-
-            target.currentHealth -= actual;
-            result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: actual, isCombat: true });
-            if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sId] += actual;
+            if (striker.keywords.includes('Lifesteal' as any)) {
+                // Lifesteal heals for the amount of damage that WOULD have been dealt (atk power)
+                // In Riftbound/LoR, Lifesteal hits for the unit's power regardless of barrier.
+                result.lifestealHeal[sId] += dmg;
+            }
 
             if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
-                const excess = Math.max(0, actual - targetPreHP);
+                // Overwhelm calculates based on what SHOULD HAVE been dealt vs current HP
+                const excess = Math.max(0, dmg - targetPreHP);
                 if (excess > 0) {
                     result.nexusDamage[defenderId] += excess;
                     result.damageEvents.push({ sourceId: striker.instanceId, targetId: defenderId, amount: excess, isOverwhelm: true });
-                    if (striker.keywords.includes('Lifesteal' as any)) result.lifestealHeal[sId] += excess;
+                    // Lifesteal on excess is handled by the initial 'dmg' addition above if it counts total striking power,
+                    // but usually it's power + excess? No, power is the total.
                 }
             }
 
