@@ -26,12 +26,13 @@ export class RemoteBot implements Bot {
      */
     async decideAction(gameState: SerializedGameState): Promise<Action | null> {
         try {
-            const response = await fetch(`${this.baseUrl}/predict`, {
+            // Updated to match backend/main.py endpoint (/act) and expected flattened payload
+            const response = await fetch(`${this.baseUrl}/act`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ state: gameState })
+                body: JSON.stringify(gameState) // Simplified payload: Send state as root object
             });
 
             if (!response.ok) {

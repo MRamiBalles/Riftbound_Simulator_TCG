@@ -15,8 +15,8 @@
 2.  **Phase 2-3**: High-Fidelity Hextech UI & Audio.
 3.  **Phase 4**: Persistence & Collection Hub (LocalStorage).
 4.  **Phase 5-6**: Multi-Protocol AI & Visual transitions. [COMPLETED]
-5.  **Phase 7**: RL Data Factory & State Vectorization.
-6.  **Phase 8**: Replay Theater & URL Serialization.
+5.  **Phase 7**: Sovereign Polish & Documentation. [COMPLETED]
+6.  **Phase 8**: Sovereign Visual Aesthetics. [COMPLETED]
 7.  **Phase 9**: Neural Evolution (In-browser ONNX).
 8.  **Phase 10**: The Cloud Armory (Supabase Scaling).
 9.  **Phase 11**: Rift Arena (Live WebSocket PvP).
