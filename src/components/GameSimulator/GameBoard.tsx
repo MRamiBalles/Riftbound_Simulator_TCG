@@ -87,7 +87,13 @@ export const GameBoard: React.FC = () => {
 
     // AI Integration
     useEffect(() => {
-        if (activePlayer === 'opponent' && !winner && phase === 'Main' && !isMultiplayerMode) {
+        const shouldFetch = !winner && !isMultiplayerMode && (
+            (activePlayer === 'opponent' && phase === 'Main') ||
+            (phase === 'Mulligan' && activePlayer === 'opponent') || // Actually activePlayer doesn't switch in Mulligan, but we want AI to act.
+            (phase === 'Mulligan') // AI should just try to act in Mulligan.
+        );
+
+        if (shouldFetch) {
             const timer = setTimeout(async () => {
                 await fetchInferenceAction();
             }, 1000);

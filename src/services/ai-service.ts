@@ -17,7 +17,9 @@ export class AIService {
      * Gets a move based on the current AIMode.
      */
     public static async getAction(state: SerializedGameState): Promise<Action | null> {
-        if (state.activePlayer !== 'opponent' || state.winner) return null;
+        if (state.winner) return null;
+        // Allow action if it's opponent's turn OR if it's Mulligan phase (simultaneous)
+        if (state.activePlayer !== 'opponent' && state.phase !== 'Mulligan') return null;
 
         let action: Action | null = null;
         let avgConfidence = 0.5;

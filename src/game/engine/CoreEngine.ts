@@ -186,6 +186,11 @@ export class CoreEngine {
         if (this.state.phase !== 'Mulligan') return;
 
         const playerId = action.playerId;
+        if (this.mulliganStatus[playerId]) {
+            console.warn(`[CoreEngine] Player ${playerId} already mulliganed.`);
+            return;
+        }
+
         const player = this.state.players[playerId];
         const swapIds = action.mulliganCards || [];
 
@@ -217,10 +222,8 @@ export class CoreEngine {
         // track which players have mulliganed
         this.mulliganStatus[playerId] = true;
 
-        // Simple AI Mulligan (AI never swaps for now, but mark it done)
-        if (playerId === 'player') {
-            this.mulliganStatus['opponent'] = true;
-        }
+        // track which players have mulliganed
+        this.mulliganStatus[playerId] = true;
 
         if (this.mulliganStatus.player && this.mulliganStatus.opponent) {
             this.state.log.push(`Mulligan Phase Complete`);

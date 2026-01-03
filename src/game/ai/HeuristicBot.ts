@@ -44,6 +44,11 @@ export class HeuristicBot implements Bot {
             }
         }
 
+        // 0. MULLIGAN PHASE
+        if (gameState.phase === 'Mulligan') {
+            return this.decideMulligan(gameState);
+        }
+
         // 1. COMBAT PHASE LOGIC
         if (gameState.phase === 'Combat') {
             if (gameState.combat?.step === 'declare_blockers' && gameState.activePlayer !== this.id) {
@@ -201,5 +206,29 @@ export class HeuristicBot implements Bot {
             };
         }
         return null;
+    }
+
+    private decideMulligan(gameState: SerializedGameState): Action {
+        const player = gameState.players[this.id];
+        const hand = player.hand;
+        const toReplace: string[] = [];
+
+        hand.forEach((card: RuntimeCard) => {
+            // Keep Champions (or Legends)
+            if (card.rarity === 'Champion' || card.type === 'Legend' as any) return;
+
+            // Keep Early Drops (Cost <= 3)
+            if (card.currentCost <= 3) return;
+
+            // Otherwise, replace high cost cards to smooth curve
+            toReplace.push(card.instanceId);
+        });
+
+        console.log(`[Bot] Mulligan: Replacing ${toReplace.length} cards.`);
+        return {
+            type: 'SELECT_MULLIGAN',
+            playerId: this.id,
+            mulliganCards: toReplace
+        };
     }
 }

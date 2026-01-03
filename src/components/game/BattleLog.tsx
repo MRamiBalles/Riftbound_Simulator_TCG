@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { Terminal, Shield, Zap, Sword, Heart } from 'lucide-react';
+import { Terminal, Shield, Zap, Sword, Heart, RefreshCcw } from 'lucide-react';
 
 interface BattleLogProps {
     logs: string[];
@@ -21,6 +21,7 @@ export const BattleLog: React.FC<BattleLogProps> = ({ logs }) => {
         if (text.includes('Lifesteal') || text.includes('healed')) return <Heart className="w-4 h-4 text-pink-400" />;
         if (text.includes('damage') || text.includes('played unit')) return <Sword className="w-4 h-4 text-red-400" />;
         if (text.includes('cast') || text.includes('spell')) return <Zap className="w-4 h-4 text-cyan-400" />;
+        if (text.includes('Mulligan') || text.includes('Replacing')) return <RefreshCcw className="w-4 h-4 text-amber-400" />;
         return <Terminal className="w-4 h-4 text-slate-400" />;
     };
 
