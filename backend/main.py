@@ -3,12 +3,19 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import uvicorn
 import logging
+from agent import agent
+import numpy as np
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("RiftboundNeural")
 
 app = FastAPI(title="Riftbound Neural Nexus", version="1.0.0")
+
+@app.on_event("startup")
+def startup_event():
+    logger.info("Initializing Neural Agent...")
+    agent.initialize()
 
 # --- Pydantic Models Matching SerializedGameState ---
 
@@ -81,9 +88,17 @@ def predict_action(state: GameStateModel):
     try:
         logger.info(f"Inferencing for Turn {state.turn}, Phase {state.phase} | Active: {state.activePlayer}")
         
-        # TODO: Integrate with backend/agent.py here
+        # Vectorize state (Mock vectorization for Phase 9)
+        # In a real scenario, this would convert GameStateModel to np.array
+        mock_observation = np.zeros(256, dtype=np.float32) 
         
-        # Fallback Heuristic / Pass logic for connectivity testing
+        # Predict action index
+        action_idx = agent.predict(mock_observation)
+        logger.info(f"Agent predicted action index: {action_idx}")
+        
+        # Map index back to Game Action (Mock mapping)
+        # For now, we still return a PASS to ensure game flow doesn't break
+        # but the log confirms the Neural Agent was consulted.
         if state.priority == "opponent":
             return ActionModel(type="PASS", playerId="opponent")
             
