@@ -1,11 +1,44 @@
-'use client';
-
 import { useGameStore } from '@/store/game-store';
 import { Swords, Sword, Shield, CheckCircle } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+interface DamageFloater {
+    id: number;
+    value: number;
+    x: number;
+    y: number;
+    isPlayer: boolean;
+}
 
 export function CombatOverlay() {
     const { combat, activePlayer, priority, performAction } = useGameStore();
+    const [floaters, setFloaters] = useState<DamageFloater[]>([]);
+
+    useEffect(() => {
+        const handleDamage = (e: CustomEvent) => {
+            const { amount, targetId, isPlayer } = e.detail;
+            // Randomize position slightly
+            const x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
+            const y = window.innerHeight / 2 + (Math.random() - 0.5) * 100;
+
+            const newFloater: DamageFloater = {
+                id: Date.now(),
+                value: amount,
+                x,
+                y,
+                isPlayer
+            };
+
+            setFloaters(prev => [...prev, newFloater]);
+            setTimeout(() => {
+                setFloaters(prev => prev.filter(f => f.id !== newFloater.id));
+            }, 1000);
+        };
+
+        window.addEventListener('RIFTBOUND_DAMAGE' as any, handleDamage as any);
+        return () => window.removeEventListener('RIFTBOUND_DAMAGE' as any, handleDamage as any);
+    }, []);
 
     if (!combat || !combat.isCombatPhase) return null;
 
@@ -64,6 +97,22 @@ export function CombatOverlay() {
                     </div>
                 </button>
             </div>
+
+            {/* Damage Floaters */}
+            <AnimatePresence>
+                {floaters.map(f => (
+                    <motion.div
+                        key={f.id}
+                        initial={{ opacity: 0, scale: 0.5, y: f.y, x: f.x }}
+                        animate={{ opacity: 1, scale: 1.5, y: f.y - 100 }}
+                        exit={{ opacity: 0, scale: 2 }}
+                        className={`fixed z-50 font-black text-6xl drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] pointer-events-none ${f.isPlayer ? 'text-red-500' : 'text-blue-500'}`}
+                        style={{ textShadow: '0 0 4px black' }}
+                    >
+                        -{f.value}
+                    </motion.div>
+                ))}
+            </AnimatePresence>
         </div>
     );
 }

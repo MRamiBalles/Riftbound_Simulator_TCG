@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useGameStore } from '@/store/game-store';
-import { Card } from '../Card';
+import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import clsx from 'clsx';
 import { Sparkles, Sword, Shield, Zap, Skull, RefreshCcw } from 'lucide-react';
 import { CombatOverlay } from './CombatOverlay';
@@ -215,7 +215,7 @@ export const GameBoard: React.FC = () => {
                                         "transition-all duration-300 transform",
                                         selectedMulliganIds.includes(card.instanceId) ? "mulligan-card-swapping" : "hover:scale-105"
                                     )}>
-                                        <Card card={card} />
+                                        <ImmersiveCard card={card} />
                                     </div>
                                     {selectedMulliganIds.includes(card.instanceId) && (
                                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -275,7 +275,7 @@ export const GameBoard: React.FC = () => {
                                         key={card.instanceId}
                                         className="w-24 relative transform scale-90 rotate-y-180 transition-all duration-500"
                                     >
-                                        <Card card={card} />
+                                        <ImmersiveCard card={card} showStats={false} />
                                         <div className="absolute -bottom-6 w-full flex justify-between px-1 text-[10px] font-black text-white bg-black/80 rounded border border-white/10">
                                             <span className="text-yellow-400">ATK {card.currentAttack}</span>
                                             <span className="text-red-400">HP {card.currentHealth}</span>
@@ -343,7 +343,7 @@ export const GameBoard: React.FC = () => {
                                         card.hasAttacked && "opacity-60 grayscale-[0.5]"
                                     )}
                                 >
-                                    <Card card={card} />
+                                    <ImmersiveCard card={card} />
 
                                     {/* Keyword Badges */}
                                     <div className="absolute -top-4 -right-2 flex flex-col gap-1 z-20">
@@ -393,7 +393,7 @@ export const GameBoard: React.FC = () => {
                                                 transform: `rotate(${(i - player.hand.length / 2) * 4}deg) translateY(${Math.abs((i - player.hand.length / 2) * 8)}px)`
                                             }}
                                         >
-                                            <Card card={card} />
+                                            <ImmersiveCard card={card} />
                                             {canPlay && (
                                                 <div
                                                     className="absolute -top-8 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-[10px] font-black px-3 py-1 rounded shadow-[0_0_15px_#06b6d4] uppercase opacity-0 group-hover:opacity-100 transition-opacity"

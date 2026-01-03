@@ -492,8 +492,14 @@ export class CoreEngine {
                     const unit = p.field.find(c => c.instanceId === evt.targetId);
                     if (unit) {
                         unit.currentHealth -= evt.amount;
+                        // Log Unit Damage
+                        this.state.log.push(`Dealt ${evt.amount} damage to ${unit.name}`);
                     }
                 });
+            }
+            // Log Nexus Damage
+            if (evt.targetId === 'player' || evt.targetId === 'opponent') {
+                this.state.log.push(`Dealt ${evt.amount} damage to ${evt.targetId}`);
             }
         });
 

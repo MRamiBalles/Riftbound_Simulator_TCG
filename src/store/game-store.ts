@@ -77,11 +77,29 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         const newState = engine.applyAction(action);
 
         // --- SENSORY TRIGGER: Combat Shake ---
-        // Inspect the new state for logs or combat results that indicate high impact
         const lastLog = newState.log[newState.log.length - 1] || "";
         if (lastLog.includes('Combat resolved') || lastLog.includes('damage to opponent') || lastLog.includes('damage to player')) {
             window.dispatchEvent(new CustomEvent('RIFTBOUND_SHAKE', { detail: { intensity: 8 } }));
         }
+
+        // --- VISUAL TRIGGER: Damage Floaters ---
+        const recentLogs = newState.log.slice(-3);
+        recentLogs.forEach(entry => {
+            const damageMatch = entry.match(/Dealt (\d+) damage to (.+)/);
+            if (damageMatch) {
+                const amount = parseInt(damageMatch[1]);
+                const targetName = damageMatch[2];
+                const isPlayerTarget = targetName === 'player';
+
+                window.dispatchEvent(new CustomEvent('RIFTBOUND_DAMAGE', {
+                    detail: {
+                        amount,
+                        targetId: targetName,
+                        isPlayer: isPlayerTarget
+                    }
+                }));
+            }
+        });
 
         set({ ...newState });
     },
