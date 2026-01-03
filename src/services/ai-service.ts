@@ -1,13 +1,15 @@
 import { Action, SerializedGameState } from '../game/engine/game.types';
 import { HeuristicBot } from '../game/ai/HeuristicBot';
 import { NeuralBot } from '../game/ai/NeuralBot';
+import { RemoteBot } from '../game/ai/RemoteBot';
 
-export type AIMode = 'Heuristic' | 'Neural' | 'Hybrid';
+export type AIMode = 'Heuristic' | 'Neural' | 'Hybrid' | 'Remote';
 
 export class AIService {
     private static baseUrl = 'http://localhost:8000';
     private static localBot = new HeuristicBot();
     private static neuralBot = new NeuralBot();
+    private static remoteBot = new RemoteBot();
     private static currentMode: AIMode = 'Heuristic';
 
     // To store last confidence for visualization
@@ -38,6 +40,12 @@ export class AIService {
                 action = result.action;
                 this.lastConfidence = result.confidence;
                 usedNeural = true;
+            }
+        } else if (this.currentMode === 'Remote') {
+            action = await this.remoteBot.decideAction(state);
+            if (!action) {
+                console.log('[AI] Remote bot failed/timed out. Falling back to Heuristic.');
+                action = await this.localBot.decideAction(state);
             }
         } else {
             action = await this.localBot.decideAction(state);
