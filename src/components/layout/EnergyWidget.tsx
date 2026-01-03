@@ -9,6 +9,13 @@ export default function EnergyWidget() {
     const { getRefreshedEnergy, boosterEnergy, lastEnergyUpdate } = useUserStore();
     const currentEnergy = getRefreshedEnergy();
     const [timeLeft, setTimeLeft] = useState<string>('');
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) return null;
 
     // Update timer every second
     useEffect(() => {
