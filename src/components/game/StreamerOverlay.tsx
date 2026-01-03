@@ -10,7 +10,13 @@ export const StreamerOverlay: React.FC = () => {
     const { engine, aiMode, winRatePrediction } = useGameStore();
 
     // Mock win rate if not calculated
-    const predictionValue = winRatePrediction || (Math.random() * 40 + 30).toFixed(1);
+    const [mockPrediction, setMockPrediction] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        setMockPrediction((Math.random() * 40 + 30).toFixed(1));
+    }, []);
+
+    const predictionValue = winRatePrediction || mockPrediction || "50.0";
 
     return (
         <div className="fixed top-24 left-8 z-40 w-64 pointer-events-none space-y-4 animate-in fade-in slide-in-from-left duration-700">
