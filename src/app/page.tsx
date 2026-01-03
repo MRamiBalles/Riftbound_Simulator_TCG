@@ -1,195 +1,141 @@
 import { getCards } from '@/services/card-service';
 import { CardGrid } from '@/components/CardGrid';
 import Link from 'next/link';
-import { Search, Sparkles, Trophy, Zap, Sword, Crown, Medal, Shield, Palette, Users, BookOpen, Box, Scroll, Wand2, ShieldCheck, Tv, ShoppingBag } from 'lucide-react';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { Sparkles, Trophy, Zap, Sword, Crown, Box, Scroll, Wand2 } from 'lucide-react';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import MissionWidget from '@/components/layout/MissionWidget';
-import clsx from 'clsx';
+import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 
 export default async function Home() {
   const cards = await getCards();
+  const featuredCard = cards[0]; // Just for show
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden bg-[#010a13] font-serif text-[#f0e6d2]">
-      <EnergyWidget />
+    <main className="min-h-screen bg-[#010a13] font-serif text-[#f0e6d2] overflow-x-hidden pt-16 flex">
+      <HextechNavbar />
+      <HextechSidebar />
 
-      {/* Background Video/Image */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#010a13] via-transparent to-[#010a13] z-10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#010a13_90%)] z-10" />
-        <img
-          src="https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt2a829e1f57fb8b78/62e0339aab625e114008778a/01PZ040-full.png"
-          alt="Jinx Background"
-          className="w-full h-full object-cover animate-pulse-slow"
-        />
-      </div>
+      {/* Main Client Content */}
+      <div className="flex-1 flex flex-col relative">
 
-      <div className="z-10 w-full max-w-4xl flex flex-col items-center space-y-8 mt-20">
-        <MissionWidget />
-
-        <header className="text-center space-y-2">
-          <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-widest font-serif" style={{ fontFamily: 'Beaufort' }}>
-            RIFTBOUND
-          </h1>
-          <p className="text-[#a09b8c] tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs md:text-sm font-bold border-t border-b border-[#a09b8c]/30 py-2 px-4 md:px-8 inline-block">
-            League of Legends TCG Simulator
-          </p>
-        </header>
-
-        {/* MAIN GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <Link href="/shop" className="group">
-            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/30 transition-all text-center">
-              <Zap size={48} className="text-[#c8aa6e] mb-4 group-hover:scale-110 transition-transform" />
-              <div className="text-xl font-black text-white uppercase tracking-tighter">BOOSTER SHOP</div>
-            </div>
-          </Link>
-
-          <Link href="/arena" className="group">
-            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#0ac8b9]/30 transition-all text-center">
-              <Sword size={48} className="text-[#0ac8b9] mb-4 group-hover:scale-110 transition-transform" />
-              <div className="text-xl font-black text-white uppercase tracking-tighter">DRAFT ARENA</div>
-            </div>
-          </Link>
-
-          <Link href="/battle-pass" className="group">
-            <div className="bg-gradient-to-br from-[#c8aa6e]/10 to-transparent border border-[#c8aa6e]/20 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-[#f0e6d2]/50 transition-all text-center relative overflow-hidden">
-              <Crown size={48} className="text-[#c8aa6e] mb-4 group-hover:rotate-12 transition-transform" />
-              <div className="text-xl font-black text-white uppercase tracking-tighter">RIFT PASS</div>
-              <div className="absolute top-4 right-4 text-[8px] font-black text-[#c8aa6e] uppercase">S1 ACTIVE</div>
-            </div>
-          </Link>
-
-          <Link href="/collection" className="group">
-            <div className="bg-black/40 border border-white/5 p-12 rounded-[2.5rem] backdrop-blur-xl h-64 flex flex-col items-center justify-center group-hover:border-white/20 transition-all text-center">
-              <Trophy size={48} className="text-[#add8e6] mb-4" />
-              <div className="text-xl font-black text-white uppercase tracking-tighter">COLLECTION</div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Search Bar Placeholder */}
-        <div className="relative w-full max-w-md group">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-[#c8aa6e] group-focus-within:text-[#f0e6d2] transition-colors" />
-          </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-[#7a5c29] rounded-none leading-5 bg-[#010a13]/80 text-[#f0e6d2] placeholder-[#7a5c29] focus:outline-none focus:ring-1 focus:ring-[#c8aa6e] focus:border-[#c8aa6e] transition-all shadow-lg backdrop-blur-sm"
-            placeholder="SEARCH CHAMPIONS..."
+        {/* Cinematic Background */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#010a13] via-transparent to-[#010a13] z-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(10,200,185,0.1)_0%,transparent_60%)] z-10" />
+          <img
+            src="https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt2a829e1f57fb8b78/62e0339aab625e114008778a/01PZ040-full.png"
+            alt="Client Background"
+            className="w-full h-full object-cover opacity-30 blur-sm scale-105"
           />
         </div>
-      </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full max-w-4xl justify-center z-10">
-        <Link href="/play" className="btn-hextech-primary w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Sparkles className="w-4 h-4" /> PLAY
-        </Link>
-        <Link href="/decks" className="btn-hextech w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <BookOpen className="w-4 h-4" /> DECKS
-        </Link>
-        <Link href="/packs" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Box className="w-4 h-4" /> PACKS
-        </Link>
-        <Link href="/live" className="btn-hextech border-amber-400 text-amber-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Zap className="w-4 h-4" /> HORIZON
-        </Link>
-        <Link href="/genesis" className="btn-hextech border-purple-400 text-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Scroll className="w-4 h-4" /> GENESIS
-        </Link>
-        <Link href="/forge" className="btn-hextech border-cyan-400 text-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Wand2 className="w-4 h-4" /> FORGE
-        </Link>
-        <Link href="/raid" className="btn-hextech border-red-500 text-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Sword className="w-4 h-4" /> RAID
-        </Link>
-        <Link href="/vault" className="btn-hextech border-[#0ac8b9] text-[#0ac8b9] hover:shadow-[0_0_20px_rgba(10,200,185,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4" /> VAULT
-        </Link>
-        <Link href="/tv" className="btn-hextech border-red-600 text-red-600 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <Tv className="w-4 h-4" /> APEX TV
-        </Link>
-        <Link href="/shop" className="btn-hextech border-amber-400 text-amber-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] w-full sm:w-auto text-center justify-center flex items-center gap-2">
-          <ShoppingBag className="w-4 h-4" /> SHOP
-        </Link>
-      </div>
+        {/* Dynamic Content Scrollable */}
+        <div className="relative z-10 p-8 lg:p-12 overflow-y-auto w-full max-w-[calc(100vw-18rem)]">
+          <div className="grid grid-cols-12 gap-8">
 
-      {/* Main Content */}
-      <section className="max-w-7xl mx-auto w-full z-10 mt-12 px-4">
-        {/* MAIN GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-24">
-          <Link href="/shop" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/30 transition-all text-center">
-              <Zap size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">BOOSTER SHOP</div>
+            {/* FEATURED: Big Hero Card for Ranked */}
+            <div className="col-span-12 lg:col-span-8 space-y-8">
+              <div className="relative p-12 rounded-[2rem] border-magic-gold glass-hextech overflow-hidden group">
+                <div className="absolute top-0 right-0 w-1/2 h-full opacity-40 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+                  <img
+                    src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-crest-challenger.png"
+                    className="w-full h-full object-contain filter drop-shadow-[0_0_50px_rgba(10,200,185,0.3)]"
+                    alt="Ranked"
+                  />
+                </div>
+
+                <div className="relative z-10 space-y-6 max-w-md">
+                  <div className="inline-block px-3 py-1 bg-[#0ac8b9]/20 border border-[#0ac8b9]/40 text-[#0ac8b9] text-[10px] font-black uppercase tracking-widest rounded-sm">
+                    Season 1: Neural Nexus
+                  </div>
+                  <h2 className="text-6xl font-black italic tracking-tighter" style={{ fontFamily: 'Beaufort' }}>
+                    EVOLVE THE RIFT
+                  </h2>
+                  <p className="text-[#a09b8c] text-lg leading-relaxed">
+                    Participate in the first AI-driven tournament. Master the core of the Rift and claim Hextech rewards.
+                  </p>
+
+                  <div className="flex gap-4 pt-4">
+                    <Link href="/play" className="btn-hextech-primary px-12 py-4 text-center">
+                      SOLO QUEUE
+                    </Link>
+                    <Link href="/arena" className="btn-hextech px-12 py-4">
+                      DRAFT ARENA
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Visual Accent */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#c8aa6e]/50 to-transparent" />
+              </div>
+
+              {/* TABS / TRENDING */}
+              <div className="space-y-6">
+                <div className="flex justify-between items-center border-b border-white/10 pb-4">
+                  <h3 className="text-2xl font-bold text-[#c8aa6e]">TRENDING COLLECTIONS</h3>
+                  <div className="flex gap-6">
+                    <span className="text-xs font-black text-white cursor-pointer border-b-2 border-[#0ac8b9] pb-4 -mb-4">NEW</span>
+                    <span className="text-xs font-black text-[#a09b8c] hover:text-white cursor-pointer transition-colors pb-4 -mb-4">LEGACY</span>
+                    <span className="text-xs font-black text-[#a09b8c] hover:text-white cursor-pointer transition-colors pb-4 -mb-4">PRO DECKS</span>
+                  </div>
+                </div>
+                <CardGrid cards={cards.slice(0, 4)} />
+              </div>
             </div>
-          </Link>
 
-          <Link href="/arena" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#0ac8b9]/30 transition-all text-center">
-              <Sword size={32} className="text-[#0ac8b9] mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">DRAFT ARENA</div>
+            {/* SIDEBAR: Missions & Loot */}
+            <div className="col-span-12 lg:col-span-4 space-y-8">
+              <MissionWidget />
+
+              {/* QUICK ACTIONS */}
+              <div className="grid grid-cols-2 gap-4">
+                <Link href="/shop" className="group glass-hextech p-6 border border-white/5 hover:border-[#c8aa6e]/30 transition-all rounded-2xl flex flex-col items-center justify-center text-center">
+                  <Zap size={24} className="text-[#c8aa6e] mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-[10px] font-black text-white tracking-widest uppercase">Booster Shop</span>
+                </Link>
+                <Link href="/vault" className="group glass-hextech p-6 border border-white/5 hover:border-[#c8aa6e]/30 transition-all rounded-2xl flex flex-col items-center justify-center text-center">
+                  <Sword size={24} className="text-[#c8aa6e] mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-[10px] font-black text-white tracking-widest uppercase">My Vault</span>
+                </Link>
+                <Link href="/decks" className="group glass-hextech p-6 border border-white/5 hover:border-[#c8aa6e]/30 transition-all rounded-2xl flex flex-col items-center justify-center text-center">
+                  <Box size={24} className="text-[#c8aa6e] mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-[10px] font-black text-white tracking-widest uppercase">Forge Decks</span>
+                </Link>
+                <Link href="/battle-pass" className="group glass-hextech p-6 border border-white/5 hover:border-[#c8aa6e]/30 transition-all rounded-2xl flex flex-col items-center justify-center text-center">
+                  <Crown size={24} className="text-[#c8aa6e] mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-[10px] font-black text-white tracking-widest uppercase">Rift Pass</span>
+                </Link>
+              </div>
+
+              {/* SHOP PREVIEW SECTION */}
+              <div className="glass-hextech rounded-2xl p-6 border border-white/5 relative overflow-hidden group cursor-pointer">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#010a13] to-transparent z-10" />
+                <img
+                  src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/hextech-chest.png"
+                  className="w-full h-32 object-contain group-hover:scale-125 transition-transform duration-500"
+                  alt="Loot"
+                />
+                <div className="relative z-20 text-center space-y-1">
+                  <h4 className="text-xl font-bold text-[#c8aa6e]">LOOT CRATE</h4>
+                  <p className="text-[10px] text-[#a09b8c] uppercase font-black tracking-widest">Available in Store</p>
+                </div>
+              </div>
             </div>
-          </Link>
 
-          <Link href="/tournaments" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/50 transition-all text-center">
-              <Trophy size={32} className="text-[#c8aa6e] mb-3 group-hover:rotate-12 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">WORLD CUP</div>
-            </div>
-          </Link>
-
-          <Link href="/guilds" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#c8aa6e]/50 transition-all text-center">
-              <Shield size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">GUILD HALL</div>
-            </div>
-          </Link>
-
-          <Link href="/battle-pass" className="group">
-            <div className="bg-gradient-to-br from-[#c8aa6e]/10 to-transparent border border-[#c8aa6e]/20 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#f0e6d2]/50 transition-all text-center relative overflow-hidden">
-              <Crown size={32} className="text-[#c8aa6e] mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">RIFT PASS</div>
-            </div>
-          </Link>
-
-          <Link href="/forge/cosmetics" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-[#0ac8b9]/30 transition-all text-center">
-              <Palette size={32} className="text-[#0ac8b9] mb-3 group-hover:scale-110 transition-transform" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">PRISM FORGE</div>
-            </div>
-          </Link>
-
-          <Link href="/collection" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-white/20 transition-all text-center">
-              <Medal size={32} className="text-[#add8e6] mb-3" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">COLLECTION</div>
-            </div>
-          </Link>
-
-          <Link href="/social" className="group">
-            <div className="bg-black/40 border border-white/5 p-8 rounded-[2.5rem] backdrop-blur-xl h-48 flex flex-col items-center justify-center group-hover:border-white/20 transition-all text-center">
-              <Users size={32} className="text-white mb-3" />
-              <div className="text-[10px] font-black text-white uppercase tracking-tighter">SOCIAL HUB</div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Search Bar Placeholder */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-[#c8aa6e] flex items-center gap-2" style={{ fontFamily: 'Beaufort' }}>
-            <span className="w-1 h-6 bg-[#0ac8b9] rounded-full inline-block" />
-            TRENDING CARDS
-          </h2>
-          <div className="flex items-center">
-            <Link href="/social" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10 first:border-0">Social Hub</Link>
-            <Link href="/invasion" className="px-6 py-2 text-[10px] font-black text-red-500 hover:text-red-400 transition-colors uppercase tracking-[0.2em] border-l border-white/10 animate-pulse">Boss Raid</Link>
-            <Link href="/shop" className="px-6 py-2 text-[10px] font-black text-white hover:text-[#c8aa6e] transition-colors uppercase tracking-[0.2em] border-l border-white/10">Market</Link>
           </div>
+
+          <footer className="mt-24 pt-12 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-[#5c5b57] uppercase tracking-[0.4em]">
+            <div>© 2026 Riftbound Simulator // Neural Nexus Project</div>
+            <div className="flex gap-8">
+              <span className="hover:text-white cursor-pointer">Support</span>
+              <span className="hover:text-white cursor-pointer">API Docs</span>
+              <span className="hover:text-white cursor-pointer">Status</span>
+            </div>
+          </footer>
         </div>
 
-        <CardGrid cards={cards.slice(0, 8)} />
-      </section>
-    </main >
+      </div>
+    </main>
   );
 }
