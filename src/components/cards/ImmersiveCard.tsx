@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/lib/database.types';
 import { LegacyService } from '@/services/legacy-service';
 import { useUserStore } from '@/store/user-store';
@@ -22,8 +22,15 @@ interface ImmersiveCardProps {
  * Provides 3D parallax visual effects matching TCGP's Immersive Cards.
  */
 export function ImmersiveCard({ card, size = 'md', className, onClick, showStats = true }: ImmersiveCardProps) {
+    const [isMounted, setIsMounted] = useState(false);
     const { cardLegacies } = useUserStore();
-    const legacy = cardLegacies[card.id] || { wins: 0, games: 0, kills: 0 };
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Only access store legacy data after mount to avoid hydration mismatch
+    const legacy = isMounted ? (cardLegacies[card.id] || { wins: 0, games: 0, kills: 0 }) : { wins: 0, games: 0, kills: 0 };
     const title = LegacyService.getTitle(legacy);
 
     const x = useMotionValue(0);
