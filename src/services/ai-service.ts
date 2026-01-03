@@ -21,24 +21,38 @@ export class AIService {
 
         let action: Action | null = null;
         let avgConfidence = 0.5;
+        let usedNeural = false;
 
-        if (this.currentMode === 'Neural') {
+        if (this.currentMode === 'Neural' || this.currentMode === 'Hybrid') {
             const result = await this.neuralBot.decideAction(state);
-            action = result.action;
-            this.lastConfidence = result.confidence;
-            avgConfidence = result.confidence.reduce((a, b) => a + b, 0) / result.confidence.length;
+            avgConfidence = result.confidence.reduce((a, b) => a + b, 0) / (result.confidence.length || 1);
+
+            // HYBRID LOGIC: If confidence is low, fallback to Heuristic
+            if (this.currentMode === 'Hybrid' && avgConfidence < 0.45) {
+                console.log(`[AI] Neural confidence low (${avgConfidence.toFixed(2)}). Falling back to Heuristic.`);
+                action = await this.localBot.decideAction(state);
+                usedNeural = false;
+            } else {
+                action = result.action;
+                this.lastConfidence = result.confidence;
+                usedNeural = true;
+            }
         } else {
             action = await this.localBot.decideAction(state);
-            avgConfidence = 0.6;
+            avgConfidence = 0.6; // Base heuristic confidence
         }
 
         // --- AI PERSONALITY: Contextual Emotes ---
         if (action) {
             let emote = "";
-            if (avgConfidence > 0.8) emote = "YOUR DEFEAT IS STATISTICALLY INEVITABLE.";
-            else if (avgConfidence > 0.65) emote = "THE RIFT ALIGNS WITH MY PREDICTIONS.";
-            else if (avgConfidence < 0.35) emote = "UNFORESEEN VARIABLE DETECTED. RECALIBRATING...";
-            else if (avgConfidence < 0.2) emote = "CRITICAL ERROR IN STRATEGY. ADAPTING...";
+            if (usedNeural) {
+                if (avgConfidence > 0.85) emote = "YOUR DEFEAT IS STATISTICALLY INEVITABLE.";
+                else if (avgConfidence > 0.65) emote = "THE RIFT ALIGNS WITH MY PREDICTIONS.";
+                else if (avgConfidence < 0.3) emote = "UNFORESEEN VARIABLE DETECTED. RECALIBRATING...";
+            } else {
+                // Heuristic/Fallback emotes
+                emote = "ADAPTING TO BATTLEFIELD VARIABLES.";
+            }
 
             if (emote) {
                 console.log(`[AI] "${emote}"`);

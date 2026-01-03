@@ -44,6 +44,7 @@ const INITIAL_STATE: SerializedGameState = {
     log: [],
     combat: null,
     stack: [],
+    seed: 0,
     actionHistory: []
 };
 
@@ -69,13 +70,19 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         const { engine, isReplayMode, isMultiplayerMode } = get();
         if (!engine || isReplayMode) return;
 
-        // In multiplayer, we only perform local player actions directly. 
-        // Opponent actions come through receiveOpponentAction.
         if (isMultiplayerMode) {
             MultiplayerService.sendAction(action);
         }
 
         const newState = engine.applyAction(action);
+
+        // --- SENSORY TRIGGER: Combat Shake ---
+        // Inspect the new state for logs or combat results that indicate high impact
+        const lastLog = newState.log[newState.log.length - 1] || "";
+        if (lastLog.includes('Combat resolved') || lastLog.includes('damage to opponent') || lastLog.includes('damage to player')) {
+            window.dispatchEvent(new CustomEvent('RIFTBOUND_SHAKE', { detail: { intensity: 8 } }));
+        }
+
         set({ ...newState });
     },
 
