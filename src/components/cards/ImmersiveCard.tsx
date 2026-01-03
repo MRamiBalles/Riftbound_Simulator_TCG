@@ -119,9 +119,11 @@ export function ImmersiveCard({ card, size = 'md', className, onClick, showStats
             <motion.div
                 style={{
                     background: useTransform(
-                        [x, y] as [MotionValue<number>, MotionValue<number>],
-                        ([valX, valY]: [number, number]) =>
-                            `radial-gradient(circle at ${50 + valX / 2}% ${50 + valY / 2}%, rgba(255,255,255,0.15) 0%, transparent 60%)`
+                        [x, y],
+                        (values: number[]) => {
+                            const [valX, valY] = values;
+                            return `radial-gradient(circle at ${50 + valX / 2}% ${50 + valY / 2}%, rgba(255,255,255,0.15) 0%, transparent 60%)`;
+                        }
                     )
                 }}
                 className="absolute inset-0 z-30 pointer-events-none"

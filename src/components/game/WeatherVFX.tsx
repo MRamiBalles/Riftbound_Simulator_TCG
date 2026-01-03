@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useGameStore } from '@/store/game-store';
 
 /**
@@ -13,6 +13,13 @@ export const WeatherVFX: React.FC = () => {
         const regions = ['Freljord', 'Shurima', 'Shadow Isles', 'Void'];
         return regions[Math.floor(Math.random() * regions.length)];
     }, []);
+
+    const [isMounted, setIsMounted] = React.useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) return <div className="absolute inset-0 z-10 overflow-hidden" />; // Clean empty div for SSR
 
     return (
         <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
