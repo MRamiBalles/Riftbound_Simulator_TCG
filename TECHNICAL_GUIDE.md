@@ -40,5 +40,12 @@ The `AIService` now supports a **Hybrid-Remote** architecture allowing seamless 
 - **Card Scanner**: Implements an immersive OCR simulation. It utilizes a multi-stage analysis pipeline to match visual inputs against the local high-fidelity database.
 - **Deck Builder**: Uses list virtualization to handle thousands of permutations while maintaining 60FPS during search and filtering.
 
+## 5. Sovereign Visual Stack
+To achieve "Sovereign" aesthetic fidelity, the frontend employs a layered rendering approach:
+- **ImmersiveCard Engine**: A custom React component (`ImmersiveCard.tsx`) utilizing `framer-motion` to map mouse coordinates to 3D CSS transforms (rotateX/Y), simulating physical depth and holographic reflection layers.
+- **Event-Driven FX**: 
+    - **Damage Floaters**: Triggered via a custom `RIFTBOUND_DAMAGE` event dispatched from the Redux-like store middleware, ensuring visual feedback is decoupled from game logic.
+    - **Cinematic Atmosphere**: Weather effects use fractal noise overlays (`SVG feTurbulence`) to create a film-grain aesthetic, consistent with premium production values.
+
 ---
-*Document Version: 1.0.4 | Last Audit: 2025-12-26*
+*Document Version: 1.1.0 Sovereign | Last Audit: 2026-01-03*
