@@ -170,6 +170,42 @@ h6 {
   .hextech-gradient-bg {
     background: radial-gradient(circle at center, rgba(9, 20, 40, 0.8) 0%, rgba(1, 10, 19, 1) 100%);
   }
+
+  /* Premium Visuals */
+  .hextech-scanline {
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(10, 200, 185, 0.05) 50%,
+        transparent 100%);
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  .hextech-aura-aura {
+    filter: drop-shadow(0 0 15px rgba(10, 200, 185, 0.4));
+  }
+
+  @keyframes pulseThin {
+
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .animate-pulse-thin {
+    animation: pulseThin 4s ease-in-out infinite;
+  }
+
+  .border-magic-gold-bold {
+    border: 2px solid;
+    border-image: linear-gradient(to bottom, #c8aa6e, #7a5c29, #c8aa6e) 1;
+    box-shadow: 0 0 20px rgba(200, 170, 110, 0.2);
+  }
 }
 
 /* --- MOBILE RESPONSIVE ADAPTATIONS --- */
