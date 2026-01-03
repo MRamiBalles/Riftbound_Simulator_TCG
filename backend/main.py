@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Optional
 import uvicorn
 import logging
 from agent import agent
+from vectorizer import vectorizer
 import numpy as np
 
 # Configure logging
@@ -88,12 +89,12 @@ def predict_action(state: GameStateModel):
     try:
         logger.info(f"Inferencing for Turn {state.turn}, Phase {state.phase} | Active: {state.activePlayer}")
         
-        # Vectorize state (Mock vectorization for Phase 9)
-        # In a real scenario, this would convert GameStateModel to np.array
-        mock_observation = np.zeros(256, dtype=np.float32) 
+        # Real Vectorization
+        observation = vectorizer.vectorize(state.model_dump())
+        logger.debug(f"Vectorized state (first 5 values): {observation[:5]}")
         
-        # Predict action index
-        action_idx = agent.predict(mock_observation)
+        # Predict action index using the trained model
+        action_idx = agent.predict(observation)
         logger.info(f"Agent predicted action index: {action_idx}")
         
         # Map index back to Game Action (Mock mapping)
