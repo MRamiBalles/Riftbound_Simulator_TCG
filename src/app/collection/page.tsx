@@ -63,11 +63,11 @@ export default function CollectionPage() {
     const completionRate = Math.round((uniqueOwned / MOCK_CARDS.length) * 100);
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-[clamp(1rem,5vw,4rem)] overflow-x-hidden">
             <HextechNavbar />
             <HextechSidebar />
 
-            <div className="max-w-7xl mx-auto flex flex-col gap-12">
+            <div className="max-w-[100rem] mx-auto flex flex-col gap-12">
                 {/* Header Section */}
                 <header className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-white/5 pb-12">
                     <div className="flex flex-col gap-4">
@@ -98,9 +98,11 @@ export default function CollectionPage() {
                 </header>
 
                 {/* Main Experience */}
-                <div className="flex gap-12">
-                    {/* Left Sidebar */}
-                    <FilterSidebar />
+                <div className="flex flex-col xl:flex-row gap-12">
+                    {/* Left Sidebar - Hidden on small screens or moved to top */}
+                    <div className="xl:w-72 flex-shrink-0">
+                        <FilterSidebar />
+                    </div>
 
                     {/* Right Content */}
                     <div className="flex-1 flex flex-col gap-12">
@@ -124,7 +126,7 @@ export default function CollectionPage() {
                                 {filteredCards.length > 0 ? (
                                     <motion.div
                                         layout
-                                        className="grid grid-cols-2 lg:grid-cols-4 gap-8"
+                                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-8"
                                     >
                                         {filteredCards.map((card) => {
                                             const qty = inventory[card.id] || 0;

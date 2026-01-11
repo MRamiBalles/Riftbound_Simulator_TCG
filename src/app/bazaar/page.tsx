@@ -37,11 +37,11 @@ export default function BazaarPage() {
     const loyaltyTier = PointStrategyService.getTier(prestigePoints);
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-[clamp(1rem,5vw,4rem)] overflow-x-hidden">
             <HextechNavbar />
             <HextechSidebar />
 
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-[100rem] mx-auto">
                 <header className="mb-16 flex flex-col md:flex-row justify-between items-end gap-8">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-4">
@@ -125,7 +125,7 @@ export default function BazaarPage() {
                             key="auction"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+                            className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-12"
                         >
                             {auctions.map((auc) => (
                                 <div key={auc.id} className="relative group">
@@ -182,7 +182,7 @@ export default function BazaarPage() {
                             key="listings"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-8"
                         >
                             {listings.map((listing) => (
                                 <div key={listing.id} className="group relative bg-[#091428]/60 border border-white/5 hover:border-[#c8aa6e]/40 rounded-[2.5rem] p-6 backdrop-blur-xl transition-all duration-300 flex flex-col items-center">

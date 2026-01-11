@@ -16,11 +16,11 @@ export default function LiveHubPage() {
     const { activeMissions, level, currentXP, requiredXP, passTiers } = useMissionStore();
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4">
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-[clamp(1rem,5vw,4rem)] overflow-x-hidden">
             <HextechNavbar />
             <HextechSidebar />
 
-            <header className="max-w-6xl mx-auto mb-12">
+            <header className="max-w-[100rem] mx-auto mb-12">
                 <h1 className="text-5xl md:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] uppercase mb-4" style={{ fontFamily: 'Beaufort' }}>
                     Infinite Horizon
                 </h1>
@@ -48,11 +48,11 @@ export default function LiveHubPage() {
                 </div>
             </header>
 
-            <section className="max-w-6xl mx-auto">
+            <section className="max-w-[100rem] mx-auto">
                 {activeTab === 'PASS' ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-12">
                         {/* LEFT: PROGRESS & MISSIONS */}
-                        <div className="lg:col-span-2 space-y-12">
+                        <div className="lg:col-span-1 2xl:col-span-2 space-y-12">
                             {/* Current Level HUD */}
                             <div className="bg-[#091428]/60 border border-[#c8aa6e]/20 rounded-3xl p-8 relative overflow-hidden backdrop-blur-xl">
                                 <div className="absolute top-0 right-0 p-8 opacity-10">

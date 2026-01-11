@@ -100,7 +100,7 @@ export default function PackOpeningPage() {
     };
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden flex flex-col items-center justify-center">
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-[clamp(1rem,5vw,4rem)] overflow-x-hidden flex flex-col items-center justify-center">
             <HextechNavbar />
             <HextechSidebar />
 
@@ -153,7 +153,7 @@ export default function PackOpeningPage() {
                         key="revealing"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="flex flex-col items-center gap-12 w-full max-w-lg"
+                        className="flex flex-col items-center gap-12 w-full max-w-[clamp(20rem,60vw,40rem)]"
                     >
                         <div className="relative">
                             {isGodPack && (
@@ -215,11 +215,11 @@ export default function PackOpeningPage() {
                         key="done"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="flex flex-col items-center gap-16 w-full max-w-7xl"
+                        className="flex flex-col items-center gap-16 w-full max-w-[100rem]"
                     >
                         <div className={clsx(
-                            "grid gap-4 w-full",
-                            count > 1 ? "grid-cols-5 md:grid-cols-10" : "grid-cols-2 md:grid-cols-5"
+                            "grid gap-8 w-full",
+                            count > 1 ? "grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10" : "grid-cols-2 lg:grid-cols-5"
                         )}>
                             {(count > 1 ? bulkResults.flat() : packCards).map((card, i) => (
                                 <motion.div

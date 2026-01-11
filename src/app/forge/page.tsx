@@ -41,11 +41,11 @@ export default function ForgePage() {
     };
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4">
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-[clamp(1rem,5vw,4rem)] overflow-x-hidden">
             <HextechNavbar />
             <HextechSidebar />
 
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-[100rem] mx-auto">
                 <header className="mb-16 text-center">
                     <h1 className="text-6xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] uppercase mb-4" style={{ fontFamily: 'Beaufort' }}>
                         Neural Forge

@@ -13,7 +13,7 @@ const FRIENDS = [
 
 export const HextechSidebar: React.FC = () => {
     return (
-        <aside className="fixed right-0 top-16 bottom-0 w-72 glass-hextech border-l border-[#c8aa6e]/30 p-4 flex flex-col z-40 hidden lg:flex">
+        <aside className="fixed right-0 top-16 bottom-0 w-72 glass-hextech border-l border-[#c8aa6e]/30 p-6 flex flex-col z-40 hidden xl:flex backdrop-blur-xl">
             {/* Header / Social Icons */}
             <div className="flex items-center justify-between mb-6 px-2">
                 <div className="flex gap-4">
