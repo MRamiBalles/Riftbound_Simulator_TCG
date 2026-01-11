@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getCards } from '@/services/card-service';
 import { CardGrid } from '@/components/CardGrid';
 import Link from 'next/link';
-import { Sparkles, Trophy, Zap, Sword, Crown, Box, Activity, Cpu, Radio, ShieldAlert } from 'lucide-react';
+import { Sparkles, Zap, Sword, Box, Activity, Cpu, Radio, ShieldAlert, Crown } from 'lucide-react';
 import { HextechNavbar } from '@/components/layout/HextechNavbar';
 import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import MissionWidget from '@/components/layout/MissionWidget';
@@ -160,9 +160,9 @@ export default function Home() {
               {/* QUICK ACTIONS */}
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { label: 'Booster Shop', icon: Zap, href: '/shop' },
-                  { label: 'My Vault', icon: Sword, href: '/vault' },
-                  { label: 'Forge Decks', icon: Box, href: '/decks' },
+                  { label: 'Marketplace', icon: Zap, href: '/marketplace' },
+                  { label: 'Collection', icon: Sword, href: '/collection' },
+                  { label: 'Strategic Brain', icon: Box, href: '/ai' },
                   { label: 'Rift Pass', icon: Crown, href: '/battle-pass' }
                 ].map((action) => (
                   <Link key={action.label} href={action.href} className="group glass-hextech p-6 border border-white/5 hover:border-[#c8aa6e]/40 hover:bg-white/5 transition-all rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
@@ -173,19 +173,12 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* SHOP PREVIEW SECTION */}
+              {/* MARKETPLACE PREVIEW SECTION */}
               <div className="glass-hextech rounded-2xl p-8 border border-white/5 relative overflow-hidden group cursor-pointer border-magic-gold">
                 <div className="absolute inset-0 bg-gradient-to-t from-[#010a13] to-transparent z-10" />
-                <motion.img
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/hextech-chest.png"
-                  className="w-full h-40 object-contain group-hover:scale-110 transition-transform duration-500 relative z-10"
-                  alt="Loot"
-                />
-                <div className="relative z-20 text-center space-y-2">
-                  <h4 className="text-2xl font-black italic text-[#c8aa6e]">HEX-LOOT</h4>
-                  <p className="text-[10px] text-[#0ac8b9] uppercase font-black tracking-widest animate-pulse">LEGENDARY DROP ACTIVE</p>
+                <div className="relative z-20 text-center space-y-2 py-8">
+                  <h4 className="text-2xl font-black italic text-[#c8aa6e]">MARKETPLACE</h4>
+                  <p className="text-[10px] text-[#0ac8b9] uppercase font-black tracking-widest animate-pulse">LIVE ASSET TRADING</p>
                 </div>
               </div>
             </motion.div>

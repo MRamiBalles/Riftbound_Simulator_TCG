@@ -3,14 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, Trophy, ShoppingBag, Box, Users, Settings } from 'lucide-react';
+import { Sparkles, Trophy, ShoppingBag, Cpu, Users, Settings } from 'lucide-react';
 import clsx from 'clsx';
 
 const NAV_ITEMS = [
     { label: 'PLAY', href: '/play', icon: Sparkles, primary: true },
     { label: 'COLLECTION', href: '/collection', icon: Trophy },
-    { label: 'SHOP', href: '/shop', icon: ShoppingBag },
-    { label: 'LOOT', href: '/packs', icon: Box },
+    { label: 'MARKET', href: '/marketplace', icon: ShoppingBag },
+    { label: 'AI NEXUS', href: '/ai', icon: Cpu },
     { label: 'SOCIAL', href: '/social', icon: Users },
 ];
 
@@ -55,17 +55,12 @@ export const HextechNavbar: React.FC = () => {
                 </div>
             </div>
 
-            {/* Profile / Currency (Mock) */}
+            {/* Profile / Currency */}
             <div className="flex items-center gap-6">
                 <div className="flex items-center gap-4 px-4 py-1.5 rounded-full bg-black/40 border border-[#c8aa6e]/20">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[#0ac8b9] shadow-[0_0_8px_#0ac8b9]" />
                         <span className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-tighter">4,250 BE</span>
-                    </div>
-                    <div className="w-px h-3 bg-white/10" />
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
-                        <span className="text-[10px] font-black text-amber-400 uppercase tracking-tighter">850 RP</span>
                     </div>
                 </div>
 

@@ -1,14 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Card } from '@/lib/database.types';
 import { CloudService } from '@/services/cloud-service';
-
-export type CollectionSource = 'REAL' | 'VIRTUAL';
-
-interface CollectionEntry {
-    virtual: number;
-    real: number;
-}
 
 interface Deck {
     id: string;
@@ -17,16 +9,16 @@ interface Deck {
 }
 
 interface CollectionState {
-    // Map of Card ID -> Counts
-    inventory: Record<string, CollectionEntry>;
+    // Map of Card ID -> Quantity (Real Collection)
+    inventory: Record<string, number>;
 
-    addCard: (cardId: string, source: CollectionSource) => void;
-    addCards: (cardIds: string[], source: CollectionSource) => void;
-    removeCard: (cardId: string, source: CollectionSource) => void;
-    getQuantity: (cardId: string, source?: CollectionSource) => number;
+    addCard: (cardId: string, quantity?: number) => void;
+    addCards: (cardIds: string[]) => void;
+    removeCard: (cardId: string) => void;
+    getQuantity: (cardId: string) => number;
 
     // Helpers for UI
-    getTotalCards: (source: CollectionSource) => number;
+    getTotalCards: () => number;
 
     // Showcase
     showcase: (string | null)[]; // 9 slots
@@ -36,7 +28,7 @@ interface CollectionState {
     activeDeck: string[] | null;
     setActiveDeck: (deck: string[]) => void;
 
-    // New deck management
+    // Deck management
     decks: Deck[];
     addDeck: (deck: Omit<Deck, 'id'>) => void;
     updateDeck: (id: string, cards: string[]) => void;
@@ -44,8 +36,8 @@ interface CollectionState {
 }
 
 /**
- * Store for managing the user's card collection and custom decks.
- * Includes persistence to LocalStorage for a consistent experience across sessions.
+ * Store for managing the user's REAL card collection and custom decks.
+ * Virtual/Gacha systems have been removed to focus on Marketplace and persistent assets.
  */
 export const useCollectionStore = create<CollectionState>()(
     persist(
@@ -53,64 +45,41 @@ export const useCollectionStore = create<CollectionState>()(
             inventory: {},
             showcase: Array(9).fill(null),
 
-            addCard: (cardId, source) => {
+            addCard: (cardId, quantity = 1) => {
                 set((state) => {
                     const inv = { ...state.inventory };
-                    if (!inv[cardId]) {
-                        inv[cardId] = { virtual: 0, real: 0 };
-                    }
-
-                    if (source === 'VIRTUAL') inv[cardId].virtual++;
-                    else inv[cardId].real++;
-
+                    inv[cardId] = (inv[cardId] || 0) + quantity;
                     return { inventory: inv };
                 });
             },
 
-            addCards: (cardIds, source) => {
+            addCards: (cardIds) => {
                 set((state) => {
                     const newInventory = { ...state.inventory };
                     cardIds.forEach(id => {
-                        const existing = newInventory[id] || { virtual: 0, real: 0 };
-                        newInventory[id] = {
-                            ...existing,
-                            [source.toLowerCase()]: existing[source.toLowerCase() as 'virtual' | 'real'] + 1
-                        };
+                        newInventory[id] = (newInventory[id] || 0) + 1;
                     });
                     return { inventory: newInventory };
                 });
             },
 
-            removeCard: (cardId, source) => {
+            removeCard: (cardId) => {
                 set((state) => {
                     const newInventory = { ...state.inventory };
-                    const existing = newInventory[cardId];
-                    if (existing) {
-                        const key = source.toLowerCase() as 'virtual' | 'real';
-                        if (existing[key] > 0) {
-                            newInventory[cardId] = {
-                                ...existing,
-                                [key]: existing[key] - 1
-                            };
-                        }
+                    if (newInventory[cardId] > 0) {
+                        newInventory[cardId]--;
                     }
                     return { inventory: newInventory };
                 });
             },
 
-            getQuantity: (cardId, source) => {
-                const item = get().inventory[cardId];
-                if (!item) return 0;
-                if (source === 'VIRTUAL') return item.virtual;
-                if (source === 'REAL') return item.real;
-                return item.virtual + item.real;
+            getQuantity: (cardId) => {
+                return get().inventory[cardId] || 0;
             },
 
-            getTotalCards: (source) => {
+            getTotalCards: () => {
                 const { inventory } = get();
-                return Object.values(inventory).reduce((acc, item) => {
-                    return acc + (source === 'VIRTUAL' ? item.virtual : item.real);
-                }, 0);
+                return Object.values(inventory).reduce((acc, qty) => acc + qty, 0);
             },
 
             setShowcaseSlot: (index, cardId) => {
@@ -144,7 +113,7 @@ export const useCollectionStore = create<CollectionState>()(
             })),
         }),
         {
-            name: 'riftbound-hybrid-collection',
+            name: 'riftbound-real-collection',
         }
     )
 );
