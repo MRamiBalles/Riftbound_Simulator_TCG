@@ -40,22 +40,27 @@ class RiftboundEnv(gym.Env):
         return observation, info
 
     def step(self, action_idx):
-        # 1. Map action index to engine action (Prototype mapping)
+        # 1. Player Action
         legal_actions = self.engine.get_legal_actions("player")
         
-        # For prototype, we take action = action_idx % len(legal_actions)
         if legal_actions:
+            # Safe modulo in case action_idx is out of current legal bounds
             action = legal_actions[action_idx % len(legal_actions)]
             self.engine.apply_action(action)
+        else:
+            pass
+
+        # 2. Opponent Loop (Simple Random Bot to force game progression)
+        self._play_opponent_turn()
         
-        # 2. Get new state
+        # 3. Get new state (Player perspective)
         raw_state = self.engine.state
         observation = self.vectorizer.vectorize(
             self._serialize_state(raw_state), 
             player_id="player"
         )
         
-        # 3. Calculate reward (Win/Loss + Health diff)
+        # 4. Calculate reward (Win/Loss + Health diff)
         reward = 0.0
         terminated = False
         if raw_state.winner == "player":
@@ -66,16 +71,38 @@ class RiftboundEnv(gym.Env):
             terminated = True
             
         # Intermediate rewards (Heuristic help for training)
-        reward += (raw_state.players["player"].health - 20) * 0.1
+        reward += (raw_state.players["player"].health - 20) * 0.05
         
         truncated = False
         info = {"legal_actions": self.engine.get_legal_actions("player")}
         
         return observation, reward, terminated, truncated, info
 
+    def _play_opponent_turn(self):
+        """Simulates opponent moves until priority returns to player or game ends."""
+        steps = 0
+        while not self.engine.state.winner and steps < 100:
+            # If it's player's turn (active_player), stop
+            if self.engine.state.active_player == "player":
+                break
+            
+            acting_pid = self.engine.state.active_player
+            actions = self.engine.get_legal_actions(acting_pid)
+            
+            if not actions:
+                # If no actions but it's opponent's turn, verify if this state is stuck
+                # In CoreEngine, if no legal actions (usually means pass/end turn logic needed)
+                # But our PythonCoreEngine relies on apply_action to end turn.
+                # If get_legal_actions returns empty, something is weird in GameState.
+                break
+                
+            # Simple Random Policy
+            action = actions[np.random.randint(0, len(actions))]
+            self.engine.apply_action(action)
+            steps += 1
+
     def _serialize_state(self, state):
         """Converts internal Python objects to dict for vectorizer."""
-        # This is a simplified serialization for the SpatialVectorizer
         res = {
             "turn": state.turn,
             "activePlayer": state.active_player,
