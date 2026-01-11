@@ -18,11 +18,22 @@ export interface MarketMetric {
 export class SovereignTradeService {
     private static instance: SovereignTradeService;
     private marketIndex: Map<string, MarketMetric> = new Map();
+    private saturationLevel: number = 0; // 0.0 (Empty) to 1.0 (Full Saturation)
 
     private constructor() {
         // [SIMULATION] Initialize with dummy meta data
-        // In a real scenario, this would sync with LeagueManager
         this.initializeMockMarket();
+
+        // [LIQUIDITY RECOVERY]
+        // Market appetite recovers 5% every 10 seconds
+        setInterval(() => this.recoverLiquidity(), 10000);
+    }
+
+    private recoverLiquidity() {
+        if (this.saturationLevel > 0) {
+            this.saturationLevel = Math.max(0, this.saturationLevel - 0.05);
+            // console.log(`[SovereignTrade] 💧 Liquidity Recovering. Saturation: ${(this.saturationLevel*100).toFixed(0)}%`);
+        }
     }
 
     public static getInstance(): SovereignTradeService {
@@ -33,7 +44,6 @@ export class SovereignTradeService {
     }
 
     private initializeMockMarket() {
-        // Simulate a "Meta Snapshot"
         console.log('[SovereignTrade] Initializing Market Ledger...');
     }
 
@@ -75,12 +85,39 @@ export class SovereignTradeService {
         return metric;
     }
 
+    /**
+     * [LIQUIDITY FATIGUE PROTOCOL]
+     * Calculates offer based on Market Saturation.
+     * High Volume -> High Saturation -> Lower Offers (Preventing Infinite Loops).
+     */
     public getQuickSellOffer(card: Card): number {
         const metric = this.evaluateAsset(card);
-        // During PANIC (High Volatility), offer spreads widen (80% value)
-        // During STABLE/RECOVERY, offers tighten (90% value)
-        const spread = metric.volatility > 0.5 ? 0.80 : 0.90;
-        return Math.floor(metric.currentPrice * spread);
+
+        // Base Spread (10-20% based on Volatility)
+        const baseSpread = metric.volatility > 0.5 ? 0.20 : 0.10;
+
+        // Fatigue Malus (Up to 50% extra fee if fully saturated)
+        const fatigueMalus = this.saturationLevel * 0.50;
+
+        // Total Fee
+        const totalFee = baseSpread + fatigueMalus;
+        const offerRatio = Math.max(0.30, 1 - totalFee); // Floor at 30% value
+
+        return Math.floor(metric.currentPrice * offerRatio);
+    }
+
+    public confirmQuickSell(cardId: string) {
+        // Consuming liquidity increases saturation
+        // Higher rarity = More saturation (harder to offload)
+        const metric = this.marketIndex.get(cardId);
+        const impact = metric ? (metric.scarcityMultiplier * 0.01) : 0.05;
+
+        this.saturationLevel = Math.min(1.0, this.saturationLevel + impact);
+        console.log(`[SovereignTrade] 💸 Asset Sold. Market Saturation: ${(this.saturationLevel * 100).toFixed(1)}%`);
+    }
+
+    public getMarketSaturation(): number {
+        return this.saturationLevel;
     }
 
     /**
