@@ -268,6 +268,12 @@ import { tradeEngine } from '@/services/sovereign-trade-service';
 function AppraisalWidget({ card }: { card: Card }) {
     const valuation = tradeEngine.evaluateAsset(card);
     const offer = tradeEngine.getQuickSellOffer(card);
+    const saturation = tradeEngine.getMarketSaturation();
+
+    // Saturation Status (Visual Feedback)
+    const isSaturated = saturation > 0.6;
+    const saturationColor = isSaturated ? "text-red-500" : saturation > 0.3 ? "text-yellow-500" : "text-green-500";
+    const statusText = isSaturated ? "MARKET FLOODED" : saturation > 0.3 ? "DEMAND COOLING" : "HIGH DEMAND";
 
     return (
         <motion.div
@@ -293,11 +299,20 @@ function AppraisalWidget({ card }: { card: Card }) {
                     <span>Validation</span>
                     <span className="text-[#0ac8b9]">Sovereign Verified</span>
                 </div>
+                <div className="flex justify-between text-[10px] text-white">
+                    <span>Market Appetite</span>
+                    <span className={clsx("font-black uppercase", saturationColor)}>
+                        {statusText} (-{(saturation * 50).toFixed(0)}%)
+                    </span>
+                </div>
             </div>
 
             <div className="h-px bg-white/10 my-1" />
 
-            <button className="w-full bg-[#c8aa6e]/10 hover:bg-[#c8aa6e]/20 text-[#c8aa6e] border border-[#c8aa6e]/30 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
+            <button
+                onClick={() => tradeEngine.confirmQuickSell(card.id)}
+                className="w-full bg-[#c8aa6e]/10 hover:bg-[#c8aa6e]/20 text-[#c8aa6e] border border-[#c8aa6e]/30 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 active:scale-95"
+            >
                 <Zap size={12} /> Quick Sell ({offer})
             </button>
         </motion.div>
