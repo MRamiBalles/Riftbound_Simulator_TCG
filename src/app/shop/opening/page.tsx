@@ -8,6 +8,12 @@ import { VfxService } from '@/services/vfx-service';
 import { SocialService } from '@/services/social-service';
 import { Card } from '@/lib/database.types';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
+import { useUserStore } from '@/store/user-store';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, Zap, ArrowRight, Scissors, Trophy, Gem, Box, Crown } from 'lucide-react';
+import { PointStrategyService } from '@/services/point-strategy-service';
+import Link from 'next/link';
+import clsx from 'clsx';
 import { HextechNavbar } from '@/components/layout/HextechNavbar';
 import { HextechSidebar } from '@/components/layout/HextechSidebar';
 
@@ -66,7 +72,7 @@ export default function PackOpeningPage() {
 
         // Broadcast IF it's a hit!
         if (anyRare) {
-            SocialService.broadcastPull('MasterPlayer', 50, packCards, packType);
+            SocialService.broadcastPull('MasterPlayer', 50, packCards, packType as any);
         }
 
         if (isGodPack) {

@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { ForgeService, ForgedCard } from '@/services/forge-service';
 import { HextechNavbar } from '@/components/layout/HextechNavbar';
 import { HextechSidebar } from '@/components/layout/HextechSidebar';
+import { RealityLinkService } from '@/services/reality-link-service';
 import { Sparkles, Brain, Cpu, Save, RefreshCw, Zap, Shield, Wand2, FileText, Check } from 'lucide-react';
-import { CardView } from '@/components/CardView';
+import { Card as CardComponent } from '@/components/Card';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -104,7 +105,7 @@ export default function ForgePage() {
                             <div className="animate-in zoom-in fade-in duration-1000 flex flex-col items-center">
                                 <div className="mb-12 perspective-1000">
                                     <div className="shadow-[0_0_100px_rgba(200,170,110,0.2)] rounded-[2rem] overflow-hidden transform rotate-y-12">
-                                        <CardView card={result} />
+                                        <CardComponent card={result} />
                                     </div>
                                 </div>
 

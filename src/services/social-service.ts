@@ -9,6 +9,15 @@ export interface PublicPull {
     packType: 'alpha' | 'omega' | 'void';
 }
 
+export interface FriendActivity {
+    id: string;
+    username: string;
+    avatarUrl: string;
+    type: 'PACK' | 'DECK' | 'TRADE';
+    timeAgo: string;
+    packResult: Card[];
+}
+
 export class SocialService {
     private static feed: PublicPull[] = [];
 
@@ -30,6 +39,28 @@ export class SocialService {
             return this.generateMockFeed();
         }
         return this.feed;
+    }
+
+    public static async getFriendEchoes(): Promise<FriendActivity[]> {
+        // Mock friend activity for the Echo feature
+        return [
+            {
+                id: 'echo1',
+                username: 'Nova_Stellar',
+                avatarUrl: 'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/588.png',
+                type: 'PACK',
+                timeAgo: '5m ago',
+                packResult: [] // Will be populated in the component if needed or kept empty for mock
+            },
+            {
+                id: 'echo2',
+                username: 'VoidWalker',
+                avatarUrl: 'https://ddragon.leagueoflegends.com/cdn/13.24.1/img/profileicon/590.png',
+                type: 'DECK',
+                timeAgo: '12m ago',
+                packResult: []
+            }
+        ];
     }
 
     private static generateMockFeed(): PublicPull[] {

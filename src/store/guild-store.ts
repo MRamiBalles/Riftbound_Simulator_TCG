@@ -10,16 +10,26 @@ export interface GuildMember {
 }
 
 interface GuildState {
-    guild: {
+    userGuild: {
         id: string;
         name: string;
         tag: string;
         level: number;
         xp: number;
         motd: string;
+        description: string;
+        sharedLibrarySize: number;
         members: GuildMember[];
         vault: { shards: number; dust: number };
     } | null;
+    availableGuilds: Array<{
+        id: string;
+        name: string;
+        tag: string;
+        description: string;
+        memberCount: number;
+        level: number;
+    }>;
 
     // Actions
     createGuild: (name: string, tag: string) => void;
@@ -31,32 +41,42 @@ interface GuildState {
 
 export const useGuildStore = create<GuildState>()(
     persist(
-        (set) => ({
-            guild: null,
+        (set, get) => ({
+            userGuild: null,
+            availableGuilds: [
+                { id: 'g1', name: 'VOID WALKERS', tag: 'VOID', description: 'Masters of the rift and beyond.', memberCount: 142, level: 42 },
+                { id: 'g2', name: 'SOLAR ECLIPSE', tag: 'SUN', description: 'Harnessing the power of the stars.', memberCount: 88, level: 35 },
+                { id: 'g3', name: 'CHRONO KEEPERS', tag: 'TIME', description: 'Guardians of the temporal threads.', memberCount: 215, level: 50 }
+            ],
 
             createGuild: (name, tag) => set({
-                guild: {
+                userGuild: {
                     id: Math.random().toString(36).substr(2, 9),
                     name,
                     tag,
                     level: 1,
                     xp: 0,
                     motd: "Welcome to the Riftbound Alliance!",
+                    description: "A new power rises in the rift.",
+                    sharedLibrarySize: 0,
                     members: [{ id: 'user_1', name: 'User', role: 'LEADER', contribution: 0, joinedAt: Date.now() }],
                     vault: { shards: 0, dust: 0 }
                 }
             }),
 
             joinGuild: (guildId) => {
+                const guild = get().availableGuilds.find((g: any) => g.id === guildId);
                 // Mock join logic
                 set({
-                    guild: {
+                    userGuild: {
                         id: guildId,
-                        name: "DIMENSIONAL OVERLORDS",
-                        tag: "VOID",
-                        level: 42,
+                        name: guild?.name || "DIMENSIONAL OVERLORDS",
+                        tag: guild?.tag || "VOID",
+                        level: guild?.level || 42,
                         xp: 850000,
                         motd: "FOR THE RIFT!",
+                        description: guild?.description || "Masters of the absolute zero.",
+                        sharedLibrarySize: 156,
                         members: [
                             { id: 'user_x', name: 'VoidWalker', role: 'LEADER', contribution: 9999, joinedAt: Date.now() },
                             { id: 'user_1', name: 'User', role: 'RECRUIT', contribution: 0, joinedAt: Date.now() }
@@ -66,30 +86,30 @@ export const useGuildStore = create<GuildState>()(
                 });
             },
 
-            leaveGuild: () => set({ guild: null }),
+            leaveGuild: () => set({ userGuild: null }),
 
             updateMotd: (motd) => set(state => {
-                if (!state.guild) return state;
-                return { guild: { ...state.guild, motd } };
+                if (!state.userGuild) return state;
+                return { userGuild: { ...state.userGuild, motd } };
             }),
 
             contribute: (shards, dust) => set(state => {
-                if (!state.guild) return state;
-                const userIndex = state.guild.members.findIndex(m => m.name === 'User');
+                if (!state.userGuild) return state;
+                const userIndex = state.userGuild.members.findIndex(m => m.name === 'User');
                 if (userIndex === -1) return state;
 
-                const newMembers = [...state.guild.members];
+                const newMembers = [...state.userGuild.members];
                 newMembers[userIndex].contribution += (shards + (dust * 2));
 
                 return {
-                    guild: {
-                        ...state.guild,
+                    userGuild: {
+                        ...state.userGuild,
                         vault: {
-                            shards: state.guild.vault.shards + shards,
-                            dust: state.guild.vault.dust + dust
+                            shards: state.userGuild.vault.shards + shards,
+                            dust: state.userGuild.vault.dust + dust
                         },
                         members: newMembers,
-                        xp: state.guild.xp + (shards * 10)
+                        xp: state.userGuild.xp + (shards * 10)
                     }
                 };
             })

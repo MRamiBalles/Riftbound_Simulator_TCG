@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { BazaarService, BazaarListing } from '@/services/bazaar-service';
 import { Card as CardComponent } from '@/components/Card';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
-import EnergyWidget from '@/components/layout/EnergyWidget';
 import { ShoppingCart, Tag, User, Clock, ArrowLeft, Filter, Zap, Hammer, Gavel, Trophy, TrendingUp, ShieldCheck } from 'lucide-react';
 import { AuctionService, AuctionItem } from '@/services/auction-service';
 import { PointStrategyService } from '@/services/point-strategy-service';
@@ -12,6 +11,8 @@ import { useUserStore } from '@/store/user-store';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 
 export default function BazaarPage() {
     const [view, setView] = useState<'LISTINGS' | 'TRADES' | 'AUCTION'>('AUCTION');
@@ -37,7 +38,8 @@ export default function BazaarPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <div className="max-w-7xl mx-auto">
                 <header className="mb-16 flex flex-col md:flex-row justify-between items-end gap-8">

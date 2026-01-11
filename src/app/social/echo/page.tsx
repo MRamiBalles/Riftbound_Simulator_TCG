@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getFriendEchoes, FriendActivity } from '@/services/social-service';
+import { SocialService, FriendActivity } from '@/services/social-service';
 import { Card as CardComponent } from '@/components/Card';
 import { useCollectionStore } from '@/store/collection-store';
 import { Loader2, Radio, User, Gem } from 'lucide-react';
@@ -22,7 +22,7 @@ export default function HextechEchoPage() {
     }, []);
 
     const loadEchoes = async () => {
-        const data = await getFriendEchoes();
+        const data = await SocialService.getFriendEchoes();
         setEchoes(data);
         setLoading(false);
     };

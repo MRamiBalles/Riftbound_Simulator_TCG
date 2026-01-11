@@ -13,8 +13,11 @@ export interface Mission {
 }
 
 interface MissionState {
-    missions: Mission[];
-    weeklyMissions: Mission[];
+    activeMissions: Array<Mission & { target: number; rewardXP: number }>;
+    level: number;
+    currentXP: number;
+    requiredXP: number;
+    passTiers: Array<{ level: number; rewardName: string; isPremium: boolean; unlocked: boolean }>;
     dailyClaimed: boolean;
     lastLogin: number | null;
 
@@ -29,40 +32,44 @@ interface MissionState {
 export const useMissionStore = create<MissionState>()(
     persist(
         (set, get) => ({
-            missions: [
-                { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', goal: 1, progress: 0, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
-                { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', goal: 5000, progress: 0, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
+            activeMissions: [
+                { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', goal: 1, progress: 0, target: 1, rewardXP: 150, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
+                { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', goal: 5000, progress: 1250, target: 5000, rewardXP: 450, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
             ],
-            weeklyMissions: [
-                { id: 'w1', title: 'Market Mogul', description: 'Complete 3 Trades', goal: 3, progress: 0, reward: { type: 'DUST', amount: 500 }, completed: false, claimed: false }
-            ],
+            level: 14,
+            currentXP: 1250,
+            requiredXP: 2000,
+            passTiers: Array.from({ length: 50 }, (_, i) => ({
+                level: i + 1,
+                rewardName: i % 5 === 0 ? 'Legendary Core' : '100 Shards',
+                isPremium: i % 3 === 0,
+                unlocked: i + 1 <= 14
+            })),
             dailyClaimed: false,
             lastLogin: null,
 
             updateProgress: (id, amount) => set(state => {
-                const update = (m: Mission) => {
+                const update = (m: any) => {
                     if (m.id !== id || m.completed) return m;
                     const next = m.progress + amount;
                     return { ...m, progress: next, completed: next >= m.goal };
                 };
                 return {
-                    missions: state.missions.map(update),
-                    weeklyMissions: state.weeklyMissions.map(update)
+                    activeMissions: state.activeMissions.map(update)
                 };
             }),
 
             claimReward: (id) => set(state => {
-                const claim = (m: Mission) => (m.id === id ? { ...m, claimed: true } : m);
+                const claim = (m: any) => (m.id === id ? { ...m, claimed: true } : m);
                 return {
-                    missions: state.missions.map(claim),
-                    weeklyMissions: state.weeklyMissions.map(claim)
+                    activeMissions: state.activeMissions.map(claim)
                 };
             }),
 
             refreshDaily: () => set({
-                missions: [
-                    { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', goal: 1, progress: 0, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
-                    { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', goal: 5000, progress: 0, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
+                activeMissions: [
+                    { id: 'd1', title: 'Novice Breach', description: 'Open 1 Pack', goal: 1, progress: 0, target: 1, rewardXP: 150, reward: { type: 'SHARDS', amount: 10 }, completed: false, claimed: false },
+                    { id: 'd2', title: 'Aggressive Assault', description: 'Deal 5000 damage to Boss', goal: 5000, progress: 0, target: 5000, rewardXP: 450, reward: { type: 'ENERGY', amount: 24 }, completed: false, claimed: false }
                 ]
             }),
 
