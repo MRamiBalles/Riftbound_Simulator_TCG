@@ -174,6 +174,20 @@ export default function PackOpeningPage() {
                         </div>
 
                         <div className="flex flex-col items-center gap-4">
+                            {bulkResults.map((pack: Card[], pIdx: number) => (
+                                <div key={pIdx} className="grid grid-cols-5 gap-2">
+                                    {pack.map((c: Card, cIdx: number) => (
+                                        <div
+                                            key={cIdx}
+                                            className={clsx(
+                                                "w-2 h-2 rounded-full transition-all duration-500",
+                                                cIdx === revealIndex && pIdx === bulkIndex ? "bg-[#c8aa6e] w-8" : (cIdx < revealIndex && pIdx === bulkIndex) || pIdx < bulkIndex ? "bg-[#0ac8b9]" : "bg-white/10"
+                                            )}
+                                        />
+                                    ))}
+                                </div>
+                            ))}
+
                             <div className="flex gap-2 mb-4">
                                 {packCards.map((_, i) => (
                                     <div
