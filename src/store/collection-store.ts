@@ -24,6 +24,19 @@ interface CollectionState {
     showcase: (string | null)[]; // 9 slots
     setShowcaseSlot: (index: number, cardId: string | null) => void;
 
+    // Filter & Search State
+    filters: {
+        rarity: string | null;
+        cost: number | null;
+        type: string | null;
+        set: string | null;
+    };
+    searchQuery: string;
+
+    setFilter: (key: keyof CollectionState['filters'], value: any) => void;
+    setSearchQuery: (query: string) => void;
+    resetFilters: () => void;
+
     // Deck Play
     activeDeck: string[] | null;
     setActiveDeck: (deck: string[]) => void;
@@ -44,27 +57,47 @@ export const useCollectionStore = create<CollectionState>()(
         (set, get) => ({
             inventory: {},
             showcase: Array(9).fill(null),
+            filters: {
+                rarity: null,
+                cost: null,
+                type: null,
+                set: null,
+            },
+            searchQuery: '',
 
-            addCard: (cardId, quantity = 1) => {
-                set((state) => {
+            setFilter: (key: keyof CollectionState['filters'], value: any) => {
+                set((state: CollectionState) => ({
+                    filters: { ...state.filters, [key]: value }
+                }));
+            },
+
+            setSearchQuery: (query: string) => set({ searchQuery: query }),
+
+            resetFilters: () => set({
+                filters: { rarity: null, cost: null, type: null, set: null },
+                searchQuery: ''
+            }),
+
+            addCard: (cardId: string, quantity = 1) => {
+                set((state: CollectionState) => {
                     const inv = { ...state.inventory };
                     inv[cardId] = (inv[cardId] || 0) + quantity;
                     return { inventory: inv };
                 });
             },
 
-            addCards: (cardIds) => {
-                set((state) => {
+            addCards: (cardIds: string[]) => {
+                set((state: CollectionState) => {
                     const newInventory = { ...state.inventory };
-                    cardIds.forEach(id => {
+                    cardIds.forEach((id: string) => {
                         newInventory[id] = (newInventory[id] || 0) + 1;
                     });
                     return { inventory: newInventory };
                 });
             },
 
-            removeCard: (cardId) => {
-                set((state) => {
+            removeCard: (cardId: string) => {
+                set((state: CollectionState) => {
                     const newInventory = { ...state.inventory };
                     if (newInventory[cardId] > 0) {
                         newInventory[cardId]--;
@@ -82,8 +115,8 @@ export const useCollectionStore = create<CollectionState>()(
                 return Object.values(inventory).reduce((acc, qty) => acc + qty, 0);
             },
 
-            setShowcaseSlot: (index, cardId) => {
-                set((state) => {
+            setShowcaseSlot: (index: number, cardId: string | null) => {
+                set((state: CollectionState) => {
                     const newShowcase = [...state.showcase];
                     if (index >= 0 && index < 9) {
                         newShowcase[index] = cardId;
@@ -92,7 +125,7 @@ export const useCollectionStore = create<CollectionState>()(
                     // Cloud Sync
                     CloudService.saveDeck('local-user', {
                         showcase: newShowcase
-                    }).catch(e => console.warn('[Showcase] Cloud sync deferred.', e));
+                    }).catch((e: any) => console.warn('[Showcase] Cloud sync deferred.', e));
 
                     return { showcase: newShowcase };
                 });
