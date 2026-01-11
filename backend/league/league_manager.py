@@ -21,12 +21,14 @@ class LeagueManager:
             print(f"LeagueManager: Loaded Fixed Opponent from {main_agent_path}")
         except Exception as e:
             print(f"LeagueManager Error: Could not load opponent. {e}")
-            raise e
+            self.opponent = None # Fallback or fail
 
     def get_opponent_action(self, obs):
         """
         Queries the frozen opponent for an action given the current observation.
         """
+        if self.opponent is None: return 0, 0.0
+
         with torch.no_grad():
             obs_t = torch.tensor(obs).unsqueeze(0).to(self.device)
             # Representation
@@ -43,6 +45,8 @@ class LeagueManager:
         Returns the Value (V) estimate of the opponent for a given state.
         Used for Minimax Reward calculation.
         """
+        if self.opponent is None: return 0.0
+
         with torch.no_grad():
             obs_t = torch.tensor(obs).unsqueeze(0).to(self.device)
             s0 = self.opponent.representation(obs_t)
