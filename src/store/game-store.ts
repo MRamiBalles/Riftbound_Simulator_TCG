@@ -5,7 +5,7 @@ import { Action, SerializedGameState, ReplayData } from '@/game/engine/game.type
 import { ReplayService } from '@/services/replay-service';
 import { AIService, AIMode } from '@/services/ai-service';
 import { MultiplayerService } from '@/services/multiplayer-service';
-import { RoboticArmService } from '@/services/robotic-arm-service';
+import { roboticArm } from '@/services/robotic-arm-service';
 
 interface GameStoreState extends SerializedGameState {
     engine: CoreEngine | null;
@@ -17,6 +17,8 @@ interface GameStoreState extends SerializedGameState {
     aiMode: AIMode;
     aiThinking: Record<string, number>;
     winRatePrediction: string | null;
+    autoPilotEnabled: boolean;
+    aiIntention: string | null;
 
     // Actions
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => void;
@@ -25,6 +27,8 @@ interface GameStoreState extends SerializedGameState {
     fetchInferenceAction: () => Promise<void>;
     setAIMode: (mode: AIMode) => void;
     setMultiplayerMode: (enabled: boolean, roomId?: string) => void;
+    toggleAutoPilot: () => void;
+    setAIIntention: (intention: string | null) => void;
 
     // Replay Actions
     loadReplay: (data: ReplayData) => void;
@@ -60,6 +64,8 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
     aiMode: 'Heuristic',
     aiThinking: {},
     winRatePrediction: null,
+    autoPilotEnabled: false,
+    aiIntention: null,
 
     initGame: (playerDeck: Card[], opponentDeck: Card[]) => {
         const engine = new CoreEngine();
@@ -131,6 +137,21 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         set({ aiMode: mode });
     },
 
+    toggleAutoPilot: () => {
+        const { autoPilotEnabled } = get();
+        const newState = !autoPilotEnabled;
+        if (newState) {
+            roboticArm.start();
+        } else {
+            roboticArm.stop();
+        }
+        set({ autoPilotEnabled: newState, aiIntention: null });
+    },
+
+    setAIIntention: (intention: string | null) => {
+        set({ aiIntention: intention });
+    },
+
     loadReplay: (data: ReplayData) => {
         const engine = ReplayService.createPlaybackEngine(data, -1);
         set({
@@ -163,10 +184,19 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
     fetchInferenceAction: async () => {
         const state = get();
         if (state.isReplayMode) return;
-        const action = await AIService.getAction(state);
-        if (action) {
-            // Use RoboticArmService for human-like visual execution
-            await RoboticArmService.executeAction(action, (a) => get().performAction(a));
-        }
+
+        const isOpponentTurn = state.activePlayer === 'opponent' || state.phase === 'Mulligan';
+        const isAutoPilotActive = state.autoPilotEnabled && state.activePlayer === 'player';
+
+        if (!isOpponentTurn && !isAutoPilotActive) return;
+
+        // Use RoboticArmService for human-like visual execution
+        await roboticArm.processGameState(state, (action) => {
+            get().performAction(action);
+            set({ aiIntention: roboticArm.getIntention() });
+        });
+
+        // Update intention even if no action was taken
+        set({ aiIntention: roboticArm.getIntention() });
     }
 }));

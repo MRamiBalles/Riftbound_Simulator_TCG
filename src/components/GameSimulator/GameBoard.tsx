@@ -48,7 +48,9 @@ export const GameBoard: React.FC = () => {
         setMultiplayerMode,
         loadReplay,
         aiMode,
-        setAIMode
+        setAIMode,
+        autoPilotEnabled,
+        toggleAutoPilot
     } = useGameStore();
 
     const [showCoach, setShowCoach] = useState(false);
@@ -94,7 +96,8 @@ export const GameBoard: React.FC = () => {
         const shouldFetch = !winner && !isMultiplayerMode && (
             (activePlayer === 'opponent' && phase === 'Main') ||
             (phase === 'Mulligan' && activePlayer === 'opponent') ||
-            (phase === 'Mulligan')
+            (phase === 'Mulligan') ||
+            (autoPilotEnabled && activePlayer === 'player' && phase === 'Main')
         );
 
         if (shouldFetch) {
@@ -103,7 +106,7 @@ export const GameBoard: React.FC = () => {
             }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [activePlayer, fetchInferenceAction, winner, phase, isMultiplayerMode]);
+    }, [activePlayer, fetchInferenceAction, winner, phase, isMultiplayerMode, autoPilotEnabled]);
 
     // UI Semaphore: Monitor phase and transitions to block Robotic Arm
     useEffect(() => {
@@ -539,6 +542,17 @@ export const GameBoard: React.FC = () => {
                 >
                     <Radio size={18} />
                     {showStreamerHUD ? 'Streamer HUD ON' : 'Streamer Toolkit'}
+                </button>
+
+                <button
+                    onClick={toggleAutoPilot}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-black transition-all border ${autoPilotEnabled
+                        ? 'bg-indigo-500/30 border-indigo-400 text-indigo-300 shadow-[0_0_25px_rgba(99,102,241,0.4)] animate-pulse'
+                        : 'bg-slate-900/80 border-slate-700 text-slate-500 hover:text-indigo-400 hover:border-indigo-500/50'
+                        }`}
+                >
+                    <Brain className={clsx("w-5 h-5", autoPilotEnabled && "animate-spin-slow")} />
+                    <span>{autoPilotEnabled ? 'SOVEREIGN AUTO-PILOT ON' : 'ENGAGE AUTO-PILOT'}</span>
                 </button>
             </div>
 

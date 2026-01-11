@@ -8,7 +8,7 @@ export type AIMode = 'Heuristic' | 'Neural' | 'Hybrid' | 'Remote';
 export class AIService {
     private static baseUrl = 'http://localhost:8000';
     private static localBot = new HeuristicBot();
-    // private static neuralBot = new NeuralBot(); // Disabled: Missing onnxruntime-web dependency
+    private static neuralBot = new NeuralBot();
     private static remoteBot = new RemoteBot();
     private static currentMode: AIMode = 'Heuristic';
 
@@ -28,10 +28,6 @@ export class AIService {
         let usedNeural = false;
 
         if (this.currentMode === 'Neural' || this.currentMode === 'Hybrid') {
-            console.warn('[AI] NeuralBot is currently disabled. Falling back to Heuristic.');
-            action = await this.localBot.decideAction(state);
-            usedNeural = false;
-            /* 
             const result = await this.neuralBot.decideAction(state);
             avgConfidence = result.confidence.reduce((a, b) => a + b, 0) / (result.confidence.length || 1);
 
@@ -45,7 +41,6 @@ export class AIService {
                 this.lastConfidence = result.confidence;
                 usedNeural = true;
             }
-            */
         } else if (this.currentMode === 'Remote') {
             action = await this.remoteBot.decideAction(state);
             if (!action) {
