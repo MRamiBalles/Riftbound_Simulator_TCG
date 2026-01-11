@@ -1,62 +1,98 @@
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-from vectorizer import vectorizer
+from spatial_vectorizer import SpatialVectorizer
+from game_logic import PythonCoreEngine
 
 class RiftboundEnv(gym.Env):
     """
-    Gymnasium interface for Riftbound Simulator.
-    
-    Observation Space:
-    - Box(low=0, high=1, shape=(INPUT_DIM,), dtype=float32)
-    - Represents the vectorized game state (Health, Mana, Board State, Hand).
-    
-    Action Space:
-    - Discrete(ACTION_DIM)
-    - Represents the index of the action to take from the masked legal moves.
+    Riftbound Strategic Gym [Spatial Edition].
+    Integrates PythonCoreEngine with SpatialVectorizer [32, 9, 5].
     """
-    metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 4}
+    metadata = {"render_modes": ["human"], "render_fps": 4}
 
     def __init__(self, render_mode=None):
         super().__init__()
         
-        # Define logic constants (Mock values for now)
-        self.INPUT_DIM = 256  # Size of the state vector
-        self.ACTION_DIM = 50  # Max possible unique actions per turn context
+        self.engine = PythonCoreEngine()
+        self.vectorizer = SpatialVectorizer(channels=32, height=9, width=5)
         
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(self.INPUT_DIM,), dtype=np.float32
+            low=0, high=1, shape=(32, 9, 5), dtype=np.float32
         )
-        self.action_space = spaces.Discrete(self.ACTION_DIM)
+        
+        # Action space: 128 discrete actions (indexed action space)
+        self.action_space = spaces.Discrete(128)
         
         self.render_mode = render_mode
-        self.state = None
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
+        state = self.engine.reset()
         
-        # TODO: Initialize a fresh game state
-        # In a real implementation, this would instantiate the Game Engine
+        # Vectorize initial state
+        observation = self.vectorizer.vectorize(
+            self._serialize_state(state), 
+            player_id="player"
+        )
         
-        observation = np.zeros(self.INPUT_DIM, dtype=np.float32)
-        info = {}
+        info = {"legal_actions": self.engine.get_legal_actions("player")}
         return observation, info
 
-    def step(self, action):
-        # TODO: Apply action to the engine and get new state
+    def step(self, action_idx):
+        # 1. Map action index to engine action (Prototype mapping)
+        legal_actions = self.engine.get_legal_actions("player")
         
-        # Mock step return
-        observation = np.zeros(self.INPUT_DIM, dtype=np.float32)
+        # For prototype, we take action = action_idx % len(legal_actions)
+        if legal_actions:
+            action = legal_actions[action_idx % len(legal_actions)]
+            self.engine.apply_action(action)
+        
+        # 2. Get new state
+        raw_state = self.engine.state
+        observation = self.vectorizer.vectorize(
+            self._serialize_state(raw_state), 
+            player_id="player"
+        )
+        
+        # 3. Calculate reward (Win/Loss + Health diff)
         reward = 0.0
         terminated = False
+        if raw_state.winner == "player":
+            reward = 10.0
+            terminated = True
+        elif raw_state.winner == "opponent":
+            reward = -10.0
+            terminated = True
+            
+        # Intermediate rewards (Heuristic help for training)
+        reward += (raw_state.players["player"].health - 20) * 0.1
+        
         truncated = False
-        info = {}
+        info = {"legal_actions": self.engine.get_legal_actions("player")}
         
         return observation, reward, terminated, truncated, info
 
+    def _serialize_state(self, state):
+        """Converts internal Python objects to dict for vectorizer."""
+        # This is a simplified serialization for the SpatialVectorizer
+        res = {
+            "turn": state.turn,
+            "activePlayer": state.active_player,
+            "phase": state.phase,
+            "players": {
+                pid: {
+                    "health": p.health,
+                    "mana": p.mana,
+                    "hand": [{"id": c.id, "attack": c.attack, "health": c.health} for c in p.hand],
+                    "field": [{"id": c.id, "attack": c.attack, "health": c.health, "keywords": c.keywords} for c in p.field]
+                } for pid, p in state.players.items()
+            }
+        }
+        return res
+
     def render(self):
-        if self.render_mode == "human":
-            pass
+        pass
 
     def close(self):
         pass
