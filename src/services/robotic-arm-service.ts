@@ -26,45 +26,64 @@ export class RoboticArmService {
         return RoboticArmService.instance;
     }
 
+    /**
+     * sovereign-semaphore: Static global lock to prevent the AI from interacting
+     * while the UI is performing intensive animations (Combat, Phase transitions).
+     */
     public static setUIBusy(busy: boolean) {
         this.isUIBusy = busy;
     }
 
+    private emitIntention(action: Action) {
+        window.dispatchEvent(new CustomEvent('ROBOTIC_ARM_INTENTION', {
+            detail: { ...action, timestamp: Date.now() }
+        }));
+    }
+
+    /**
+     * Executes a single action with humanized latency.
+     * Used by external callers that need controlled AI injection.
+     */
     public static async executeAction(action: Action, onExecute: (a: Action) => void) {
         const instance = this.getInstance();
+        if (RoboticArmService.isUIBusy) return;
 
-        // Signal intention via Event for UI components
-        window.dispatchEvent(new CustomEvent('ROBOTIC_ARM_INTENTION', { detail: action }));
+        instance.emitIntention(action);
 
-        // Humanize delay
         const delay = instance.config.baseLatency + Math.random() * instance.config.stochasticVariance;
         await new Promise(resolve => setTimeout(resolve, delay));
 
         onExecute(action);
     }
 
+    /**
+     * Main autonomous loop processing.
+     * Implements a two-stage "thinking" process for maximum humanization.
+     */
     public async processGameState(state: SerializedGameState, onAction: (action: Action) => void) {
         if (!this.isRunning || RoboticArmService.isUIBusy) return;
 
-        // Humanize: Add a "thinking" delay
+        // Stage 1: Recognition Delay (Mimic human reaction time to state change)
         const delay = this.config.baseLatency + Math.random() * this.config.stochasticVariance;
-
         this.currentIntention = "Analyzing tactical options...";
         await new Promise(resolve => setTimeout(resolve, delay * 0.4));
 
-        const action = await AIService.getAction(state);
+        try {
+            const action = await AIService.getAction(state);
 
-        if (action) {
-            this.currentIntention = this.formatActionIntention(action);
+            if (action) {
+                this.currentIntention = this.formatActionIntention(action);
+                this.emitIntention(action);
 
-            // Dispatch event for visual overlays
-            window.dispatchEvent(new CustomEvent('ROBOTIC_ARM_INTENTION', { detail: action }));
-
-            // Visual confirmation delay
-            await new Promise(resolve => setTimeout(resolve, delay * 0.6));
-            onAction(action);
-        } else {
-            this.currentIntention = "Waiting for optimal moment...";
+                // Stage 2: Interaction Delay (Mimic tactical selection/confirmation)
+                await new Promise(resolve => setTimeout(resolve, delay * 0.6));
+                onAction(action);
+            } else {
+                this.currentIntention = "Waiting for optimal moment...";
+            }
+        } catch (error) {
+            console.error('[RoboticArm] AI Inference Error:', error);
+            this.currentIntention = "Recalibrating neural link...";
         }
     }
 
