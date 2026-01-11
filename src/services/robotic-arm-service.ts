@@ -37,8 +37,11 @@ export class RoboticArmService {
     }
 
     /**
-     * sovereign-semaphore: Static global lock to prevent the AI from interacting
-     * while the UI is performing intensive animations.
+     * [Sovereign-Semaphore]
+     * A static global lock (Mutex) to prevent "Mechanical Overlap".
+     * This ensures the AI never attempts to interact with the board while the UI
+     * is busy rendering critical animations (Combat resolution, Phase transitions),
+     * preventing state desynchronization.
      */
     public static setUIBusy(busy: boolean) {
         this.isUIBusy = busy;
@@ -51,8 +54,16 @@ export class RoboticArmService {
     }
 
     /**
-     * Generates a Log-Normal distributed delay.
-     * Uses Box-Muller transform to generate Normal distribution, then exp().
+     * Generates a delay based on a Log-Normal Distribution.
+     * 
+     * Why Log-Normal?
+     * Human reaction times are not Uniformly distributed. They follow a Log-Normal curve:
+     * - Most reactions cluster around the mean (fast recognition).
+     * - A "long tail" exists for complex decisions (the "thinking" pause).
+     * 
+     * Implementation:
+     * Uses the Box-Muller transform to generate a Standard Normal (Z),
+     * then scales it: T = exp(mu + sigma * Z).
      */
     private getLogNormalDelay(meanMs: number, sigma: number): number {
         const u = 1 - Math.random(); // Convert [0,1) to (0,1]
@@ -68,6 +79,11 @@ export class RoboticArmService {
     /**
      * Token Bucket Rate Limiter (APM Check)
      * Enforces human-like burst limits.
+     * 
+     * Rationale:
+     * Humans can perform rapid actions (APM spikes) but cannot sustain them indefinitely.
+     * This limiter prevents the Log-Normal tail from generating physically impossible
+     * "machine-gun" sequences of actions.
      */
     private async enforceAPMLimit() {
         const now = Date.now();
@@ -98,6 +114,7 @@ export class RoboticArmService {
         if (!this.isRunning || RoboticArmService.isUIBusy) return;
 
         // Stage 1: Recognition (Thinking Time)
+        // Simulate the cognitive load of reading the board state.
         const thinkingDelay = this.getLogNormalDelay(this.config.baseThinkingMean, this.config.baseThinkingSigma);
 
         this.currentIntention = "Analyzing tactical options...";
@@ -112,6 +129,7 @@ export class RoboticArmService {
                 this.emitIntention(action);
 
                 // Stage 2: Mechanic Execution (Mouse Movement)
+                // Simulate the physical time to move the cursor to the target.
                 const mechDelay = this.getLogNormalDelay(this.config.baseMechanicalMean, this.config.baseMechanicalSigma);
                 await new Promise(resolve => setTimeout(resolve, mechDelay));
 

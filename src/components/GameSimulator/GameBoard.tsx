@@ -114,6 +114,30 @@ export const GameBoard: React.FC = () => {
         RoboticArmService.setUIBusy(isBusy);
     }, [combat, phase, winner]);
 
+    // [SOVEREIGN GAUNTLET] Stress Test Triggers
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Ctrl + Shift + E -> Endurance Test
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                if (engine) {
+                    import('@/services/stress-test-service').then(m =>
+                        m.StressTestService.runEnduranceTest(engine.getState())
+                    );
+                }
+            }
+            // Ctrl + Shift + C -> Chaos Monkey
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                if (engine) {
+                    import('@/services/stress-test-service').then(m =>
+                        m.StressTestService.runChaosTest(engine.getState())
+                    );
+                }
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [engine]);
+
     const [armIntention, setArmIntention] = useState<Action | null>(null);
 
     // Listen for Robotic Arm Intentions (XAI)

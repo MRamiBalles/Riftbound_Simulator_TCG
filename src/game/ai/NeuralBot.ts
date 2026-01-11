@@ -13,13 +13,18 @@ export class NeuralBot {
     }
 
     /**
-     * Initializes the ONNX session using dynamic imports for browser resilience.
+     * [Resilience Pattern: Graceful Degradation]
+     * Initializes the ONNX session using dynamic imports.
+     * 
+     * Architecture Note:
+     * We use `import('onnxruntime-web')` instead of a top-level static import.
+     * This ensures that if the dependency is missing (e.g. fresh clone before `npm install`),
+     * the application still boots (falling back to Heuristic Mode) rather than crashing with a "Module Not Found" error.
      */
     public async initialize() {
         if (this.session) return;
 
         try {
-            // Dynamic import to prevent crash if onnxruntime-web is missing from node_modules
             if (!this.ort) {
                 this.ort = await import('onnxruntime-web');
             }
@@ -28,14 +33,22 @@ export class NeuralBot {
             this.session = await this.ort.InferenceSession.create(this.modelPath);
             console.log('[NeuralBot] Session initialized successfully via dynamic import');
 
-            // Warm-up: Run a dummy inference to compile JIT shaders
+            // Trigger JIT Compilation for WebGL shaders
             await this.warmup();
         } catch (e) {
-            console.error('[NeuralBot] Failed to initialize ONNX session. Ensure `npm install` has been run.', e);
+            console.error('[NeuralBot] Initialization failed. System will fallback to Heuristic Mode. Ensure `npm install` has been run.', e);
             throw e;
         }
     }
 
+    /**
+     * [Optimization: Cold Start Mitigation]
+     * Runs a dummy inference with a zero-tensor to force the WebGL backend
+     * to compile its shader programs.
+     * 
+     * Without this, the first player action would suffer a visible frame drop (~500ms)
+     * while the GPU context initializes.
+     */
     private async warmup() {
         if (!this.session || !this.ort) return;
         try {
