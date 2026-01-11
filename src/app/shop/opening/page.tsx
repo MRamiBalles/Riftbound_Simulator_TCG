@@ -167,8 +167,14 @@ export default function PackOpeningPage() {
                                     animate={{ opacity: 1, rotateY: 0, scale: 1 }}
                                     exit={{ opacity: 0, x: -100, rotateZ: -10 }}
                                     transition={{ type: 'spring', damping: 20 }}
+                                    className="relative group"
                                 >
                                     <ImmersiveCard card={packCards[revealIndex]} />
+
+                                    {/* SOVEREIGN APPRAISAL OVERLAY */}
+                                    <div className="absolute -right-48 top-10 w-40">
+                                        <AppraisalWidget card={packCards[revealIndex]} />
+                                    </div>
                                 </motion.div>
                             </AnimatePresence>
                         </div>
@@ -254,5 +260,46 @@ export default function PackOpeningPage() {
                 )}
             </AnimatePresence>
         </main>
+    );
+}
+
+import { tradeEngine } from '@/services/sovereign-trade-service';
+
+function AppraisalWidget({ card }: { card: Card }) {
+    const valuation = tradeEngine.evaluateAsset(card);
+    const offer = tradeEngine.getQuickSellOffer(card);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-[#091428]/90 backdrop-blur-xl border border-[#c8aa6e]/30 p-4 rounded-xl flex flex-col gap-3 shadow-2xl"
+        >
+            <div>
+                <div className="text-[8px] font-black text-[#a09b8c] uppercase tracking-widest">Oracle Valuation</div>
+                <div className="text-2xl font-black text-[#c8aa6e] font-mono flex items-center gap-2">
+                    {valuation.currentPrice} <Gem size={14} />
+                </div>
+            </div>
+
+            <div className="space-y-1">
+                <div className="flex justify-between text-[10px] text-white">
+                    <span>Meta WinRate</span>
+                    <span className={valuation.winRate > 0.5 ? "text-green-400" : "text-red-400"}>
+                        {(valuation.winRate * 100).toFixed(1)}%
+                    </span>
+                </div>
+                <div className="flex justify-between text-[10px] text-white">
+                    <span>Validation</span>
+                    <span className="text-[#0ac8b9]">Sovereign Verified</span>
+                </div>
+            </div>
+
+            <div className="h-px bg-white/10 my-1" />
+
+            <button className="w-full bg-[#c8aa6e]/10 hover:bg-[#c8aa6e]/20 text-[#c8aa6e] border border-[#c8aa6e]/30 py-2 rounded text-[10px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
+                <Zap size={12} /> Quick Sell ({offer})
+            </button>
+        </motion.div>
     );
 }
