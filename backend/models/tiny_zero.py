@@ -40,6 +40,14 @@ class TinyZero(nn.Module):
         self.policy_head = nn.Linear(latent_channels * 9 * 5, action_dim)
         self.value_head = nn.Linear(latent_channels * 9 * 5, 1)
 
+    def forward(self, obs):
+        # Combined forward pass for ONNX export (Raw Policy Inference)
+        # Input: Observation [B, 32, 9, 5]
+        # Output: Policy [B, 128], Value [B, 1]
+        s = self.representation(obs)
+        p, v = self.prediction(s)
+        return p, v
+
     def representation(self, obs):
         return self.representer(obs)
 
