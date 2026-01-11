@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo, useEffect } from 'react';
 import { useGameStore } from '@/store/game-store';
 

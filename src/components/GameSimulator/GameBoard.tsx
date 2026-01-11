@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { useGameStore } from '@/store/game-store';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';

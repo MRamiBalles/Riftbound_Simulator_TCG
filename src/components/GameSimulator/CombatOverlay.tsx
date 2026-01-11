@@ -1,3 +1,5 @@
+"use client";
+
 import { useGameStore } from '@/store/game-store';
 import { Swords, Sword, Shield, CheckCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';

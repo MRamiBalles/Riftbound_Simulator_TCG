@@ -25,10 +25,6 @@ export class HeuristicBot implements Bot {
      * @returns A promise resolving to an Action or null if no action is possible.
      */
     async decideAction(gameState: SerializedGameState): Promise<Action | null> {
-        // Delay for realism
-        if (!this.fastMode) {
-            await new Promise(resolve => setTimeout(resolve, 800));
-        }
 
         if (gameState.priority !== this.id) {
             console.log(`[Bot] Priority mismatch. My ID: ${this.id}, Priority: ${gameState.priority}`);
