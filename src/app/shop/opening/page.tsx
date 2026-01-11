@@ -8,19 +8,14 @@ import { VfxService } from '@/services/vfx-service';
 import { SocialService } from '@/services/social-service';
 import { Card } from '@/lib/database.types';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
-import EnergyWidget from '@/components/layout/EnergyWidget';
-import { useUserStore } from '@/store/user-store';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Zap, ArrowRight, Scissors, Trophy, Gem, Box, Crown } from 'lucide-react';
-import { PointStrategyService } from '@/services/point-strategy-service';
-import Link from 'next/link';
-import clsx from 'clsx';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 
 export default function PackOpeningPage() {
     const searchParams = useSearchParams();
     const packType = (searchParams.get('pack') || 'alpha') as 'alpha' | 'omega' | 'void' | 'master_box';
     const count = parseInt(searchParams.get('count') || '1');
-    const { pityCounter, registerPackOpening, consumeEnergy, addPrestigePoints } = useUserStore();
+    const { pityCounter, registerPackOpening, addPrestigePoints } = useUserStore();
 
     const [step, setStep] = useState<'IDLE' | 'CUTTING' | 'REVEALING' | 'DONE'>('IDLE');
     const [packCards, setPackCards] = useState<Card[]>([]);
@@ -54,9 +49,6 @@ export default function PackOpeningPage() {
 
     const handleCut = () => {
         const isBox = packType === 'master_box';
-        const energyCost = isBox ? 0 : 12 * count; // Boxes might be wonder shard based later
-
-        if (!consumeEnergy(energyCost)) return;
 
         setStep('CUTTING');
         VfxService.trigger('PACK_OPEN');
@@ -103,7 +95,8 @@ export default function PackOpeningPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden flex flex-col items-center justify-center">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <AnimatePresence mode="wait">
                 {step === 'IDLE' && (
