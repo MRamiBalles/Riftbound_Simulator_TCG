@@ -3,7 +3,7 @@
 @theme {
   --font-beaufort: "Beaufort", sans-serif;
   --font-spiegel: "Spiegel", sans-serif;
-  
+
   --color-hextech-action: #0ac8b9;
   --color-hextech-magic: #c8aa6e;
   --color-hextech-gold: #c8aa6e;
@@ -292,4 +292,18 @@ h6 {
     top: 100%;
     opacity: 0;
   }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
 }
