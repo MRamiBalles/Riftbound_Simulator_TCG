@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from models.muzero_nexus import MuZeroNexus
 from game_gym import RiftboundEnv
 import numpy as np
+import os
 
 class ProSTTrainer:
     """
@@ -75,7 +76,9 @@ class ProSTTrainer:
             
             terminated = False
             total_l = 0
-            while not terminated:
+            steps = 0
+            while not terminated and steps < 50: # Limit steps per episode for speed
+                steps += 1
                 # Select dummy action for demonstration
                 action_idx = np.random.randint(0, 128)
                 action_t = torch.tensor([float(action_idx)])
@@ -89,7 +92,13 @@ class ProSTTrainer:
                 
                 obs_t = next_obs_t
             
-            print(f"Episode {ep} | Avg Loss: {total_l:.4f}")
+            print(f"Episode {ep} | Avg Loss: {total_l/steps:.4f}")
+            
+        # Save model
+        os.makedirs("backend/models", exist_ok=True)
+        save_path = "backend/models/muzero_main_v1.pt"
+        torch.save(self.model.state_dict(), save_path)
+        print(f"MainAgent_v1 saved to {save_path}")
 
 if __name__ == "__main__":
     nexus = MuZeroNexus()
@@ -99,5 +108,5 @@ if __name__ == "__main__":
     trainer.adam_reset()
     
     # Run training
-    trainer.run_training_loop(episodes=5)
+    trainer.run_training_loop(episodes=50)
     print("Verification: ProST Loop executed successfully.")
