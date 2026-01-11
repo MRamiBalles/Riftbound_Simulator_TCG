@@ -1,60 +1,110 @@
+# -*- coding: utf-8 -*-
+"""
+Servicio de Embeddings Semánticos para Cartas
+==============================================
+
+Genera y cachea vectores de embedding para el texto de cada carta usando
+el modelo sentence-transformers/all-MiniLM-L6-v2.
+
+Los embeddings semánticos permiten que el modelo de IA generalice a cartas
+nuevas sin re-entrenamiento, ya que cartas con efectos similares tendrán
+vectores cercanos en el espacio latente.
+
+El cache se almacena en formato JSON para acceso rápido desde otros scripts.
+
+Author: Manuel Ramirez Ballesteros
+Email: ramiballes96@gmail.com
+Copyright (c) 2026 Manuel Ramirez Ballesteros. All rights reserved.
+"""
+
 import json
-import numpy as np
 import os
 from sentence_transformers import SentenceTransformer
 
-# Target: 640-dim latent space ([384-dim semantic] + [256-dim game-state])
-# Using all-MiniLM-L6-v2 (384-dim) for <10MB target compliance.
 
 class CardEmbeddingService:
-    def __init__(self, model_name='sentence-transformers/all-MiniLM-L6-v2'):
-        print(f"Loading embedding model: {model_name}...")
-        self.model = SentenceTransformer(model_name)
-        # Cache in the same directory as the service
-        self.cache_path = os.path.join(os.path.dirname(__file__), 'card_embeddings_cache.json')
-        self.embeddings = {}
-        self.load_cache()
-
-    def generate_embeddings(self, cards_data):
-        print(f"Generating embeddings for {len(cards_data)} cards...")
-        texts = []
-        ids = []
+    """Servicio para generación y gestión de embeddings de cartas.
+    
+    Usa MiniLM-L6-v2, un modelo compacto (~90MB) que genera embeddings
+    de 384 dimensiones optimizados para similitud semántica.
+    """
+    
+    def __init__(self):
+        # Ruta del cache de embeddings
+        self.cache_path = os.path.join(
+            os.path.dirname(__file__), 
+            "card_embeddings_cache.json"
+        )
         
-        for card in cards_data:
-            # Combine name, text and keywords for richer semantics
-            text_context = f"{card.get('name', '')}. {card.get('text', '')}. Keywords: {', '.join(card.get('keywords', []))}"
-            texts.append(text_context)
-            ids.append(card['id'])
+        # Ruta del archivo de datos de cartas
+        self.data_path = os.path.join(
+            os.path.dirname(__file__), 
+            "..", "..", "src", "data", "riftbound-data.json"
+        )
         
-        vectors = self.model.encode(texts)
+        # Modelo de embeddings (carga lazy)
+        self._model = None
+    
+    @property
+    def model(self) -> SentenceTransformer:
+        """Carga el modelo de embeddings bajo demanda."""
+        if self._model is None:
+            self._model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        return self._model
+    
+    def generate_embeddings(self) -> dict:
+        """Genera embeddings para todas las cartas y los guarda en cache.
         
-        for i, card_id in enumerate(ids):
-            self.embeddings[card_id] = vectors[i].tolist()
+        Returns:
+            Diccionario {card_id: [embedding_384d]}
+        """
+        # Cargar datos de cartas
+        if not os.path.exists(self.data_path):
+            print(f"Error: Archivo de datos no encontrado en {self.data_path}")
+            return {}
         
-        self.save_cache()
-        print("Embeddings generated and cached.")
-
-    def load_cache(self):
+        with open(self.data_path, 'r', encoding='utf-8-sig') as f:
+            cards = json.load(f)
+        
+        print(f"Procesando {len(cards)} cartas...")
+        
+        embeddings = {}
+        for card in cards:
+            card_id = str(card.get("id", ""))
+            
+            # Construir texto descriptivo combinando nombre, tipo y efecto
+            name = card.get("name", "")
+            card_type = card.get("type", "")
+            text = card.get("text", "")
+            
+            description = f"{name}. {card_type}. {text}".strip()
+            
+            if description:
+                # Generar embedding
+                vec = self.model.encode(description).tolist()
+                embeddings[card_id] = vec
+        
+        # Guardar cache
+        with open(self.cache_path, 'w', encoding='utf-8') as f:
+            json.dump(embeddings, f)
+        
+        print(f"Cache guardado en {self.cache_path}")
+        print(f"Total embeddings: {len(embeddings)}")
+        
+        return embeddings
+    
+    def load_cache(self) -> dict:
+        """Carga embeddings desde el cache existente.
+        
+        Returns:
+            Diccionario de embeddings o dict vacío si no existe cache
+        """
         if os.path.exists(self.cache_path):
-            try:
-                with open(self.cache_path, 'r') as f:
-                    self.embeddings = json.load(f)
-                print(f"Loaded {len(self.embeddings)} embeddings from cache.")
-            except Exception as e:
-                print(f"Warning: Failed to load cache: {e}")
+            with open(self.cache_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {}
 
-    def save_cache(self):
-        with open(self.cache_path, 'w') as f:
-            json.dump(self.embeddings, f)
 
 if __name__ == "__main__":
-    # Path to local data
-    data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src', 'data', 'riftbound-data.json'))
-    print(f"Looking for data at: {data_path}")
-    
-    # Handle UTF-8 with BOM (utf-8-sig)
-    with open(data_path, 'r', encoding='utf-8-sig') as f:
-        cards = json.load(f)
-    
     service = CardEmbeddingService()
-    service.generate_embeddings(cards)
+    service.generate_embeddings()
