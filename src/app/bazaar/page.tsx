@@ -240,6 +240,57 @@ export default function BazaarPage() {
                     <div className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-[0.2em] mt-1 italic">Authorized Trading Floor</div>
                 </div>
             </footer>
+
+            <MarketTicker />
         </main>
+    );
+}
+
+import { tradeEngine } from '@/services/sovereign-trade-service';
+import { AlertTriangle } from 'lucide-react';
+
+function MarketTicker() {
+    const [news, setNews] = useState<string | null>(null);
+
+    useEffect(() => {
+        // [SOVEREIGN GAUNTLET] Flash Crash Trigger (Ctrl+Shift+X)
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'X') {
+                // Simulate Void Ray crash
+                tradeEngine.triggerMarketCorrection('void-ray-1', 0.45);
+            }
+        };
+
+        const handleMarketEvent = (e: any) => {
+            if (e.detail.type === 'CRASH') {
+                setNews(e.detail.message);
+                setTimeout(() => setNews(null), 8000);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('SOVEREIGN_MARKET_EVENT', handleMarketEvent as any);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('SOVEREIGN_MARKET_EVENT', handleMarketEvent as any);
+        };
+    }, []);
+
+    if (!news) return null;
+
+    return (
+        <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            exit={{ y: 100 }}
+            className="fixed bottom-0 left-0 right-0 bg-red-900/90 text-white p-2 z-[100] border-t border-red-500 overflow-hidden"
+        >
+            <div className="flex items-center gap-4 animate-pulse">
+                <AlertTriangle className="text-red-500" fill="white" />
+                <div className="text-xs font-black uppercase tracking-[0.2em] whitespace-nowrap">
+                    MARKET ALERT: {news}
+                </div>
+            </div>
+        </motion.div>
     );
 }
