@@ -1,135 +1,167 @@
+# -*- coding: utf-8 -*-
+"""
+MuZero Nexus: Arquitectura de Planificación Estratégica
+========================================================
+
+Implementación de la arquitectura MuZero adaptada para juegos de cartas coleccionables.
+Incluye red de dinámica para predicción de transiciones y decodificador de observaciones
+para prevenir estados alucinados en el espacio latente.
+
+Decisiones de diseño:
+- 64 canales latentes: Balance entre expresividad y coste computacional.
+- 3 bloques residuales: Suficiente profundidad para capturar patrones tácticos.
+- Decodificador reconstructivo: Fuerza al modelo a mantener representaciones físicamente coherentes.
+
+Author: Manuel Ramirez Ballesteros
+Email: ramiballes96@gmail.com
+Copyright (c) 2026 Manuel Ramirez Ballesteros. All rights reserved.
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class ResidualBlock(nn.Module):
-    def __init__(self, channels):
-        super(ResidualBlock, self).__init__()
+
+class ResBlock(nn.Module):
+    """Bloque residual estándar con normalización por lotes.
+    
+    La suma residual permite que gradientes fluyan directamente hacia capas anteriores,
+    facilitando el entrenamiento de redes profundas.
+    """
+    def __init__(self, channels: int):
+        super().__init__()
         self.conv1 = nn.Conv2d(channels, channels, kernel_size=3, padding=1)
         self.bn1 = nn.BatchNorm2d(channels)
         self.conv2 = nn.Conv2d(channels, channels, kernel_size=3, padding=1)
         self.bn2 = nn.BatchNorm2d(channels)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         residual = x
         out = F.relu(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
-        out += residual
+        # Suma no inplace para compatibilidad con autograd
+        out = out + residual
         return F.relu(out)
 
-class RepresentationNetwork(nn.Module):
-    """
-    h: o_t -> s_t
-    Encodes the spatial tensor [32, 9, 5] into a latent state.
-    """
-    def __init__(self, in_channels=32, latent_channels=64):
-        super(RepresentationNetwork, self).__init__()
-        self.conv_in = nn.Conv2d(in_channels, latent_channels, kernel_size=3, padding=1)
-        self.res1 = ResidualBlock(latent_channels)
-        self.res2 = ResidualBlock(latent_channels)
 
-    def forward(self, x):
-        x = F.relu(self.conv_in(x))
-        x = self.res1(x)
-        x = self.res2(x)
-        return x # Latent space is [latent_channels, 9, 5]
+class RepresentationNetwork(nn.Module):
+    """Red de representación h(o) → s.
+    
+    Transforma observaciones del juego (tensor espacial) en estados latentes compactos.
+    La reducción de canales (32→64) y los bloques residuales extraen características
+    relevantes para la planificación.
+    """
+    def __init__(self, in_channels: int = 32, latent_channels: int = 64, num_blocks: int = 3):
+        super().__init__()
+        self.conv_in = nn.Conv2d(in_channels, latent_channels, kernel_size=3, padding=1)
+        self.blocks = nn.Sequential(*[ResBlock(latent_channels) for _ in range(num_blocks)])
+    
+    def forward(self, obs: torch.Tensor) -> torch.Tensor:
+        x = F.relu(self.conv_in(obs))
+        return self.blocks(x)
+
 
 class DynamicsNetwork(nn.Module):
+    """Red de dinámica g(s, a) → (s', r).
+    
+    Predice el siguiente estado latente y la recompensa inmediata dada una acción.
+    La acción se inyecta como un canal adicional expandido espacialmente.
+    
+    Esta red permite "imaginar" trayectorias futuras sin ejecutar el motor del juego,
+    habilitando búsqueda tipo MCTS en el espacio latente.
     """
-    g: (s_t, a_t) -> (s_t+1, r_t+1)
-    Predicts next latent state and reward.
-    """
-    def __init__(self, latent_channels=64, action_dim=128):
-        super(DynamicsNetwork, self).__init__()
-        # We broadcast the action embedding across the spatial grid
-        self.action_conv = nn.Conv2d(latent_channels + 1, latent_channels, kernel_size=3, padding=1)
-        self.res1 = ResidualBlock(latent_channels)
+    def __init__(self, latent_channels: int = 64, num_blocks: int = 2):
+        super().__init__()
+        # +1 canal para la acción codificada
+        self.conv_action = nn.Conv2d(latent_channels + 1, latent_channels, kernel_size=3, padding=1)
+        self.blocks = nn.Sequential(*[ResBlock(latent_channels) for _ in range(num_blocks)])
+        # Predicción de recompensa como valor escalar
         self.reward_head = nn.Linear(latent_channels * 9 * 5, 1)
 
-    def forward(self, state, action_onehot):
-        # action_onehot: [B, 1] (or embedding)
-        # For simple integration, we repeat the action value over a new channel
+    def forward(self, state: torch.Tensor, action: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         B, C, H, W = state.shape
-        action_channel = action_onehot.view(B, 1, 1, 1).expand(B, 1, H, W)
-        
-        x = torch.cat([state, action_channel], dim=1)
-        x = F.relu(self.action_conv(x))
-        next_state = self.res1(x)
-        
+        # Expandir la acción a un plano espacial
+        action_plane = action.view(B, 1, 1, 1).expand(B, 1, H, W)
+        x = torch.cat([state, action_plane], dim=1)
+        x = F.relu(self.conv_action(x))
+        next_state = self.blocks(x)
         reward = self.reward_head(next_state.view(B, -1))
         return next_state, reward
 
+
 class ObservationDecoder(nn.Module):
+    """Decodificador de observaciones d(s) → ô.
+    
+    Reconstruye características observables (ataque, vida, etc.) desde el estado latente.
+    Sirve como regularizador: si el modelo puede reconstruir la observación, el latente
+    contiene información físicamente válida.
+    
+    Sin este componente, el espacio latente puede "alucinar" estados imposibles.
     """
-    d: s_t -> o_t_reconstructed
-    Decoder for L_recon loss. Prevents latent alucinations.
-    Forced to reconstruct physical features (HP, Attack) and Semantic Fingerprints.
+    def __init__(self, latent_channels: int = 64, out_channels: int = 32):
+        super().__init__()
+        self.deconv = nn.ConvTranspose2d(latent_channels, out_channels, kernel_size=3, padding=1)
+    
+    def forward(self, state: torch.Tensor) -> torch.Tensor:
+        return self.deconv(state)
+
+
+class PredictionNetwork(nn.Module):
+    """Red de predicción f(s) → (π, v).
+    
+    Genera la política (distribución de probabilidad sobre acciones) y el valor
+    (probabilidad de victoria) desde un estado latente.
     """
-    def __init__(self, latent_channels=64, out_channels=32):
-        super(ObservationDecoder, self).__init__()
-        self.conv1 = nn.Conv2d(latent_channels, latent_channels, kernel_size=3, padding=1)
-        self.res1 = ResidualBlock(latent_channels)
-        self.conv_out = nn.Conv2d(latent_channels, out_channels, kernel_size=1)
-
-    def forward(self, latent):
-        x = F.relu(self.conv1(latent))
-        x = self.res1(x)
-        out = torch.sigmoid(self.conv_out(x)) # Reconstructing normalized features
-        return out
-
-class MuZeroNexus(nn.Module):
-    """
-    Integrated MuZero architecture for Riftbound.
-    Designed for expansion immunity and edge inference.
-    """
-    def __init__(self, in_channels=32, latent_channels=64, action_dim=128):
-        super(MuZeroNexus, self).__init__()
-        self.representer = RepresentationNetwork(in_channels, latent_channels)
-        self.dynamics = DynamicsNetwork(latent_channels, action_dim)
-        self.decoder = ObservationDecoder(latent_channels, in_channels)
-        
-        # Prediction Network (p, v)
-        self.policy_head = nn.Linear(latent_channels * 9 * 5, action_dim)
-        self.value_head = nn.Linear(latent_channels * 9 * 5, 1)
-
-    def representation(self, obs):
-        return self.representer(obs)
-
-    def prediction(self, state):
+    def __init__(self, latent_channels: int = 64, action_dim: int = 128):
+        super().__init__()
+        flat_size = latent_channels * 9 * 5
+        self.policy_head = nn.Linear(flat_size, action_dim)
+        self.value_head = nn.Linear(flat_size, 1)
+    
+    def forward(self, state: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         B = state.shape[0]
         flat = state.view(B, -1)
         policy = self.policy_head(flat)
         value = self.value_head(flat)
         return policy, value
 
-    def next_step(self, state, action):
+
+class MuZeroNexus(nn.Module):
+    """Modelo MuZero completo para Riftbound.
+    
+    Combina las cuatro redes (representación, dinámica, predicción, decodificador)
+    en una arquitectura unificada que puede:
+    - Codificar observaciones del juego.
+    - Simular trayectorias futuras.
+    - Evaluar posiciones.
+    - Reconstruir observaciones (anti-alucinación).
+    """
+    def __init__(self, in_channels: int = 32, latent_channels: int = 64, action_dim: int = 128):
+        super().__init__()
+        self.representation = RepresentationNetwork(in_channels, latent_channels)
+        self.dynamics = DynamicsNetwork(latent_channels)
+        self.prediction_net = PredictionNetwork(latent_channels, action_dim)
+        self.decoder = ObservationDecoder(latent_channels, in_channels)
+    
+    def forward(self, obs: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Paso hacia adelante para inferencia rápida."""
+        state = self.representation(obs)
+        policy, value = self.prediction_net(state)
+        return policy, value
+
+    def next_step(self, state: torch.Tensor, action: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """Avanza un paso en el espacio latente."""
         return self.dynamics(state, action)
 
-    def reconstruct(self, state):
+    def reconstruct(self, state: torch.Tensor) -> torch.Tensor:
+        """Reconstruye observación desde estado latente."""
         return self.decoder(state)
 
+
 if __name__ == "__main__":
-    # Test Architecture
+    # Verificación rápida de la arquitectura
     model = MuZeroNexus()
-    dummy_obs = torch.randn(1, 32, 9, 5)
-    
-    # 1. Representation
-    s0 = model.representation(dummy_obs)
-    print(f"Latent State s0 shape: {s0.shape}")
-    
-    # 2. Prediction
-    p, v = model.prediction(s0)
-    print(f"Policy shape: {p.shape}, Value shape: {v.shape}")
-    
-    # 3. Dynamics
-    dummy_action = torch.tensor([5.0]) # Action index 5
-    s1, r1 = model.next_step(s0, dummy_action)
-    print(f"Next State s1 shape: {s1.shape}, Reward r1: {r1.item():.4f}")
-    
-    # 4. Reconstruction (The Safety Mechanism)
-    o_hat = model.reconstruct(s0)
-    print(f"Reconstructed Obs shape: {o_hat.shape}")
-    
-    # Check model size
-    total_params = sum(p.numel() for p in model.parameters())
-    print(f"Total Parameters: {total_params:,} (~{total_params * 4 / 1e6:.2f} MB as float32)")
+    dummy_obs = torch.randn(2, 32, 9, 5)
+    policy, value = model(dummy_obs)
+    print(f"MuZeroNexus - Parámetros: {sum(p.numel() for p in model.parameters()):,}")
+    print(f"Policy shape: {policy.shape}, Value shape: {value.shape}")

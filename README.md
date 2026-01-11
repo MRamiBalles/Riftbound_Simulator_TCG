@@ -1,48 +1,69 @@
-# ⚔️ Riftbound Simulator TCG (Sovereign Release)
+# Riftbound Simulator TCG
 
-**Riftbound Simulator** is an enterprise-grade TCG ecosystem designed for both players and AI researchers. It features a high-fidelity, sensory-rich web interface powered by a deterministic game engine, integrated with a Deep Reinforcement Learning pipeline.
+Sistema de simulación e inteligencia artificial para el juego de cartas coleccionables Riftbound. Este proyecto implementa un motor de juego determinista junto con una arquitectura de aprendizaje por refuerzo basada en MuZero, optimizada para inferencia en navegador.
 
-## 🌟 Sovereign Features
-- **Deterministic Game Engine**: 100% serializable state, enabling bit-perfect replays and AI training.
-- **Neural AI Hub**: Real-time in-browser ONNX inference with "AI Vision" strategic heatmaps.
-- **Hybrid Persistence**: Cloud-synced decks and collections (Supabase) with seamless offline fallback.
-- **Rift Arena**: Live WebSocket PvP with global matchmaking and spectator modes.
-- **RL Data Pipeline**: Headless simulation harness capable of 500+ games per minute.
-- **Sensory Excellence**: Hextech glassmorphism, region-reactive weather VFX, and 3D card physics.
+## Características principales
 
-## 🗺️ The 13-Phase Evolution
-1.  **Phase 1**: Core Deterministic Engine & Mechanics.
-2.  **Phase 2-3**: High-Fidelity Hextech UI & Audio.
-3.  **Phase 4**: Persistence & Collection Hub (LocalStorage).
-4.  **Phase 5-6**: Multi-Protocol AI & Visual transitions. [COMPLETED]
-5.  **Phase 7**: Sovereign Polish & Documentation. [COMPLETED]
-6.  **Phase 8**: Sovereign Visual Aesthetics. [COMPLETED]
-7.  **Phase 9**: Neural Evolution (In-browser ONNX).
-8.  **Phase 10**: The Cloud Armory (Supabase Scaling).
-9.  **Phase 11**: Rift Arena (Live WebSocket PvP).
-10. **Phase 12**: Galactic Expansion (Weather VFX & Personality).
-11. **Phase 13**: Sovereign Release (Mobile & Optimization).
+- **Motor determinista**: Estados serializables al 100%, permitiendo replays exactos y entrenamiento reproducible.
+- **IA estratégica (MuZero)**: Red de dinámica que predice transiciones de estado sin ejecutar el motor completo.
+- **Inferencia edge**: Modelo TinyZero destilado (<0.1 MB) exportado a ONNX para ejecución en cliente web.
+- **Embeddings semánticos**: Las cartas se representan mediante vectores MiniLM, permitiendo generalización ante nuevas expansiones.
+- **Liga adversarial (ROA-Star)**: Entrenamiento de agentes explotadores para robustez estratégica.
 
-## 🛠️ Tech Stack
-- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS 4, Framer Motion.
-- **Backend**: Supabase (PostgreSQL, Auth, RLS, Realtime).
-- **AI/ML**: Python (Stable Baselines3), ONNX Runtime, FastAPI.
-- **State Management**: Zustand (Multi-store architecture).
+## Estructura del proyecto
 
-## 🚀 Getting Started
+```
+Riftbound_Simulator_TCG/
+├── src/                    # Frontend Next.js
+│   ├── services/           # Servicios cliente (DriftWatchdog, etc.)
+│   └── data/               # Atlas semántico y modelo ONNX
+├── backend/                # Motor Python
+│   ├── models/             # Arquitecturas MuZero/TinyZero
+│   ├── embeddings/         # Cache de vectores semánticos
+│   └── league/             # Sistema de liga adversarial
+└── scripts/                # Utilidades de sincronización y exportación
+```
+
+## Requisitos
+
+- Node.js 18+
+- Python 3.12+
+- PyTorch 2.x
+- sentence-transformers
+
+## Instalación
+
 ```bash
-# Clone the repository
-git clone https://github.com/Manu/resonant-curie.git
+# Clonar el repositorio
+git clone https://github.com/MRamiBalles/Riftbound_Simulator_TCG.git
 
-# Install dependencies
+# Instalar dependencias frontend
 npm install
 
-# Start the lab
+# Instalar dependencias backend
+pip install -r backend/requirements.txt
+
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-## 🧪 AI Research Guide
-The `backend/agent/` directory contains the RL training scripts. You can export current game states as tensors to train your own models using the `HeadlessSimulator`.
+## Pipeline de IA
+
+1. **Sincronización de datos**: `scripts/sync-api-cards.ps1` obtiene las cartas desde la API oficial.
+2. **Generación de embeddings**: `backend/embeddings/card_embeddings.py` crea vectores semánticos.
+3. **Entrenamiento MuZero**: `backend/train_muzero_pro.py` entrena el agente principal.
+4. **Destilación**: `backend/train_student.py` comprime el conocimiento en TinyZero.
+5. **Exportación**: `scripts/export_onnx.py` genera el modelo para navegador.
+
+## Documentación adicional
+
+- [Guía Técnica](TECHNICAL_GUIDE.md): Detalles de arquitectura y decisiones de diseño.
+- [Changelog](CHANGELOG.md): Historial de cambios por versión.
 
 ---
-*Developed by Antigravity & Peer Collaborators. Ascended to Version 1.0.0 (Alpha-Omega)* 🌌✨🏁
+
+**Autor**: Manuel Ramirez Ballesteros  
+**Contacto**: ramiballes96@gmail.com  
+**Licencia**: MIT
+
+© 2026 Manuel Ramirez Ballesteros. Todos los derechos reservados.

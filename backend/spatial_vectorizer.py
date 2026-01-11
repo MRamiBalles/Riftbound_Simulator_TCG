@@ -1,102 +1,168 @@
+# -*- coding: utf-8 -*-
+"""
+Vectorizador Espacial para Observaciones del Juego
+===================================================
+
+Transforma el estado del juego en un tensor espacial compatible con
+arquitecturas convolucionales (estilo AlphaGo/AlphaZero).
+
+Representación: [C, H, W] donde
+- C = 32 canales de características
+- H = 9 filas del tablero
+- W = 5 columnas del tablero
+
+Distribución de canales:
+- Canales 0-15: Embedding semántico comprimido de la unidad en cada celda
+- Canal 16: Máscara de presencia (1 si hay unidad, 0 si vacío)
+- Canal 17: Propietario (1 si es del jugador activo, 0 si es oponente)
+- Canales 18-20: Ataque normalizado (log-scale)
+- Canales 21-23: Vida normalizada (log-scale)
+- Canales 24-31: Keywords binarios (Quick Attack, Barrier, Overwhelm, etc.)
+
+Esta representación espacial permite que las convoluciones capturen
+patrones posicionales (formaciones, flancos) que un vector plano ignora.
+
+Author: Manuel Ramirez Ballesteros
+Email: ramiballes96@gmail.com
+Copyright (c) 2026 Manuel Ramirez Ballesteros. All rights reserved.
+"""
+
 import numpy as np
 import json
 import os
-from typing import Dict, Any
+
 
 class SpatialVectorizer:
+    """Convierte estados de juego a tensores espaciales.
+    
+    Integra embeddings semánticos pre-calculados con características
+    numéricas del estado actual del tablero.
     """
-    Translates JSON GameState into a Spatial Tensor [Channels, Height, Width].
-    Target: 9x5 grid (Duelyst/Riftbound tactical scale).
-    Standardizes input for MuZero Dynamics (g) and Observation Decoder.
-    """
-    def __init__(self, channels=32, height=9, width=5):
+    
+    def __init__(self, channels: int = 32, height: int = 9, width: int = 5):
         self.channels = channels
         self.height = height
         self.width = width
         
-        # Load card embeddings for semantic context
-        self.embeddings = {}
-        self.cache_path = os.path.join(os.path.dirname(__file__), 'embeddings', 'card_embeddings_cache.json')
-        self.load_embeddings()
-
-    def load_embeddings(self):
-        if os.path.exists(self.cache_path):
-            with open(self.cache_path, 'r') as f:
-                self.embeddings = json.load(f)
-            print(f"SpatialVectorizer: Integrated {len(self.embeddings)} embeddings into tensor pipeline.")
-
-    def get_card_feature_vector(self, card_id: str) -> np.ndarray:
-        """Extracts a compressed semantic feature from the embedding."""
+        # Cargar cache de embeddings semánticos
+        self.embeddings = self._load_embeddings()
+        
+    def _load_embeddings(self) -> dict:
+        """Carga embeddings pre-calculados desde el cache JSON."""
+        cache_path = os.path.join(
+            os.path.dirname(__file__), 
+            "embeddings", 
+            "card_embeddings_cache.json"
+        )
+        
+        if os.path.exists(cache_path):
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                embeddings = json.load(f)
+            print(f"SpatialVectorizer: Integrados {len(embeddings)} embeddings.")
+            return embeddings
+        else:
+            print("SpatialVectorizer: Cache de embeddings no encontrado.")
+            return {}
+    
+    def _get_semantic_features(self, card_id: str) -> np.ndarray:
+        """Obtiene los primeros 16 componentes del embedding de una carta.
+        
+        Si la carta no tiene embedding, devuelve un vector de ceros.
+        Los 16 componentes son suficientes para capturar las relaciones
+        semánticas más importantes entre cartas.
+        """
         if card_id in self.embeddings:
-            emb = np.array(self.embeddings[card_id], dtype=np.float32)
-            # We take the first 16 dimensions as a representative 'semantic fingerprint'
-            # In a production MuZero, we would use PCA or a learnable bottleneck.
-            return emb[:16] 
+            emb = self.embeddings[card_id]
+            return np.array(emb[:16], dtype=np.float32)
         return np.zeros(16, dtype=np.float32)
-
-    def vectorize(self, state: Dict[str, Any], player_id: str = 'player') -> np.ndarray:
-        # Initialize Tensor [C, H, W]
-        # H=9 (Horizontal), W=5 (Vertical/Lanes)
+    
+    def _encode_keywords(self, keywords: list) -> np.ndarray:
+        """Codifica keywords como vector binario de 8 dimensiones.
+        
+        Keywords soportados:
+        - Quick Attack, Barrier, Overwhelm, Elusive
+        - Lifesteal, Tough, Challenger, Fearsome
+        """
+        keyword_map = {
+            "Quick Attack": 0,
+            "Barrier": 1,
+            "Overwhelm": 2,
+            "Elusive": 3,
+            "Lifesteal": 4,
+            "Tough": 5,
+            "Challenger": 6,
+            "Fearsome": 7
+        }
+        
+        vec = np.zeros(8, dtype=np.float32)
+        for kw in keywords:
+            if kw in keyword_map:
+                vec[keyword_map[kw]] = 1.0
+        return vec
+    
+    def vectorize(self, game_state: dict, player_id: str) -> np.ndarray:
+        """Convierte un estado de juego a tensor espacial.
+        
+        Args:
+            game_state: Estado serializado del juego (dict)
+            player_id: ID del jugador desde cuya perspectiva se genera el tensor
+        
+        Returns:
+            Tensor numpy de forma [C, H, W] normalizado a [0, 1]
+        """
         tensor = np.zeros((self.channels, self.height, self.width), dtype=np.float32)
         
-        # Mapping Strategy:
-        # Since the current engine is linear (6 slots), we'll map them to the central lane (W=2)
-        # Player 1 (me) slots: (0-5, 2)
-        # Opponent slots: (8-3, 2) - Mirrored
-        
-        opponent_id = 'opponent' if player_id == 'player' else 'player'
-        
-        # --- PLAYER FIELD ---
-        me = state.get('players', {}).get(player_id, {})
-        for i, unit in enumerate(me.get('field', [])[:6]):
-            x, y = i, 2 # Map to first 6 tiles of central lane
-            self._fill_tile(tensor, x, y, unit, owner=1.0)
+        # Mapear unidades del campo al tensor
+        for pid, player_data in game_state.get("players", {}).items():
+            is_owner = 1.0 if pid == player_id else 0.0
             
-        # --- OPPONENT FIELD ---
-        opp = state.get('players', {}).get(opponent_id, {})
-        for i, unit in enumerate(opp.get('field', [])[:6]):
-            x, y = 8 - i, 2 # Map to last 6 tiles, mirrored
-            self._fill_tile(tensor, x, y, unit, owner=-1.0)
-            
-        # --- GLOBAL FEATURES (encoded in a separate channel or first tile) ---
-        # Turn, Mana, Health
-        tensor[0, 0, 0] = min(state.get('turn', 0) / 50.0, 1.0)
-        tensor[1, 0, 0] = me.get('health', 20) / 20.0
-        tensor[2, 0, 0] = me.get('mana', 0) / 10.0
-        tensor[3, 0, 0] = opp.get('health', 20) / 20.0
+            for idx, unit in enumerate(player_data.get("field", [])):
+                # Calcular posición en el grid (distribución simple)
+                row = idx % self.height
+                col = idx // self.height
+                
+                if col >= self.width:
+                    continue  # Fuera del tablero visible
+                
+                # Canales 0-15: Embedding semántico
+                card_id = str(unit.get("id", "0"))
+                semantic = self._get_semantic_features(card_id)
+                tensor[0:16, row, col] = semantic
+                
+                # Canal 16: Presencia
+                tensor[16, row, col] = 1.0
+                
+                # Canal 17: Propietario
+                tensor[17, row, col] = is_owner
+                
+                # Canales 18-20: Ataque (log-normalizado)
+                attack = unit.get("attack", 0)
+                tensor[18, row, col] = min(np.log1p(attack) / 3.0, 1.0)
+                
+                # Canales 21-23: Vida (log-normalizado)
+                health = unit.get("health", 0)
+                tensor[21, row, col] = min(np.log1p(health) / 3.0, 1.0)
+                
+                # Canales 24-31: Keywords
+                keywords = unit.get("keywords", [])
+                kw_vec = self._encode_keywords(keywords)
+                tensor[24:32, row, col] = kw_vec
         
         return tensor
 
-    def _fill_tile(self, tensor, x, y, unit, owner):
-        # Channel 0: Presence
-        tensor[0, x, y] = 1.0
-        # Channel 1: Owner
-        tensor[1, x, y] = owner
-        # Channel 2: Attack
-        tensor[2, x, y] = unit.get('attack', unit.get('currentAttack', 0)) / 10.0
-        # Channel 3: Health
-        tensor[3, x, y] = unit.get('health', unit.get('currentHealth', 0)) / 10.0
-        # Channel 4: Keywords (Simplified mask)
-        keywords = unit.get('keywords', [])
-        tensor[4, x, y] = 1.0 if 'Barrier' in keywords else 0.0
-        tensor[5, x, y] = 1.0 if 'Elusive' in keywords else 0.0
-        tensor[6, x, y] = 1.0 if 'Overwhelm' in keywords else 0.0
-        
-        # Channels 7-22: Semantic Features (16 dims)
-        card_id = unit.get('id', '')
-        semantic_fingerprint = self.get_card_feature_vector(card_id)
-        tensor[7:23, x, y] = semantic_fingerprint
 
 if __name__ == "__main__":
-    v = SpatialVectorizer()
+    # Test básico
+    vectorizer = SpatialVectorizer()
     dummy_state = {
-        "turn": 10,
         "players": {
-            "player": {"health": 15, "mana": 5, "field": [{"id": "OGN-179", "attack": 4, "health": 2}]},
-            "opponent": {"health": 20, "mana": 0, "field": []}
+            "player": {
+                "field": [
+                    {"id": "1", "attack": 3, "health": 2, "keywords": ["Quick Attack"]}
+                ]
+            }
         }
     }
-    tensor = v.vectorize(dummy_state)
-    print(f"Spatial Tensor Shape: {tensor.shape}")
-    print(f"Occupied Tile (0, 2): {tensor[0:4, 0, 2]}")
-    print(f"Semantic Fingerprint at (0, 2): {tensor[7:12, 0, 2]}")
+    tensor = vectorizer.vectorize(dummy_state, "player")
+    print(f"Tensor shape: {tensor.shape}")
+    print(f"Presencia en (0,0): {tensor[16, 0, 0]}")
