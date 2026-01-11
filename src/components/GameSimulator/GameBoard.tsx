@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useGameStore } from '@/store/game-store';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Sparkles, Sword, Shield, Zap, Skull, RefreshCcw } from 'lucide-react';
 import { CombatOverlay } from './CombatOverlay';
 import { Action, PlayerId } from '@/game/engine/game.types';
@@ -21,7 +22,8 @@ import { CoachService, StrategicAdvice } from '@/services/coach-service';
 import { VoiceService } from '@/services/voice-service';
 import { StreamerOverlay } from '../game/StreamerOverlay';
 import { useSearchParams } from 'next/navigation';
-import { Brain, Cpu, Users, GraduationCap, Info, Radio } from 'lucide-react';
+import { Brain, Cpu, Users, GraduationCap, Info, Radio, MousePointer2 } from 'lucide-react';
+import { RoboticArmService } from '@/services/robotic-arm-service';
 
 export const GameBoard: React.FC = () => {
     const searchParams = useSearchParams();
@@ -89,8 +91,8 @@ export const GameBoard: React.FC = () => {
     useEffect(() => {
         const shouldFetch = !winner && !isMultiplayerMode && (
             (activePlayer === 'opponent' && phase === 'Main') ||
-            (phase === 'Mulligan' && activePlayer === 'opponent') || // Actually activePlayer doesn't switch in Mulligan, but we want AI to act.
-            (phase === 'Mulligan') // AI should just try to act in Mulligan.
+            (phase === 'Mulligan' && activePlayer === 'opponent') ||
+            (phase === 'Mulligan')
         );
 
         if (shouldFetch) {
@@ -100,6 +102,59 @@ export const GameBoard: React.FC = () => {
             return () => clearTimeout(timer);
         }
     }, [activePlayer, fetchInferenceAction, winner, phase, isMultiplayerMode]);
+
+    // UI Semaphore: Monitor phase and transitions to block Robotic Arm
+    useEffect(() => {
+        const isBusy = !!combat || phase === 'Combat' || !!winner;
+        RoboticArmService.setUIBusy(isBusy);
+    }, [combat, phase, winner]);
+
+    const [armIntention, setArmIntention] = useState<Action | null>(null);
+
+    // Listen for Robotic Arm Intentions (XAI)
+    useEffect(() => {
+        const handleIntention = (e: any) => {
+            setArmIntention(e.detail);
+            setTimeout(() => setArmIntention(null), 1500);
+        };
+        window.addEventListener('ROBOTIC_ARM_INTENTION', handleIntention as any);
+        return () => window.removeEventListener('ROBOTIC_ARM_INTENTION', handleIntention as any);
+    }, []);
+
+    // Intention Overlay Component (XAI)
+    const IntentionOverlay = () => {
+        if (!armIntention) return null;
+        return (
+            <div className="absolute inset-0 z-[60] pointer-events-none overflow-hidden">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0ac8b9]/10 border border-[#0ac8b9]/40 backdrop-blur-md p-4 rounded-3xl"
+                >
+                    <div className="flex items-center gap-3 text-[#0ac8b9] font-black uppercase text-xs tracking-[0.2em]">
+                        <MousePointer2 className="w-4 h-4 animate-bounce" />
+                        <span>AI Intent: {armIntention.type}</span>
+                    </div>
+                </motion.div>
+
+                {/* SVG Arrow for targeting actions */}
+                {armIntention.type === 'DECLARE_ATTACKERS' && (
+                    <svg className="w-full h-full">
+                        <motion.line
+                            x1="50%" y1="20%" x2="50%" y2="80%"
+                            stroke="#0ac8b9"
+                            strokeWidth="4"
+                            strokeDasharray="10,5"
+                            initial={{ pathLength: 0, opacity: 0 }}
+                            animate={{ pathLength: 1, opacity: 0.6 }}
+                            className="animate-[pulse_2s_infinite]"
+                        />
+                    </svg>
+                )}
+            </div>
+        );
+    };
 
     // Auto-start
     useEffect(() => {
@@ -436,6 +491,9 @@ export const GameBoard: React.FC = () => {
             </div>
             {/* AI Vision Overlay */}
             <AIVisionOverlay />
+
+            {/* Robotic Arm Intention Overlay (XAI) */}
+            <IntentionOverlay />
 
             {/* Streamer Toolkit */}
             {showStreamerHUD && <StreamerOverlay />}

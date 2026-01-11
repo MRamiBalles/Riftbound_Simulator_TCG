@@ -5,6 +5,7 @@ import { Action, SerializedGameState, ReplayData } from '@/game/engine/game.type
 import { ReplayService } from '@/services/replay-service';
 import { AIService, AIMode } from '@/services/ai-service';
 import { MultiplayerService } from '@/services/multiplayer-service';
+import { RoboticArmService } from '@/services/robotic-arm-service';
 
 interface GameStoreState extends SerializedGameState {
     engine: CoreEngine | null;
@@ -163,6 +164,9 @@ export const useGameStore = create<GameStoreState>((set, get) => ({
         const state = get();
         if (state.isReplayMode) return;
         const action = await AIService.getAction(state);
-        if (action) get().performAction(action);
+        if (action) {
+            // Use RoboticArmService for human-like visual execution
+            await RoboticArmService.executeAction(action, (a) => get().performAction(a));
+        }
     }
 }));
