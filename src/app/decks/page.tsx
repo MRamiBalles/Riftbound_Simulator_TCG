@@ -7,7 +7,8 @@ import { getHydratedStarterDecks } from '@/data/starter-decks';
 import { useCollectionStore } from '@/store/collection-store';
 import { DeckCodeService } from '@/services/deck-code-service';
 import { MetaDashboard } from '@/components/dashboard/MetaDashboard';
-import clsx from 'clsx';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 
 export default function DecksPage() {
     const { decks, deleteDeck, addDeck } = useCollectionStore();
@@ -30,7 +31,8 @@ export default function DecksPage() {
 
     return (
         <main className="min-h-screen p-4 md:p-8 pt-20 md:pt-24 font-serif bg-[#010a13] text-[#f0e6d2] relative overflow-y-auto">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             {/* Background Elements */}
             <div className="absolute inset-0 z-0 bg-[url('https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt2a829e1f57fb8b78/62e0339aab625e114008778a/01PZ040-full.png')] bg-cover bg-center opacity-20 blur-sm fixed" />

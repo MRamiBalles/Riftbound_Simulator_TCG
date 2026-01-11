@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import { useCollectionStore } from '@/store/collection-store';
 import { MOCK_CARDS } from '@/services/card-service';
 import { Card as CardComponent } from '@/components/Card';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import Link from 'next/link';
 import { Plus, X, Search, Lock } from 'lucide-react';
 import clsx from 'clsx';
@@ -17,8 +18,8 @@ export default function ShowcasePage() {
 
     // Filter available cards for selection (must own at least 1)
     const availableCards = MOCK_CARDS.filter(card => {
-        const owned = inventory[card.id];
-        const isOwned = owned && (owned.virtual > 0 || owned.real > 0);
+        const owned = inventory[card.id] || 0;
+        const isOwned = owned > 0;
         // Also respect search
         const matchesSearch = card.name.toLowerCase().includes(searchQuery.toLowerCase());
         return isOwned && matchesSearch;
@@ -38,7 +39,8 @@ export default function ShowcasePage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif p-4 md:p-8 pt-24 relative overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             {/* Header */}
             <div className="max-w-4xl mx-auto flex flex-col items-center mb-12 relative z-10">

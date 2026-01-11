@@ -1,14 +1,14 @@
-'use client';
-
 import React from 'react';
 import { BookOpen, Share2, Star, LayoutGrid, Heart, Search, Filter, RefreshCw, Smartphone, Copy, CheckCircle2 } from 'lucide-react';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import { useUserStore } from '@/store/user-store';
 import { CloudService } from '@/services/cloud-service';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import Link from 'next/link';
 
 export default function VaultPage() {
-    const { userId, lastSyncTime, prestigePoints, setLastSyncTime, linkAccount, loadFullState } = useUserStore();
+    const { userId, lastSyncTime, setLastSyncTime, linkAccount, loadFullState } = useUserStore();
     const [syncing, setSyncing] = React.useState(false);
     const [copied, setCopied] = React.useState(false);
     const [linkInput, setLinkInput] = React.useState('');
@@ -66,7 +66,8 @@ export default function VaultPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <div className="max-w-7xl mx-auto">
                 <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 animate-in slide-in-from-top duration-700">
@@ -92,20 +93,16 @@ export default function VaultPage() {
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-                    {/* NEXUS CONNECT PANEL */}
                     <div className="space-y-8">
                         <section className="bg-gradient-to-br from-black/60 to-transparent border border-white/5 rounded-[2.5rem] p-8 backdrop-blur-3xl relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-[#c8aa6e]/5 blur-3xl -z-10" />
-
                             <div className="flex items-center gap-3 mb-6">
                                 <RefreshCw className={syncing ? "text-[#c8aa6e] animate-spin" : "text-[#c8aa6e]"} size={20} />
                                 <h3 className="text-sm font-black text-white uppercase tracking-widest">NEXUS CONNECT</h3>
                             </div>
-
                             <p className="text-[10px] text-[#a09b8c] leading-relaxed uppercase tracking-widest font-bold mb-8">
                                 Sync your Rift ID to the cloud to continue your legend on any device.
                             </p>
-
                             <div className="space-y-6">
                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center group-hover:border-[#c8aa6e]/30 transition-colors">
                                     <div>
@@ -116,39 +113,15 @@ export default function VaultPage() {
                                         {copied ? <CheckCircle2 size={16} className="text-[#0ac8b9]" /> : <Copy size={16} />}
                                     </button>
                                 </div>
-
-                                <button
-                                    onClick={handleSync}
-                                    disabled={syncing}
-                                    className="w-full btn-hextech-primary py-4 text-[10px] flex items-center justify-center gap-2"
-                                >
+                                <button onClick={handleSync} disabled={syncing} className="w-full btn-hextech-primary py-4 text-[10px] flex items-center justify-center gap-2">
                                     <RefreshCw size={14} className={syncing ? "animate-spin" : ""} />
                                     {syncing ? 'SINCRO EN PROGRESO...' : 'BACKUP TO CLOUD'}
                                 </button>
-
                                 {lastSyncTime && (
                                     <div className="text-center text-[8px] font-black text-[#5c5b57] uppercase tracking-widest">
                                         Last Synced: {new Date(lastSyncTime).toLocaleTimeString()}
                                     </div>
                                 )}
-
-                                <div className="pt-6 border-t border-white/5">
-                                    <div className="text-[8px] font-black text-[#5c5b57] uppercase tracking-widest mb-3">LINK NEW DEVICE</div>
-                                    <div className="flex gap-2">
-                                        <input
-                                            value={linkInput}
-                                            onChange={(e) => setLinkInput(e.target.value.toUpperCase())}
-                                            placeholder="RIFT-XXXX"
-                                            className="flex-1 bg-black/40 border border-white/5 rounded-xl px-3 py-2 text-[10px] text-[#c8aa6e] focus:border-[#c8aa6e]/50 outline-none"
-                                        />
-                                        <button
-                                            onClick={handleLink}
-                                            className="bg-white/5 hover:bg-white/10 p-2 rounded-xl transition-colors border border-white/10"
-                                        >
-                                            <Smartphone size={16} className="text-[#a09b8c]" />
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </section>
 
@@ -156,13 +129,12 @@ export default function VaultPage() {
                             <Star className="text-[#c8aa6e] mb-4" size={24} />
                             <h4 className="text-sm font-black text-white uppercase tracking-widest mb-2">Vault Statistics</h4>
                             <div className="space-y-2">
-                                <div className="text-[10px] text-[#a09b8c] uppercase font-black tracking-widest">PRESTIGE POINTS: {prestigePoints}</div>
                                 <div className="text-[10px] text-[#a09b8c] uppercase font-black tracking-widest">COLLECTION POWER: S-RANK</div>
+                                <div className="text-[10px] text-[#a09b8c] uppercase font-black tracking-widest">NEXUS VERIFIED: YES</div>
                             </div>
                         </div>
                     </div>
 
-                    {/* GRID */}
                     <div className="lg:col-span-3">
                         <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
                             <div className="flex gap-8">

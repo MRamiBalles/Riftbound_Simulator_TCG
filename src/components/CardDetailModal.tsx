@@ -10,11 +10,10 @@ import { useCollectionStore } from '@/store/collection-store';
 interface CardDetailModalProps {
     card: Card;
     onClose: () => void;
-    virtualCount?: number;
-    realCount?: number;
+    ownedCount: number;
 }
 
-export default function CardDetailModal({ card, onClose, virtualCount = 0, realCount = 0 }: CardDetailModalProps) {
+export default function CardDetailModal({ card, onClose, ownedCount = 0 }: CardDetailModalProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
@@ -100,15 +99,16 @@ export default function CardDetailModal({ card, onClose, virtualCount = 0, realC
 
                     <div className="bg-[#1e2328] rounded-xl p-6 border border-[#7a5c29]/30 space-y-4">
                         <div className="flex justify-between items-center border-b border-[#7a5c29]/30 pb-4">
-                            <span className="text-[#a09b8c]">Wait, I own...</span>
+                            <span className="text-[#a09b8c]">Ownership Status</span>
                             <div className="flex gap-4">
-                                <span className="text-[#0ac8b9] font-bold">{virtualCount} Virtual</span>
-                                <span className="text-[#c8aa6e] font-bold">{realCount} Real</span>
+                                <span className="text-[#c8aa6e] font-black tracking-widest uppercase text-xs">
+                                    {ownedCount > 0 ? `Verified Asset x${ownedCount}` : 'Not in Collection'}
+                                </span>
                             </div>
                         </div>
 
                         <div className="flex justify-between items-center">
-                            <span className="text-[#a09b8c]">Market Price</span>
+                            <span className="text-[#a09b8c]">Estimated Value</span>
                             <span className="text-xl font-bold text-[#0ac8b9]">${card.market_price?.toFixed(2)}</span>
                         </div>
 
@@ -123,7 +123,7 @@ export default function CardDetailModal({ card, onClose, virtualCount = 0, realC
                             <Share2 className="w-4 h-4" /> Share
                         </button>
                         <button className="flex-1 btn-hextech flex items-center justify-center gap-2 border-[#0ac8b9] text-[#0ac8b9]">
-                            <ExternalLink className="w-4 h-4" /> TCGPlayer
+                            <ExternalLink className="w-4 h-4" /> Marketplace
                         </button>
                     </div>
 

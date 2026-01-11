@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import { Tv, Play, Users, MessageSquare, Coins, Trophy, Zap, Radio } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -19,7 +20,8 @@ export default function RiftboundTVPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
                 {/* LEFT: LIVE STREAM AREA */}

@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { ForgeService, ForgedCard } from '@/services/forge-service';
-import EnergyWidget from '@/components/layout/EnergyWidget';
-import { RealityLinkService } from '@/services/reality-link-service';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import { Sparkles, Brain, Cpu, Save, RefreshCw, Zap, Shield, Wand2, FileText, Check } from 'lucide-react';
 import { CardView } from '@/components/CardView';
 import Link from 'next/link';
@@ -41,7 +41,8 @@ export default function ForgePage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <div className="max-w-6xl mx-auto">
                 <header className="mb-16 text-center">

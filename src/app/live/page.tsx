@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useGuildStore } from '@/store/guild-store';
 import { useMissionStore } from '@/store/mission-store';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import { Shield, Users, Trophy, Star, ChevronRight, LayoutGrid, CheckCircle2, Lock, Zap, Target, MessageSquare } from 'lucide-react';
 import { SocialLobby } from '@/components/social/SocialLobby';
 import Link from 'next/link';
@@ -16,7 +17,8 @@ export default function LiveHubPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <header className="max-w-6xl mx-auto mb-12">
                 <h1 className="text-5xl md:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e] uppercase mb-4" style={{ fontFamily: 'Beaufort' }}>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getCards } from '@/services/card-service'; // We'll need a client version or pass data
 import { Card as CardType } from '@/lib/database.types';
 import { Search, Filter, ArrowRight, Grid, List, Briefcase, Download, Upload, Hammer, Plus } from 'lucide-react';
 import { VfxService } from '@/services/vfx-service';
@@ -8,11 +7,13 @@ import { generateCSV, generateJSON, downloadFile } from '@/services/export-servi
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';
 import { useCollectionStore } from '@/store/collection-store';
 import { Card as CardComponent } from '@/components/Card';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import clsx from 'clsx';
 import CardDetailModal from '@/components/CardDetailModal';
 
 export default function CollectionPage() {
-    const { inventory, setActiveDeck, decks, getTotalCards, showcase, setShowcaseSlot } = useCollectionStore();
+    const { inventory, setActiveDeck, decks, showcase, setShowcaseSlot } = useCollectionStore();
     const [filterOwned, setFilterOwned] = useState(false);
     const [selectedSet, setSelectedSet] = useState<string | 'ALL'>('ALL');
     const [viewingCard, setViewingCard] = useState<typeof MOCK_CARDS[0] | null>(null);
@@ -28,19 +29,17 @@ export default function CollectionPage() {
     };
 
     // Stats
-    const totalVirtual = getTotalCards('VIRTUAL');
-    const totalReal = getTotalCards('REAL');
+    const totalOwned = Object.values(inventory).reduce((acc, qty) => acc + qty, 0);
+    const uniqueCount = Object.keys(inventory).length;
+
     const totalValue = MOCK_CARDS.reduce((acc, card) => {
-        const owned = inventory[card.id];
-        if (owned) {
-            return acc + ((owned.virtual + owned.real) * (card.market_price || 0));
-        }
-        return acc;
+        const ownedQty = inventory[card.id] || 0;
+        return acc + (ownedQty * (card.market_price || 0));
     }, 0);
 
     const filteredCards = MOCK_CARDS.filter(card => {
-        const owned = inventory[card.id];
-        const hasCopy = owned && (owned.virtual > 0 || owned.real > 0);
+        const ownedQty = inventory[card.id] || 0;
+        const hasCopy = ownedQty > 0;
 
         if (filterOwned && !hasCopy) return false;
         if (selectedSet !== 'ALL' && card.set_id !== selectedSet) return false;
@@ -49,32 +48,24 @@ export default function CollectionPage() {
     });
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif">
-            <EnergyWidget />
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-16">
+            <HextechNavbar />
+            <HextechSidebar />
 
             {/* Header */}
-            <header className="pt-24 pb-8 px-4 text-center bg-gradient-to-b from-[#091428] to-[#010a13] border-b border-[#7a5c29]">
+            <header className="pt-12 pb-8 px-4 text-center bg-gradient-to-b from-[#091428] to-[#010a13] border-b border-[#c8aa6e]/20">
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-[#c8aa6e] via-[#f0e6d2] to-[#c8aa6e]" style={{ fontFamily: 'Beaufort' }}>
                     COLLECTION
                 </h1>
 
-                <div className="flex justify-center gap-8 mt-4 text-sm tracking-widest uppercase">
-                    <div className="flex gap-4">
-                        <Link href="/collection/altar" className="btn-hextech px-6 py-3 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 border-[#c8aa6e]/30 text-[#c8aa6e] hover:bg-[#c8aa6e]/10 transition-all">
-                            <Hammer size={16} /> ALTAR OF TRANSCENDENCE
-                        </Link>
-                        <div className="bg-black/40 border border-white/10 rounded-2xl px-6 py-3 backdrop-blur-xl text-center">
-                            <div className="text-[8px] font-black text-[#add8e6] uppercase tracking-widest">TOTAL CARDS</div>
-                            <div className="text-xl font-black text-white">{Object.values(inventory).reduce((a, b) => a + (b.virtual + b.real), 0)}</div>
-                        </div>
+                <div className="flex justify-center gap-8 mt-6">
+                    <div className="bg-black/40 border border-[#c8aa6e]/20 rounded-2xl px-8 py-4 backdrop-blur-xl text-center">
+                        <div className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-widest mb-1">TOTAL ASSETS</div>
+                        <div className="text-3xl font-black text-white">{totalOwned}</div>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-[#0ac8b9] font-bold text-xl">{totalVirtual}</span>
-                        <span className="text-[#5c5b57]">Virtual</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-[#c8aa6e] font-bold text-xl">{totalReal}</span>
-                        <span className="text-[#5c5b57]">Real (Scanned)</span>
+                    <div className="bg-black/40 border border-[#0ac8b9]/20 rounded-2xl px-8 py-4 backdrop-blur-xl text-center">
+                        <div className="text-[10px] font-black text-[#0ac8b9] uppercase tracking-widest mb-1">UNIQUE CARDS</div>
+                        <div className="text-3xl font-black text-white">{uniqueCount}</div>
                     </div>
                 </div>
 
@@ -112,8 +103,8 @@ export default function CollectionPage() {
                             {filterOwned ? 'SHOW ALL CARDS' : 'SHOW ONLY OWNED'}
                         </button>
 
-                        <Link href="/decks" className="btn-hextech px-6 py-2 text-xs">
-                            THE ARMORY
+                        <Link href="/marketplace" className="btn-hextech px-6 py-2 text-xs border-[#0ac8b9]/30 text-[#0ac8b9]">
+                            TRADING HUB
                         </Link>
                     </div>
                 </div>
@@ -135,9 +126,9 @@ export default function CollectionPage() {
                                 key={i}
                                 onClick={() => {
                                     if (!card) {
-                                        alert("To pin a card, click a card in your collection below and select 'Pin to Showcase' (Slot " + (i + 1) + ")");
+                                        alert("To pin a card, click a card in your collection below and select 'Pin to Showcase'");
                                     } else {
-                                        setShowcaseSlot(i, null); // Remove if clicked
+                                        setShowcaseSlot(i, null);
                                     }
                                 }}
                                 className="aspect-[2/3] rounded-lg border border-white/5 bg-[#091428]/40 hover:border-[#0ac8b9]/40 transition-all flex flex-col items-center justify-center group overflow-hidden relative cursor-pointer"
@@ -163,8 +154,8 @@ export default function CollectionPage() {
 
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-4 max-w-7xl mx-auto pb-24 px-2">
                 {filteredCards.map(card => {
-                    const owned = inventory[card.id] || { virtual: 0, real: 0 };
-                    const isOwned = owned.virtual > 0 || owned.real > 0;
+                    const ownedQty = inventory[card.id] || 0;
+                    const isOwned = ownedQty > 0;
 
                     return (
                         <div
@@ -174,19 +165,13 @@ export default function CollectionPage() {
                         >
                             <CardComponent card={card} />
 
-                            {/* Quantity Badge - Simplified for Mobile */}
-                            <div className="absolute -bottom-2 inset-x-0 flex justify-center gap-1 scale-75 md:scale-100 origin-bottom">
-                                {owned.virtual > 0 && (
-                                    <div className="bg-[#0ac8b9] text-[#010a13] text-xs font-bold px-2 py-0.5 rounded-full shadow-lg border border-[#010a13]">
-                                        V: {owned.virtual}
+                            {isOwned && (
+                                <div className="absolute -bottom-2 inset-x-0 flex justify-center scale-75 md:scale-100 origin-bottom">
+                                    <div className="bg-[#c8aa6e] text-[#010a13] text-xs font-bold px-3 py-0.5 rounded-full shadow-lg border border-[#010a13]">
+                                        x{ownedQty}
                                     </div>
-                                )}
-                                {owned.real > 0 && (
-                                    <div className="bg-[#c8aa6e] text-[#010a13] text-xs font-bold px-2 py-0.5 rounded-full shadow-lg border border-[#010a13]">
-                                        R: {owned.real}
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     );
                 })}
@@ -197,8 +182,7 @@ export default function CollectionPage() {
                 <CardDetailModal
                     card={viewingCard}
                     onClose={() => setViewingCard(null)}
-                    virtualCount={inventory[viewingCard.id]?.virtual || 0}
-                    realCount={inventory[viewingCard.id]?.real || 0}
+                    ownedCount={inventory[viewingCard.id] || 0}
                 />
             )}
         </main>

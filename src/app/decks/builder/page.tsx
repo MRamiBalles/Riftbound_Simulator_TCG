@@ -11,7 +11,8 @@ import { Search, AlertTriangle, CheckCircle, Copy, Save, Share2, CornerUpLeft, P
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import { ManaCurveChart } from '@/components/deck-builder/ManaCurveChart';
 import { DeckCodeService } from '@/services/deck-code-service';
 import { CloudService } from '@/services/cloud-service';
@@ -126,8 +127,7 @@ export default function DeckBuilderPage() {
 
     // Validate Deck against Inventory
     const validationIssues = Object.entries(deck).map(([cardId, requiredCount]) => {
-        const owned = inventory[cardId];
-        const totalOwned = (owned?.virtual || 0) + (owned?.real || 0);
+        const totalOwned = inventory[cardId] || 0;
         if (totalOwned < requiredCount) {
             return { cardId, missing: requiredCount - totalOwned };
         }
@@ -147,8 +147,9 @@ export default function DeckBuilderPage() {
     const isValid = deckSize === 40 && validationIssues.length === 0;
 
     return (
-        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif flex flex-col pt-20">
-            <EnergyWidget />
+        <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif flex flex-col pt-20 overflow-hidden">
+            <HextechNavbar />
+            <HextechSidebar />
 
             {/* Header */}
             <header className="bg-[#091428] border-b border-[#7a5c29] p-4 flex justify-between items-center shadow-lg z-20">
@@ -261,8 +262,7 @@ export default function DeckBuilderPage() {
 
                     <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 gap-4 content-start">
                         {library.map(card => {
-                            const owned = inventory[card.id];
-                            const totalOwned = (owned?.virtual || 0) + (owned?.real || 0);
+                            const totalOwned = inventory[card.id] || 0;
                             const inDeck = deck[card.id] || 0;
 
                             return (
@@ -309,8 +309,7 @@ export default function DeckBuilderPage() {
                             </div>
                         ) : Object.entries(deck).map(([cardId, count]) => {
                             const card = MOCK_CARDS.find(c => c.id === cardId)!;
-                            const owned = inventory[cardId];
-                            const totalOwned = (owned?.virtual || 0) + (owned?.real || 0);
+                            const totalOwned = inventory[cardId] || 0;
                             const missing = Math.max(0, count - totalOwned);
 
                             return (

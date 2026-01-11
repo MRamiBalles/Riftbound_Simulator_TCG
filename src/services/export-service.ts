@@ -1,18 +1,17 @@
 import { Card } from '@/lib/database.types';
 
 interface ExportItem extends Card {
-    quantityReal: number;
-    quantityVirtual: number;
+    quantity: number;
     totalValue: number;
 }
 
-export const generateCSV = (inventory: Record<string, { virtual: number, real: number }>, allCards: Card[]) => {
-    const rows = [['ID', 'Name', 'Set', 'Rarity', 'Type', 'Region', 'Quantity (Real)', 'Quantity (Virtual)', 'Market Price', 'Total Value']];
+export const generateCSV = (inventory: Record<string, number>, allCards: Card[]) => {
+    const rows = [['ID', 'Name', 'Set', 'Rarity', 'Type', 'Region', 'Quantity', 'Market Price', 'Total Value']];
 
     allCards.forEach(card => {
-        const owned = inventory[card.id];
-        if (owned && (owned.real > 0 || owned.virtual > 0)) {
-            const totalVal = (owned.real + owned.virtual) * (card.market_price || 0);
+        const qty = inventory[card.id] || 0;
+        if (qty > 0) {
+            const totalVal = qty * (card.market_price || 0);
             rows.push([
                 card.id,
                 `"${card.name}"`, // Quote names to handle commas
@@ -20,8 +19,7 @@ export const generateCSV = (inventory: Record<string, { virtual: number, real: n
                 card.rarity,
                 card.type,
                 card.region,
-                owned.real.toString(),
-                owned.virtual.toString(),
+                qty.toString(),
                 (card.market_price || 0).toFixed(2),
                 totalVal.toFixed(2)
             ]);
@@ -31,19 +29,19 @@ export const generateCSV = (inventory: Record<string, { virtual: number, real: n
     return rows.map(e => e.join(',')).join('\n');
 };
 
-export const generateJSON = (inventory: Record<string, { virtual: number, real: number }>, allCards: Card[]) => {
+export const generateJSON = (inventory: Record<string, number>, allCards: Card[]) => {
     const exportData = {
         exportedAt: new Date().toISOString(),
         collection: [] as any[]
     };
 
     allCards.forEach(card => {
-        const owned = inventory[card.id];
-        if (owned && (owned.real > 0 || owned.virtual > 0)) {
+        const qty = inventory[card.id] || 0;
+        if (qty > 0) {
             exportData.collection.push({
                 ...card,
-                inventory: owned,
-                estimatedValue: (owned.real + owned.virtual) * (card.market_price || 0)
+                quantity: qty,
+                estimatedValue: qty * (card.market_price || 0)
             });
         }
     });

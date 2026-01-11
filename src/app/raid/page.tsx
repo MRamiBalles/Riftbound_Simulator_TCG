@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { RaidService, RaidState } from '@/services/raid-service';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 import { Sword, Shield, Zap, Users, Trophy, Activity, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -25,7 +26,8 @@ export default function RaidPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] font-serif pt-24 pb-24 px-4 overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             <div className="max-w-6xl mx-auto flex flex-col items-center">
                 <header className="mb-12 text-center animate-in fade-in duration-1000">
