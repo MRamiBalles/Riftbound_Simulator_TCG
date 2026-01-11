@@ -125,7 +125,7 @@ export default function BazaarPage() {
                             key="auction"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-12"
+                            className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-12"
                         >
                             {auctions.map((auc) => (
                                 <div key={auc.id} className="relative group">
@@ -182,7 +182,7 @@ export default function BazaarPage() {
                             key="listings"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-8"
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
                         >
                             {listings.map((listing) => (
                                 <div key={listing.id} className="group relative bg-[#091428]/60 border border-white/5 hover:border-[#c8aa6e]/40 rounded-[2.5rem] p-6 backdrop-blur-xl transition-all duration-300 flex flex-col items-center">

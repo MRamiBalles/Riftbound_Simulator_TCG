@@ -98,9 +98,9 @@ export default function CollectionPage() {
                 </header>
 
                 {/* Main Experience */}
-                <div className="flex flex-col xl:flex-row gap-12">
-                    {/* Left Sidebar - Hidden on small screens or moved to top */}
-                    <div className="xl:w-72 flex-shrink-0">
+                <div className="flex flex-col lg:flex-row gap-12">
+                    {/* Left Sidebar */}
+                    <div className="lg:w-72 flex-shrink-0">
                         <FilterSidebar />
                     </div>
 
@@ -126,7 +126,7 @@ export default function CollectionPage() {
                                 {filteredCards.length > 0 ? (
                                     <motion.div
                                         layout
-                                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-8"
+                                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
                                     >
                                         {filteredCards.map((card) => {
                                             const qty = inventory[card.id] || 0;

@@ -1,6 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-beaufort: "Beaufort", sans-serif;
+  --font-spiegel: "Spiegel", sans-serif;
+  
+  --color-hextech-action: #0ac8b9;
+  --color-hextech-magic: #c8aa6e;
+  --color-hextech-gold: #c8aa6e;
+  --color-hextech-metal: #1e2328;
+  --color-hextech-black: #010a13;
+  --color-hextech-blue: #091428;
+
+  --breakpoint-3xl: 1920px;
+}
 
 @font-face {
   font-family: 'Beaufort';
