@@ -7,7 +7,8 @@ import { useCollectionStore } from '@/store/collection-store';
 import { Loader2, Radio, User, Gem } from 'lucide-react';
 import Link from 'next/link';
 import clsx from 'clsx';
-import EnergyWidget from '@/components/layout/EnergyWidget';
+import { HextechNavbar } from '@/components/layout/HextechNavbar';
+import { HextechSidebar } from '@/components/layout/HextechSidebar';
 
 export default function HextechEchoPage() {
     const [echoes, setEchoes] = useState<FriendActivity[]>([]);
@@ -33,7 +34,7 @@ export default function HextechEchoPage() {
         // Add to collection
         if (selectedEcho && selectedEcho.type === 'PACK') {
             const card = selectedEcho.packResult[index];
-            addCard(card.id, 'VIRTUAL');
+            addCard(card.id);
         }
     };
 
@@ -44,7 +45,8 @@ export default function HextechEchoPage() {
 
     return (
         <main className="min-h-screen bg-[#010a13] text-[#f0e6d2] p-4 md:p-8 pt-20 font-serif relative overflow-hidden">
-            <EnergyWidget />
+            <HextechNavbar />
+            <HextechSidebar />
 
             {/* Background Radar Effect */}
             <div className="absolute inset-0 z-0 flex items-center justify-center opacity-10 pointer-events-none">
