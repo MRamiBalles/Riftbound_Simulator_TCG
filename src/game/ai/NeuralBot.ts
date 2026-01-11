@@ -27,9 +27,25 @@ export class NeuralBot {
             this.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/';
             this.session = await this.ort.InferenceSession.create(this.modelPath);
             console.log('[NeuralBot] Session initialized successfully via dynamic import');
+
+            // Warm-up: Run a dummy inference to compile JIT shaders
+            await this.warmup();
         } catch (e) {
             console.error('[NeuralBot] Failed to initialize ONNX session. Ensure `npm install` has been run.', e);
             throw e;
+        }
+    }
+
+    private async warmup() {
+        if (!this.session || !this.ort) return;
+        try {
+            // Dummy vector of size 200 (approx max state size)
+            const dummyData = new Float32Array(200).fill(0.1);
+            const tensor = new this.ort.Tensor('float32', dummyData, [1, 200]);
+            await this.session.run({ input: tensor });
+            console.log('[NeuralBot] Warm-up complete. Zero-latency ready.');
+        } catch (e) {
+            console.warn('[NeuralBot] Warm-up failed (non-critical):', e);
         }
     }
 

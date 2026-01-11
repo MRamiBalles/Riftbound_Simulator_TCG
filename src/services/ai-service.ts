@@ -65,9 +65,23 @@ export class AIService {
             }
 
             if (emote) {
-                console.log(`[AI] "${emote}"`);
+                // console.log(`[AI] "${emote}"`); // Deprecated simple log
                 (action as any).emote = emote;
             }
+
+            // [Sovereign GameOps] Structured Telemetry
+            const telemetry = {
+                timestamp: Date.now(),
+                turn: state.turn,
+                phase: state.phase,
+                mode: this.currentMode,
+                usedNeural,
+                meanConfidence: usedNeural ? avgConfidence : null,
+                actionType: action.type,
+                targetId: action.targetId || action.cardId || null,
+                emote
+            };
+            console.log('[AI_DECISION_TELEMETRY]', JSON.stringify(telemetry));
         }
 
         return action;
