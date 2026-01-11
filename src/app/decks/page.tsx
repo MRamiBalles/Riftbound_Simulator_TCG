@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Plus, Layers, Library, Trash2, Edit3, Share2, Download } from 'lucide-react';
 import React, { useState } from 'react';
-import EnergyWidget from '@/components/layout/EnergyWidget';
 import { getHydratedStarterDecks } from '@/data/starter-decks';
 import { useCollectionStore } from '@/store/collection-store';
 import { DeckCodeService } from '@/services/deck-code-service';

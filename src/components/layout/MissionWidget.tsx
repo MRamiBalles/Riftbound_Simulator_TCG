@@ -28,31 +28,20 @@ export default function MissionWidget() {
         <div className="w-full max-w-md mx-auto mb-8 space-y-4">
             {/* Daily Login Bonus */}
             <div className={clsx(
-                "relative p-4 rounded-xl border flex items-center justify-between transition-all",
-                dailyClaimed
-                    ? "bg-[#091428]/50 border-[#7a5c29]/30 text-[#a09b8c]"
-                    : "bg-gradient-to-r from-[#c8aa6e]/20 to-[#091428] border-[#c8aa6e] shadow-[0_0_15px_rgba(200,170,110,0.3)]"
+                "relative p-4 rounded-xl border flex items-center justify-between transition-all bg-[#091428]/50 border-[#7a5c29]/30 text-[#a09b8c]"
             )}>
                 <div className="flex items-center gap-4">
-                    <div className={clsx("p-2 rounded-full", dailyClaimed ? "bg-[#7a5c29]/20" : "bg-[#c8aa6e] text-black animate-pulse")}>
+                    <div className="p-2 rounded-full bg-[#7a5c29]/20">
                         <Gift className="w-6 h-6" />
                     </div>
                     <div>
-                        <h3 className={clsx("font-bold text-sm uppercase tracking-wider", !dailyClaimed && "text-[#f0e6d2]")}>
-                            {dailyClaimed ? "Daily Bonus Claimed" : "Daily Check-In"}
+                        <h3 className="font-bold text-sm uppercase tracking-wider">
+                            Daily Activity
                         </h3>
-                        <p className="text-xs text-[#a09b8c]">{dailyClaimed ? "Refreshes in 24h" : "Claim 100 Hex Cores"}</p>
+                        <p className="text-xs text-[#a09b8c]">Earn prestige through gameplay</p>
                     </div>
                 </div>
-                {!dailyClaimed && (
-                    <button
-                        onClick={handleClaimDaily}
-                        className="btn-hextech px-4 py-1 text-xs"
-                    >
-                        CLAIM
-                    </button>
-                )}
-                {dailyClaimed && <CheckCircle className="w-6 h-6 text-[#7a5c29]" />}
+                <CheckCircle className="w-6 h-6 text-[#7a5c29]" />
             </div>
 
             {/* Mission List */}

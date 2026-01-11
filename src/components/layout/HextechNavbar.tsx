@@ -55,15 +55,8 @@ export const HextechNavbar: React.FC = () => {
                 </div>
             </div>
 
-            {/* Profile / Currency */}
+            {/* Profile Section */}
             <div className="flex items-center gap-6">
-                <div className="flex items-center gap-4 px-4 py-1.5 rounded-full bg-black/40 border border-[#c8aa6e]/20">
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-[#0ac8b9] shadow-[0_0_8px_#0ac8b9]" />
-                        <span className="text-[10px] font-black text-[#c8aa6e] uppercase tracking-tighter">4,250 BE</span>
-                    </div>
-                </div>
-
                 <div className="relative group">
                     <div className="w-10 h-10 rounded-full border-2 border-[#c8aa6e] overflow-hidden hover:border-[#f0e6d2] transition-colors cursor-pointer bg-slate-900">
                         <img

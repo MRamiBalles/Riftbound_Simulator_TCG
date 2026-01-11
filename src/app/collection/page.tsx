@@ -3,7 +3,6 @@ import { getCards } from '@/services/card-service'; // We'll need a client versi
 import { Card as CardType } from '@/lib/database.types';
 import { Search, Filter, ArrowRight, Grid, List, Briefcase, Download, Upload, Hammer, Plus } from 'lucide-react';
 import { VfxService } from '@/services/vfx-service';
-import EnergyWidget from '@/components/layout/EnergyWidget';
 import Link from 'next/link';
 import { generateCSV, generateJSON, downloadFile } from '@/services/export-service';
 import { MOCK_CARDS, MOCK_SETS } from '@/services/card-service';

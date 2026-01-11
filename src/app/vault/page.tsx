@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import EnergyWidget from '@/components/layout/EnergyWidget';
 import { BookOpen, Share2, Star, LayoutGrid, Heart, Search, Filter, RefreshCw, Smartphone, Copy, CheckCircle2 } from 'lucide-react';
 import { ImmersiveCard } from '@/components/cards/ImmersiveCard';
 import { useUserStore } from '@/store/user-store';
