@@ -78,15 +78,25 @@ export class CombatResolver {
         const blkDmg = this.calculateStrikingDamage(blocker);
 
         const applyStrike = (striker: RuntimeCard, target: RuntimeCard, dmg: number, sId: PlayerId, tId: PlayerId) => {
-            if (result.deadUnits.includes(striker.instanceId)) return;
+            // Simultaneous combat support: Do not check deadUnits here.
+            // Quick Attack logic handles the check continuously in the proper scope.
             const targetPreHP = target.currentHealth;
             let actualDmgToUnit = dmg;
+
+            // Overwhelm Logic: Calculate excess first to split damage
+            let excess = 0;
+            if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
+                excess = Math.max(0, dmg - targetPreHP);
+                if (excess > 0) {
+                    actualDmgToUnit = Math.max(0, dmg - excess);
+                }
+            }
 
             if (target.isBarrierActive || target.keywords.includes('Barrier' as any)) {
                 result.poppedBarriers.push(target.instanceId);
                 result.damageEvents.push({ sourceId: striker.instanceId, targetId: target.instanceId, amount: 0, isCombat: true });
                 target.isBarrierActive = false;
-                actualDmgToUnit = 0; // The unit takes 0, but we still calculate Overwhelm below
+                actualDmgToUnit = 0;
             } else {
                 if (target.keywords.includes('Tough' as any)) actualDmgToUnit = Math.max(0, actualDmgToUnit - 1);
                 target.currentHealth -= actualDmgToUnit;
@@ -94,21 +104,17 @@ export class CombatResolver {
             }
 
             if (striker.keywords.includes('Lifesteal' as any)) {
-                // Lifesteal heals for the amount of damage ACTUALLY dealt
+                // Lifesteal heals for the amount of damage ACTUALLY dealt to Unit
                 result.lifestealHeal[sId] += actualDmgToUnit;
             }
 
-            if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
-                // Overwhelm calculates based on what SHOULD HAVE been dealt vs current HP
-                const excess = Math.max(0, dmg - targetPreHP);
-                if (excess > 0) {
-                    result.nexusDamage[defenderId] += excess;
-                    result.damageEvents.push({ sourceId: striker.instanceId, targetId: defenderId, amount: excess, isOverwhelm: true });
+            if (excess > 0) {
+                result.nexusDamage[defenderId] += excess;
+                result.damageEvents.push({ sourceId: striker.instanceId, targetId: defenderId, amount: excess, isOverwhelm: true });
 
-                    // If Lifesteal, we also heal for the excess damage dealt to Nexus
-                    if (striker.keywords.includes('Lifesteal' as any)) {
-                        result.lifestealHeal[sId] += excess;
-                    }
+                // If Lifesteal, we also heal for the excess damage dealt to Nexus
+                if (striker.keywords.includes('Lifesteal' as any)) {
+                    result.lifestealHeal[sId] += excess;
                 }
             }
 

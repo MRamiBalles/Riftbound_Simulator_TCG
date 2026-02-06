@@ -47,8 +47,9 @@ describe('Combat Engine: Keyword Interactions', () => {
         // Results: 
         // Blocker took 10 - 1 = 9 damage.
         // Overwhelm excess: 10 - 5 = 5 damage to Nexus.
+        // Remaining 5 assigned to unit -> Tough reduces to 4.
         const unitDmg = result.damageEvents.find(e => e.targetId === blocker.instanceId)?.amount;
-        expect(unitDmg).toBe(9);
+        expect(unitDmg).toBe(4);
         expect(result.nexusDamage.opponent).toBe(5);
     });
 
