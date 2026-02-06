@@ -15,7 +15,7 @@ describe('HeuristicBot Mulligan Logic', () => {
             turn: 0,
             activePlayer: 'player', // Doesn't matter for mulligan logic check
             phase: 'Mulligan',
-            priority: 'player',
+            priority: 'opponent',
             players: {
                 player: { id: 'player', health: 20, maxHealth: 20, mana: 0, maxMana: 0, hand: [], deckCount: 30, field: [], graveyard: [] },
                 opponent: { id: 'opponent', health: 20, maxHealth: 20, mana: 0, maxMana: 0, hand: [], deckCount: 30, field: [], graveyard: [] }

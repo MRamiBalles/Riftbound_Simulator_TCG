@@ -37,6 +37,7 @@ describe('CoreEngine', () => {
         engine.initGame(playerDeck, opponentDeck);
 
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'player', mulliganCards: [] });
+        engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
         const state = engine.getState();
         expect(state.turn).toBe(1);
@@ -49,6 +50,7 @@ describe('CoreEngine', () => {
         const engine = new CoreEngine();
         engine.initGame(playerDeck, opponentDeck);
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'player', mulliganCards: [] });
+        engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
         // Turn 1 (Player)
         engine.applyAction({ type: 'END_TURN', playerId: 'player' });
@@ -70,17 +72,17 @@ describe('CoreEngine', () => {
         const engine = new CoreEngine();
         engine.initGame(playerDeck, opponentDeck);
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'player', mulliganCards: [] });
+        engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
         const regenUnit = { ...mockCard('r1'), keywords: ['Regeneration'], health: 5, attack: 1 };
-        const state = engine.getState();
-        state.players.player.hand.push(regenUnit as any);
+        // Access private state for testing
+        (engine as any).state.players.player.hand.push(regenUnit);
 
         // Play the unit
         engine.applyAction({ type: 'PLAY_CARD', playerId: 'player', cardId: regenUnit.id });
 
         // Damage the unit
-        const deployed = engine.getState().players.player.field[0];
-        deployed.currentHealth = 1;
+        (engine as any).state.players.player.field[0].currentHealth = 1;
 
         // End turn and start again
         engine.applyAction({ type: 'END_TURN', playerId: 'player' });

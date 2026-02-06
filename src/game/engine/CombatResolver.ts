@@ -77,8 +77,8 @@ export class CombatResolver {
         const atkDmg = this.calculateStrikingDamage(attacker);
         const blkDmg = this.calculateStrikingDamage(blocker);
 
-        const applyStrike = (striker: RuntimeCard, target: RuntimeCard, dmg: number, sId: PlayerId, tId: PlayerId) => {
-            if (result.deadUnits.includes(striker.instanceId)) return;
+        const applyStrike = (striker: RuntimeCard, target: RuntimeCard, dmg: number, sId: PlayerId, tId: PlayerId, allowDeadStriker: boolean = false) => {
+            if (!allowDeadStriker && result.deadUnits.includes(striker.instanceId)) return;
             const targetPreHP = target.currentHealth;
             let actualDmgToUnit = dmg;
 
@@ -94,9 +94,8 @@ export class CombatResolver {
             }
 
             if (striker.keywords.includes('Lifesteal' as any)) {
-                // Lifesteal heals for the amount of damage that WOULD have been dealt (atk power)
-                // In Riftbound/LoR, Lifesteal hits for the unit's power regardless of barrier.
-                result.lifestealHeal[sId] += dmg;
+                // Lifesteal heals for the amount of damage ACTUALLY dealt
+                result.lifestealHeal[sId] += actualDmgToUnit;
             }
 
             if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
@@ -110,17 +109,18 @@ export class CombatResolver {
                 }
             }
 
-            if (target.currentHealth <= 0) result.deadUnits.push(target.instanceId);
+            if (target.currentHealth <= 0 && !result.deadUnits.includes(target.instanceId)) result.deadUnits.push(target.instanceId);
         };
 
         if (isQuickAttack) {
-            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId);
+            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId, false);
             if (!result.deadUnits.includes(blocker.instanceId)) {
-                applyStrike(blocker, attacker, blkDmg, blockerId, attackerId);
+                applyStrike(blocker, attacker, blkDmg, blockerId, attackerId, false);
             }
         } else {
-            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId);
-            applyStrike(blocker, attacker, blkDmg, blockerId, attackerId);
+            // Simultaneous: Both strike regardless of who "dies" during calculation
+            applyStrike(attacker, blocker, atkDmg, attackerId, blockerId, true);
+            applyStrike(blocker, attacker, blkDmg, blockerId, attackerId, true);
         }
 
         return result;
