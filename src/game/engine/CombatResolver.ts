@@ -94,9 +94,8 @@ export class CombatResolver {
             }
 
             if (striker.keywords.includes('Lifesteal' as any)) {
-                // Lifesteal heals for the amount of damage that WOULD have been dealt (atk power)
-                // In Riftbound/LoR, Lifesteal hits for the unit's power regardless of barrier.
-                result.lifestealHeal[sId] += dmg;
+                // Lifesteal heals for the amount of damage ACTUALLY dealt
+                result.lifestealHeal[sId] += actualDmgToUnit;
             }
 
             if (striker === attacker && striker.keywords.includes('Overwhelm' as any)) {
@@ -105,8 +104,11 @@ export class CombatResolver {
                 if (excess > 0) {
                     result.nexusDamage[defenderId] += excess;
                     result.damageEvents.push({ sourceId: striker.instanceId, targetId: defenderId, amount: excess, isOverwhelm: true });
-                    // Lifesteal on excess is handled by the initial 'dmg' addition above if it counts total striking power,
-                    // but usually it's power + excess? No, power is the total.
+
+                    // If Lifesteal, we also heal for the excess damage dealt to Nexus
+                    if (striker.keywords.includes('Lifesteal' as any)) {
+                        result.lifestealHeal[sId] += excess;
+                    }
                 }
             }
 

@@ -24,8 +24,12 @@ describe('HeuristicBot Mulligan Logic', () => {
             log: [],
             combat: null,
             stack: [],
-            seed: 123
+            seed: 123,
+            initialState: { p1Deck: [], p2Deck: [] },
+            actionHistory: []
         };
+        // Fix: Bot is 'opponent', so needed priority to be 'opponent' to act strict check
+        mockState.priority = 'opponent';
     });
 
     it('should keep champions and low cost cards', async () => {

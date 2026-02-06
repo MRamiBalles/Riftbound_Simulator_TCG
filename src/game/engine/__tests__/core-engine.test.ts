@@ -37,6 +37,7 @@ describe('CoreEngine', () => {
         engine.initGame(playerDeck, opponentDeck);
 
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'player', mulliganCards: [] });
+        engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
         const state = engine.getState();
         expect(state.turn).toBe(1);
