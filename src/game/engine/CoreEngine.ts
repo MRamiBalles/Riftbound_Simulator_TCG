@@ -84,6 +84,7 @@ export class CoreEngine {
             stack: [],
             // Use provided seed or random one
             seed: seed !== undefined ? seed : Math.floor(Math.random() * 1000000),
+            nextInstanceId: 1, // Start counter
             actionHistory: []
         };
     }
@@ -105,7 +106,8 @@ export class CoreEngine {
     private initializePlayer(id: PlayerId, deck: Card[]) {
         // Deterministic shuffle
         const shuffled = this.deterministicShuffle([...deck]);
-        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
+        // Use generateInstanceId for each card
+        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id, this.generateInstanceId()));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
     }
@@ -124,6 +126,15 @@ export class CoreEngine {
         // a = 1664525, c = 1013904223, m = 2^32
         this.state.seed = (1664525 * this.state.seed + 1013904223) % 4294967296;
         return this.state.seed / 4294967296;
+    }
+
+    private generateInstanceId(): string {
+        const id = this.state.nextInstanceId++;
+        // simple deterministic ID mixed with seed to look unique but predictable?
+        // Actually, just a simple counter is enough for determinism.
+        // Or hash it if we want it to look like UUID.
+        // For simplicity: `inst_${id}`
+        return `inst_${id}`;
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -315,7 +326,7 @@ export class CoreEngine {
             } else {
                 this.state.log.push(`${action.playerId} added ${speed} spell to stack: ${card.name}`);
                 this.state.stack.push({
-                    id: crypto.randomUUID(),
+                    id: this.generateInstanceId(), // Deterministic stack ID
                     playerId: action.playerId,
                     cardId: card.instanceId,
                     targetId: action.targetId,

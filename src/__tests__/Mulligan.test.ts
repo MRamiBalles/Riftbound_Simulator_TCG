@@ -35,9 +35,9 @@ describe('HeuristicBot Mulligan Logic', () => {
         const champion = { ...MOCK_CARDS[0], id: 'champ', cost: 5, rarity: 'Champion', type: 'Unit' };
 
         const hand = [
-            createRuntimeCard(highCostUnit as any, 'opponent'),
-            createRuntimeCard(lowCostUnit as any, 'opponent'),
-            createRuntimeCard(champion as any, 'opponent')
+            createRuntimeCard(highCostUnit as any, 'opponent', 'inst_1'),
+            createRuntimeCard(lowCostUnit as any, 'opponent', 'inst_2'),
+            createRuntimeCard(champion as any, 'opponent', 'inst_3')
         ];
 
         mockState.players.opponent.hand = hand;
@@ -61,8 +61,8 @@ describe('HeuristicBot Mulligan Logic', () => {
         const high2 = { ...MOCK_CARDS[0], id: 'h2', cost: 7 };
 
         const hand = [
-            createRuntimeCard(high1 as any, 'opponent'),
-            createRuntimeCard(high2 as any, 'opponent')
+            createRuntimeCard(high1 as any, 'opponent', 'inst_4'),
+            createRuntimeCard(high2 as any, 'opponent', 'inst_5')
         ];
 
         mockState.players.opponent.hand = hand;

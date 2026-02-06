@@ -29,6 +29,7 @@ export interface SerializedGameState {
     combat: CombatState | null;
     stack: StackItem[]; // Spell/Ability stack
     seed: number; // Seed for deterministic PRNG
+    nextInstanceId: number; // Counter for deterministic UUID generation
     actionHistory?: Action[]; // For replays
 }
 
