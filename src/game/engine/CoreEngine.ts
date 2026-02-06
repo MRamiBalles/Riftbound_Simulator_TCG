@@ -39,9 +39,9 @@ export class CoreEngine {
      * @param playerDeck - Array of cards for the human player.
      * @param opponentDeck - Array of cards for the AI opponent.
      */
-    public initGame(playerDeck: Card[], opponentDeck: Card[]) {
+    public initGame(playerDeck: Card[], opponentDeck: Card[], seed?: number) {
         this.initialState = { p1Deck: [...playerDeck], p2Deck: [...opponentDeck] };
-        this.state = this.createInitialState();
+        this.state = this.createInitialState(seed);
         this.state.actionHistory = [];
 
         // Initialize Players
@@ -59,11 +59,11 @@ export class CoreEngine {
      */
     public resetGame() {
         if (this.initialState) {
-            this.initGame(this.initialState.p1Deck, this.initialState.p2Deck);
+            this.initGame(this.initialState.p1Deck, this.initialState.p2Deck, this.state.seed);
         }
     }
 
-    private createInitialState(): SerializedGameState {
+    private createInitialState(seed?: number): SerializedGameState {
         return {
             turn: 0,
             activePlayer: 'player', // Coin toss could go here
@@ -77,7 +77,7 @@ export class CoreEngine {
             log: [],
             combat: null,
             stack: [],
-            seed: Math.floor(Math.random() * 1000000), // Default random seed
+            seed: seed ?? Math.floor(Math.random() * 1000000), // Default random seed
             actionHistory: []
         };
     }
