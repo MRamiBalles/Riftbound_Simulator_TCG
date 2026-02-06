@@ -21,5 +21,15 @@ Please be respectful and professional in all communications. We aim to build a h
 - Follow the established "Hextech" UI pattern using Tailwind CSS.
 - Keep components small and focused.
 
+## Branch Protection Rules (Recommended)
+To ensure the integrity of the `main` branch, we recommend configuring the following Branch Protection Rules in GitHub:
+
+1.  **Require status checks to pass before merging**:
+    *   `Build & Test` (The CI workflow we configured)
+2.  **Require pull request reviews before merging**:
+    *   Minimum number of approving reviews: 1
+3.  **Include administrators**: Enforce these rules for admins as well.
+4.  **Do not allow bypassing the above settings**.
+
 ---
 *Happy Coding!*
