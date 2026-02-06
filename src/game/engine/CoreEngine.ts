@@ -39,9 +39,9 @@ export class CoreEngine {
      * @param playerDeck - Array of cards for the human player.
      * @param opponentDeck - Array of cards for the AI opponent.
      */
-    public initGame(playerDeck: Card[], opponentDeck: Card[], seed?: number) {
+    public initGame(playerDeck: Card[], opponentDeck: Card[]) {
         this.initialState = { p1Deck: [...playerDeck], p2Deck: [...opponentDeck] };
-        this.state = this.createInitialState(seed);
+        this.state = this.createInitialState();
         this.state.actionHistory = [];
 
         // Initialize Players
@@ -59,16 +59,11 @@ export class CoreEngine {
      */
     public resetGame() {
         if (this.initialState) {
-            // Re-use original seed if possible? 
-            // Currently resetGame implementation is simplistic. 
-            // Ideally we store the initial seed in initialState too.
-            this.initGame(this.initialState.p1Deck, this.initialState.p2Deck, this.state.seed);
-            // Caution: this.state.seed is the CURRENT seed (mutated). We need the ORIGINAL seed.
-            // For now, let's just re-init. Determinism across resets requires storing original seed.
+            this.initGame(this.initialState.p1Deck, this.initialState.p2Deck);
         }
     }
 
-    private createInitialState(seed?: number): SerializedGameState {
+    private createInitialState(): SerializedGameState {
         return {
             turn: 0,
             activePlayer: 'player', // Coin toss could go here
@@ -82,9 +77,7 @@ export class CoreEngine {
             log: [],
             combat: null,
             stack: [],
-            // Use provided seed or random one
-            seed: seed !== undefined ? seed : Math.floor(Math.random() * 1000000),
-            nextInstanceId: 1, // Start counter
+            seed: Math.floor(Math.random() * 1000000), // Default random seed
             actionHistory: []
         };
     }
@@ -106,8 +99,7 @@ export class CoreEngine {
     private initializePlayer(id: PlayerId, deck: Card[]) {
         // Deterministic shuffle
         const shuffled = this.deterministicShuffle([...deck]);
-        // Use generateInstanceId for each card
-        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id, this.generateInstanceId()));
+        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
     }
@@ -126,15 +118,6 @@ export class CoreEngine {
         // a = 1664525, c = 1013904223, m = 2^32
         this.state.seed = (1664525 * this.state.seed + 1013904223) % 4294967296;
         return this.state.seed / 4294967296;
-    }
-
-    private generateInstanceId(): string {
-        const id = this.state.nextInstanceId++;
-        // simple deterministic ID mixed with seed to look unique but predictable?
-        // Actually, just a simple counter is enough for determinism.
-        // Or hash it if we want it to look like UUID.
-        // For simplicity: `inst_${id}`
-        return `inst_${id}`;
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -326,7 +309,7 @@ export class CoreEngine {
             } else {
                 this.state.log.push(`${action.playerId} added ${speed} spell to stack: ${card.name}`);
                 this.state.stack.push({
-                    id: this.generateInstanceId(), // Deterministic stack ID
+                    id: crypto.randomUUID(),
                     playerId: action.playerId,
                     cardId: card.instanceId,
                     targetId: action.targetId,
