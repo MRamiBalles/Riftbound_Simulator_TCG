@@ -99,7 +99,8 @@ export class CoreEngine {
     private initializePlayer(id: PlayerId, deck: Card[]) {
         // Deterministic shuffle
         const shuffled = this.deterministicShuffle([...deck]);
-        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id));
+        // Use seeded ID generation
+        const runtimeDeck = shuffled.map(c => createRuntimeCard(c, id, this.generateUUID()));
         this.decks[id] = runtimeDeck;
         this.state.players[id].deckCount = runtimeDeck.length;
     }
@@ -118,6 +119,13 @@ export class CoreEngine {
         // a = 1664525, c = 1013904223, m = 2^32
         this.state.seed = (1664525 * this.state.seed + 1013904223) % 4294967296;
         return this.state.seed / 4294967296;
+    }
+
+    private generateUUID(): string {
+        // Simple seeded UUID-like string generator
+        // Not RFC4122 compliant but unique and deterministic
+        const s4 = () => Math.floor((1 + this.nextRandom()) * 0x10000).toString(16).substring(1);
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 
     private decks: Record<PlayerId, RuntimeCard[]> = { player: [], opponent: [] };
@@ -222,9 +230,6 @@ export class CoreEngine {
         // track which players have mulliganed
         this.mulliganStatus[playerId] = true;
 
-        // track which players have mulliganed
-        this.mulliganStatus[playerId] = true;
-
         if (this.mulliganStatus.player && this.mulliganStatus.opponent) {
             this.state.log.push(`Mulligan Phase Complete`);
             this.startTurn();
@@ -238,28 +243,31 @@ export class CoreEngine {
         const active = this.state.activePlayer;
         this.state.priority = active;
 
-        // 1. Mana Logic
-        const player = this.state.players[active];
-        player.maxMana = Math.min(10, player.maxMana + 1);
-        player.mana = player.maxMana;
+        ['player', 'opponent'].forEach(pid => {
+            const p = this.state.players[pid as PlayerId];
 
-        // 2. Regeneration Logic (at start of turn)
-        player.field.forEach(u => {
-            if (u.keywords.includes('Regeneration')) {
-                u.currentHealth = u.maxHealth;
-            }
+            // 1. Mana Logic
+            p.maxMana = Math.min(10, p.maxMana + 1);
+            p.mana = p.maxMana;
+
+            // 2. Regeneration Logic
+            p.field.forEach(u => {
+                if (u.keywords.includes('Regeneration' as any)) {
+                    u.currentHealth = u.maxHealth;
+                }
+                // 3. Reset unit states
+                u.hasAttacked = false;
+                u.summoningSickness = false;
+            });
+
+            // Draw Card (Both players draw at start of round/turn)
+            this.drawCard(pid as PlayerId);
         });
 
         this.state.phase = 'Draw';
-        this.drawCard(active);
+        // (Draw handled in loop above)
 
         this.state.phase = 'Main';
-
-        // 3. Reset unit states
-        player.field.forEach(u => {
-            u.hasAttacked = false;
-            u.summoningSickness = false;
-        });
     }
 
     private drawCard(playerId: PlayerId) {
@@ -309,9 +317,9 @@ export class CoreEngine {
             } else {
                 this.state.log.push(`${action.playerId} added ${speed} spell to stack: ${card.name}`);
                 this.state.stack.push({
-                    id: crypto.randomUUID(),
+                    id: this.generateUUID(),
                     playerId: action.playerId,
-                    cardId: card.instanceId,
+                    card: card,
                     targetId: action.targetId,
                     resolved: false
                 });
@@ -360,25 +368,18 @@ export class CoreEngine {
         if (!item) return;
 
         const player = this.state.players[item.playerId];
-        const card = player.hand.find(c => c.instanceId === item.cardId) ||
-            player.field.find(c => c.instanceId === item.cardId) ||
-            // Fallback check in graveyard if it was moved there already
-            player.graveyard.find(c => c.instanceId === item.cardId);
+        const card = item.card;
 
-        this.state.log.push(`Stack: Resolving ${item.cardId} from ${item.playerId}`);
+        this.state.log.push(`Stack: Resolving ${card.name} from ${item.playerId}`);
 
         // Find the card logic (Prototype: if 2 damage to target)
         if (item.targetId) {
-            this.applyTargetEffect(item.cardId, item.targetId);
+            this.applyTargetEffect(card.instanceId, item.targetId);
         }
 
-        // Clean up: move to graveyard if it's a spell and not there already
-        // (In handlePlayCard we might have left it in a limbo state, let's assume it moves to graveyard now)
-        const spellInHandIdx = player.hand.findIndex(c => c.instanceId === item.cardId);
-        if (spellInHandIdx !== -1) {
-            const spell = player.hand.splice(spellInHandIdx, 1)[0];
-            player.graveyard.push(spell);
-        }
+        // Clean up: move to graveyard
+        // It was already removed from hand in handlePlayCard
+        player.graveyard.push(card);
     }
 
     private applyTargetEffect(sourceId: string, targetId: string) {
@@ -527,6 +528,8 @@ export class CoreEngine {
         // 4. Clean Dead Units
         ['player', 'opponent'].forEach(pid => {
             const p = this.state.players[pid as PlayerId];
+            const deadUnits = p.field.filter(u => u.currentHealth <= 0);
+            p.graveyard.push(...deadUnits);
             p.field = p.field.filter(u => u.currentHealth > 0);
         });
 
@@ -552,7 +555,8 @@ export class CoreEngine {
             },
             initialState: {
                 p1Deck: this.initialState?.p1Deck.map(c => c.id) || [],
-                p2Deck: this.initialState?.p2Deck.map(c => c.id) || []
+                p2Deck: this.initialState?.p2Deck.map(c => c.id) || [],
+                seed: this.state.seed.toString()
             },
             actions: this.state.actionHistory || []
         };

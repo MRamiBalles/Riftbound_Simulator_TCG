@@ -58,14 +58,14 @@ describe('CoreEngine', () => {
         // Turn 2 (Opponent)
         let state = engine.getState();
         expect(state.activePlayer).toBe('opponent');
-        expect(state.players.opponent.maxMana).toBe(1);
+        expect(state.players.opponent.maxMana).toBe(2);
 
         engine.applyAction({ type: 'END_TURN', playerId: 'opponent' });
 
         // Turn 3 (Player)
         state = engine.getState();
         expect(state.activePlayer).toBe('player');
-        expect(state.players.player.maxMana).toBe(2);
+        expect(state.players.player.maxMana).toBe(3);
     });
 
     it('should implement Regeneration correctly', () => {

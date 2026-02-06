@@ -39,13 +39,13 @@ export interface RuntimeCard extends Card {
     highlight?: boolean;
 }
 
-export function createRuntimeCard(card: Card, ownerId: string): RuntimeCard {
+export function createRuntimeCard(card: Card, ownerId: string, overrideId?: string): RuntimeCard {
     const keywords = (card as any).keywords || [];
     const hasBarrier = keywords.includes('Barrier');
 
     return {
         ...card,
-        instanceId: crypto.randomUUID(),
+        instanceId: overrideId || crypto.randomUUID(),
         ownerId,
         currentCost: card.cost,
         currentAttack: card.attack || 0,

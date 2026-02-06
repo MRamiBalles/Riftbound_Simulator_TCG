@@ -61,7 +61,7 @@ describe('CoreEngine Determinism & Flow', () => {
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
         const handAfter = engine.getState().players.player.hand;
-        expect(handAfter.length).toBe(4);
+        expect(handAfter.length).toBe(5);
         expect(handAfter.find(c => c.instanceId === swapId)).toBeUndefined(); // Should be gone
 
         // 2. Play Spell (Slow) - Add to Stack
@@ -71,8 +71,8 @@ describe('CoreEngine Determinism & Flow', () => {
         (engine as any).state.players.player.hand.push(spellCard);
 
         // Pass priority to player (Turn 1)
-        // P1 Turn. P1 plays Spell.
-        engine.applyAction({ type: 'PLAY_CARD', playerId: 'player', cardId: spellCard.id });
+        // P1 Turn. P1 plays Spell targeting opponent
+        engine.applyAction({ type: 'PLAY_CARD', playerId: 'player', cardId: spellCard.id, targetId: 'opponent' });
 
         let state = engine.getState();
         expect(state.stack.length).toBe(1);

@@ -51,7 +51,7 @@ export interface ReplayData {
 export interface StackItem {
     id: string;
     playerId: PlayerId;
-    cardId: string;
+    card: RuntimeCard;
     targetId?: string;
     resolved: boolean;
 }
