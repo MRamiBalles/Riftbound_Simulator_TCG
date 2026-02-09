@@ -68,8 +68,6 @@ describe('Phase 4 Pilot Effects Validation', () => {
 
         // For Spells (Slow/Fast/Burst). Fireburst didn't have speed set in migration script, default is Slow.
         // If Slow, it goes to stack. We need to resolve it.
-        // But wait, Fireburst OGN-179 in original data might be Fast or Slow.
-        // If it's on stack, damage hasn't happened yet.
 
         // Check log or stack
         if (state.stack.length > 0) {
@@ -144,7 +142,6 @@ describe('Phase 4 Pilot Effects Validation', () => {
 
         const player = state.players.player;
         const splashCard = createRuntimeCard(bulletTime, 'player');
-        console.log('Bullet Time Effects:', JSON.stringify(splashCard.effects, null, 2));
         player.hand = [splashCard];
 
         engine.applyAction({
@@ -156,8 +153,6 @@ describe('Phase 4 Pilot Effects Validation', () => {
         if (state.stack.length > 0) {
             engine.applyAction({ type: 'PASS', playerId: 'opponent' });
         }
-
-        console.log('Bullet Time Logs:', JSON.stringify(state.log, null, 2));
 
         expect(u1.currentHealth).toBe(u1.maxHealth - 2);
         expect(u2.currentHealth).toBe(u2.maxHealth - 2);
