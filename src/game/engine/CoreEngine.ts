@@ -10,6 +10,7 @@ import {
 } from './game.types';
 import { createRuntimeCard, RuntimeCard } from './RuntimeCard';
 import { CombatResolver } from './CombatResolver';
+import { EffectResolver, EffectContext, EffectTrigger } from './effects';
 
 /**
  * The core deterministic game engine for Riftbound Simulator.
@@ -89,8 +90,10 @@ export class CoreEngine {
             maxHealth: 20,
             mana: 0,
             maxMana: 0,
+            spellMana: 0,
             hand: [],
-            deckCount: 0, // Virtual count
+            deck: [],
+            deckCount: 0, // Deprecated but kept for compatibility
             field: [],
             graveyard: []
         };
@@ -307,6 +310,9 @@ export class CoreEngine {
             card.summoningSickness = !card.keywords?.includes('Rush');
             player.field.push(card);
             this.state.log.push(`${action.playerId} played unit: ${card.name}`);
+
+            // Trigger ON_PLAY effects for units
+            this.triggerEffects(card, 'ON_PLAY', action.targetId);
         } else if (card.type === 'Spell') {
             const speed = (card as any).speed || 'Slow';
 
@@ -372,9 +378,9 @@ export class CoreEngine {
 
         this.state.log.push(`Stack: Resolving ${card.name} from ${item.playerId}`);
 
-        // Find the card logic (Prototype: if 2 damage to target)
+        // Find the card logic
         if (item.targetId) {
-            this.applyTargetEffect(card.instanceId, item.targetId);
+            this.applyTargetEffect(card.instanceId, item.targetId, card);
         }
 
         // Clean up: move to graveyard
@@ -382,7 +388,34 @@ export class CoreEngine {
         player.graveyard.push(card);
     }
 
-    private applyTargetEffect(sourceId: string, targetId: string) {
+    private applyTargetEffect(sourceId: string, targetId: string, sourceCard?: RuntimeCard) {
+        // Legacy fallback for cards without declarative effects
+        if (sourceCard?.effects && sourceCard.effects.length > 0) {
+            const context: EffectContext = {
+                seed: this.state.seed,
+                sourceId,
+                ownerId: sourceCard.ownerId as PlayerId,
+                selectedTargetId: targetId,
+                turn: this.state.turn
+            };
+
+            const { state: newState, result } = EffectResolver.resolve(
+                this.state,
+                sourceCard,
+                'ON_CAST',
+                context
+            );
+
+            // Update state in place
+            this.state = newState;
+            this.state.log.push(...result.log);
+
+            // Handle dead units
+            this.cleanupDeadUnits(result.deadUnits);
+            return;
+        }
+
+        // Fallback: Legacy hardcoded behavior for cards without effects array
         if (targetId === 'opponent' || targetId === 'player') {
             const targetPlayer = this.state.players[targetId as PlayerId];
             targetPlayer.health -= 2; // Default spell damage
@@ -406,12 +439,82 @@ export class CoreEngine {
     }
 
     private resolveSpell(card: RuntimeCard, targetId?: string) {
+        // Try declarative effects first
+        if (card.effects && card.effects.length > 0) {
+            const context: EffectContext = {
+                seed: this.state.seed,
+                sourceId: card.instanceId,
+                ownerId: card.ownerId as PlayerId,
+                selectedTargetId: targetId,
+                turn: this.state.turn
+            };
+
+            const { state: newState, result } = EffectResolver.resolve(
+                this.state,
+                card,
+                'ON_CAST',
+                context
+            );
+
+            this.state = newState;
+            this.state.log.push(...result.log);
+            this.cleanupDeadUnits(result.deadUnits);
+            return;
+        }
+
+        // Fallback for legacy cards
         if (targetId) {
             if (targetId === 'opponent' || targetId === 'player') {
                 this.state.players[targetId as PlayerId].health -= 2;
                 this.state.log.push(`Spell dealt 2 damage to ${targetId}`);
             }
         }
+    }
+
+    /**
+     * Helper to move dead units to graveyard after effect resolution.
+     */
+    private cleanupDeadUnits(deadUnitIds: string[]) {
+        for (const unitId of deadUnitIds) {
+            for (const playerId of ['player', 'opponent'] as PlayerId[]) {
+                const player = this.state.players[playerId];
+                const unitIndex = player.field.findIndex(u => u.instanceId === unitId);
+                if (unitIndex !== -1) {
+                    const unit = player.field.splice(unitIndex, 1)[0];
+                    player.graveyard.push(unit);
+                    this.state.log.push(`${unit.name} was destroyed.`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Triggers declarative effects for a card based on the specified trigger type.
+     * @param card - The card whose effects should be triggered
+     * @param trigger - The type of trigger (ON_PLAY, ON_ATTACK, etc.)
+     * @param selectedTargetId - Optional target if effect requires selection
+     */
+    private triggerEffects(card: RuntimeCard, trigger: EffectTrigger, selectedTargetId?: string) {
+        if (!card.effects || card.effects.length === 0) return;
+
+        const context: EffectContext = {
+            seed: this.state.seed,
+            sourceId: card.instanceId,
+            ownerId: card.ownerId as PlayerId,
+            selectedTargetId,
+            turn: this.state.turn
+        };
+
+        const { state: newState, result } = EffectResolver.resolve(
+            this.state,
+            card,
+            trigger,
+            context
+        );
+
+        this.state = newState;
+        this.state.log.push(...result.log);
+        this.cleanupDeadUnits(result.deadUnits);
     }
 
     private handleDeclareAttackers(action: Action) {
