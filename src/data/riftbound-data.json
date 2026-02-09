@@ -11,7 +11,7 @@
         "keywords": [],
         "effects": [
             {
-                "trigger": "ON_PLAY",
+                "trigger": "ON_CAST",
                 "action": "DAMAGE",
                 "value": 3,
                 "target": "SELECTED_UNIT"
@@ -1124,7 +1124,7 @@
         ],
         "effects": [
             {
-                "trigger": "ON_PLAY",
+                "trigger": "ON_CAST",
                 "action": "DAMAGE",
                 "value": 2,
                 "target": "ALL_ENEMIES"
@@ -3106,14 +3106,14 @@
         "keywords": [],
         "effects": [
             {
-                "trigger": "ON_PLAY",
+                "trigger": "ON_CAST",
                 "action": "BUFF_ATTACK",
                 "value": 3,
                 "target": "SELECTED_ALLY",
                 "duration": 1
             },
             {
-                "trigger": "ON_PLAY",
+                "trigger": "ON_CAST",
                 "action": "GIVE_KEYWORD",
                 "keyword": "Overwhelm",
                 "target": "SELECTED_ALLY",
@@ -8700,7 +8700,7 @@
         "keywords": [],
         "effects": [
             {
-                "trigger": "ON_PLAY",
+                "trigger": "ON_CAST",
                 "action": "KILL",
                 "target": "SELECTED_UNIT"
             }

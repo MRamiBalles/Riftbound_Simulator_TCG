@@ -10,7 +10,7 @@ const PILOT_UPDATES = {
         text: "Kill a unit.",
         effects: [
             {
-                trigger: 'ON_PLAY', // Changed from ON_CAST to ON_PLAY for simplicity in Engine if Spells use ON_PLAY
+                trigger: 'ON_CAST', // Spell -> ON_CAST
                 action: 'KILL',
                 target: 'SELECTED_UNIT'
             }
@@ -21,15 +21,15 @@ const PILOT_UPDATES = {
         text: "Give a friendly unit +3 Power and Overwhelm this turn.",
         effects: [
             {
-                trigger: 'ON_PLAY',
+                trigger: 'ON_CAST', // Spell -> ON_CAST
                 action: 'BUFF_ATTACK',
                 value: 3,
                 target: 'SELECTED_ALLY',
                 duration: 1
             },
             {
-                trigger: 'ON_PLAY',
-                action: 'GIVE_KEYWORD', // GRANT_KEYWORD usually permanent, GIVE implies temporary
+                trigger: 'ON_CAST', // Spell -> ON_CAST
+                action: 'GIVE_KEYWORD',
                 keyword: 'Overwhelm',
                 target: 'SELECTED_ALLY',
                 duration: 1
@@ -41,7 +41,7 @@ const PILOT_UPDATES = {
         text: "When I'm played, draw 1 card.",
         effects: [
             {
-                trigger: 'ON_PLAY',
+                trigger: 'ON_PLAY', // Unit -> ON_PLAY
                 action: 'DRAW',
                 value: 1,
                 target: 'OWNER'
@@ -53,7 +53,7 @@ const PILOT_UPDATES = {
         text: "Deal 2 damage to all enemy units.",
         effects: [
             {
-                trigger: 'ON_PLAY',
+                trigger: 'ON_CAST', // Spell -> ON_CAST
                 action: 'DAMAGE',
                 value: 2,
                 target: 'ALL_ENEMIES'
@@ -66,7 +66,7 @@ const PILOT_UPDATES = {
         text: "Deal 3 damage to any unit.",
         effects: [
             {
-                trigger: 'ON_PLAY',
+                trigger: 'ON_CAST', // Spell -> ON_CAST
                 action: 'DAMAGE',
                 value: 3,
                 target: 'SELECTED_UNIT'

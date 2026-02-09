@@ -27,7 +27,7 @@ describe('Phase 4 Pilot Effects Validation', () => {
     const gentlemensDuel = getCard('OGS-008');
     const bulletTime = getCard('OGN-268');
     const lecturingYordle = getCard('OGN-087');
-    const dummyRef = getCard('OGN-056');
+    const dummyRef = { ...getCard('OGN-056'), health: 5, maxHealth: 5 };
 
     beforeEach(() => {
         engine = new CoreEngine();
@@ -144,6 +144,7 @@ describe('Phase 4 Pilot Effects Validation', () => {
 
         const player = state.players.player;
         const splashCard = createRuntimeCard(bulletTime, 'player');
+        console.log('Bullet Time Effects:', JSON.stringify(splashCard.effects, null, 2));
         player.hand = [splashCard];
 
         engine.applyAction({
@@ -155,6 +156,8 @@ describe('Phase 4 Pilot Effects Validation', () => {
         if (state.stack.length > 0) {
             engine.applyAction({ type: 'PASS', playerId: 'opponent' });
         }
+
+        console.log('Bullet Time Logs:', JSON.stringify(state.log, null, 2));
 
         expect(u1.currentHealth).toBe(u1.maxHealth - 2);
         expect(u2.currentHealth).toBe(u2.maxHealth - 2);
