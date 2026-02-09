@@ -253,12 +253,15 @@ export class CoreEngine {
             p.maxMana = Math.min(10, p.maxMana + 1);
             p.mana = p.maxMana;
 
-            // 2. Regeneration Logic
+            // 2. Trigger ON_TURN_START
+            p.field.forEach(u => this.triggerEffects(u, 'ON_TURN_START'));
+
+            // 3. Regeneration Logic
             p.field.forEach(u => {
                 if (u.keywords.includes('Regeneration' as any)) {
                     u.currentHealth = u.maxHealth;
                 }
-                // 3. Reset unit states
+                // 4. Reset unit states
                 u.hasAttacked = false;
                 u.summoningSickness = false;
             });
@@ -481,6 +484,8 @@ export class CoreEngine {
                     const unit = player.field.splice(unitIndex, 1)[0];
                     player.graveyard.push(unit);
                     this.state.log.push(`${unit.name} was destroyed.`);
+                    // Dispatch ON_DEATH
+                    this.triggerEffects(unit, 'ON_DEATH');
                 }
             }
         }
@@ -536,6 +541,8 @@ export class CoreEngine {
                     this.state.combat.attackers[attackerId] = opponentId;
                 }
                 unit.hasAttacked = true;
+                // Dispatch ON_ATTACK
+                this.triggerEffects(unit, 'ON_ATTACK');
             }
         });
 
@@ -664,6 +671,9 @@ export class CoreEngine {
     }
 
     private handleEndTurn() {
+        // Dispatch ON_TURN_END for current active player units
+        this.state.players[this.state.activePlayer].field.forEach(u => this.triggerEffects(u, 'ON_TURN_END'));
+
         this.state.activePlayer = this.state.activePlayer === 'player' ? 'opponent' : 'player';
         this.startTurn();
     }
