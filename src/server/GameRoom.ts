@@ -12,23 +12,25 @@ interface Client {
     name: string;
 }
 
+import { IncomingMessageSchema } from './schemas';
+import { RateLimiter } from './RateLimiter';
+
 export class GameRoom {
     public readonly roomId: string;
     private engine: CoreEngine;
     private clients: Map<string, Client> = new Map();
-    private playerSessions: Map<PlayerId, string> = new Map(); // Maps PlayerId -> ClientId
+    private playerSessions: Map<PlayerId, string> = new Map();
+    private rateLimiter = new RateLimiter(60, 1); // 60 actions burst, 1 refill/sec
 
     constructor(roomId: string) {
         this.roomId = roomId;
         this.engine = new CoreEngine();
-
-        // Initialize with default decks for now
-        // In production, decks would come from matchmaking payload
         const p1Deck = DeckFactory.generateDeck('Random');
         const p2Deck = DeckFactory.generateDeck('Random');
-
         this.engine.initGame(p1Deck, p2Deck, Date.now());
     }
+
+    // ... addClient/removeClient unchanged for now ...
 
     public addClient(ws: WebSocket, clientId: string, name: string): PlayerId | 'spectator' {
         let role: PlayerId | 'spectator' = 'spectator';
@@ -63,14 +65,36 @@ export class GameRoom {
         }
     }
 
-    public handleMessage(clientId: string, message: any) {
+    public handleMessage(clientId: string, rawMessage: any) {
         const client = this.clients.get(clientId);
         if (!client) return;
 
+        // 1. Rate Limiting
+        if (!this.rateLimiter.tryConsume(clientId)) {
+            console.warn(`Rate limit exceeded for ${clientId}`);
+            this.sendError(client, 'Rate limit exceeded');
+            // client.ws.close(); // Optional strict disconnect
+            return;
+        }
+
         try {
+            // 2. Schema Validation
+            const parseResult = IncomingMessageSchema.safeParse(rawMessage);
+
+            if (!parseResult.success) {
+                console.warn(`Invalid message schema from ${clientId}:`, parseResult.error.format());
+                return this.sendError(client, 'Invalid message format');
+            }
+
+            const message = parseResult.data;
+
             switch (message.type) {
                 case 'ACTION':
-                    this.processAction(client, message.payload);
+                    // message.payload is typed as ActionPayload
+                    // Need to cast or validate against Action interface needed by engine?
+                    // The schema should match the engine's Action type largely.
+                    // For now, pass payload.
+                    this.processAction(client, message.payload as any);
                     break;
                 case 'CHAT':
                     // Broadcast chat
