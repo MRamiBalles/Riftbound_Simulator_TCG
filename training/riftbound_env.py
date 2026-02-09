@@ -34,9 +34,15 @@ class RiftboundEnv(gym.Env):
             self.node_process.kill()
             
         try:
-            # Use cmd /c npx ts-node to handle Windows environment and TS directly
+            # Cross-platform command execution
+            if sys.platform == "win32":
+                cmd = ['cmd', '/c', 'npx', 'ts-node', '--transpile-only', self.bridge_path]
+            else:
+                # Linux/Container environment
+                cmd = ['npx', 'ts-node', '--transpile-only', self.bridge_path]
+
             self.node_process = subprocess.Popen(
-                ['cmd', '/c', 'npx', 'ts-node', '--transpile-only', self.bridge_path],
+                cmd,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
