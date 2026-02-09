@@ -1,0 +1,30 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "ES2022",
+        "noEmit": false,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+        "skipLibCheck": true,
+        "strict": true,
+        "esModuleInterop": true
+    },
+    "include": [
+        "src/server/**/*",
+        "src/game/**/*",
+        "src/services/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts",
+        "src/components/**/*",
+        "src/app/**/*"
+    ]
+}

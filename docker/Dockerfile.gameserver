@@ -1,0 +1,24 @@
+
+# Authoritative Game Server
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies (production only)
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Re-install dev dependencies for build step (multi-stage build recommended for prod, keeping simple for now)
+# Actually, let's assume we copy dist/ from a build stage or local build
+# For this prototype, we'll install devdeps, build, and prune
+RUN npm ci
+COPY . .
+RUN npm run build
+# Prune dev dependencies
+RUN npm prune --production
+
+# Expose WebSocket port
+EXPOSE 8080
+
+# Run Game Server
+CMD ["node", "dist/server/GameServer.js"]
