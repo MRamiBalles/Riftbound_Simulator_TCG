@@ -82,7 +82,7 @@ export class GameRoom {
             const parseResult = IncomingMessageSchema.safeParse(rawMessage);
 
             if (!parseResult.success) {
-                console.warn(`Invalid message schema from ${clientId}:`, parseResult.error.format());
+                console.log(`[DEBUG] Invalid schema from ${clientId}:`, JSON.stringify(parseResult.error.format()));
                 return this.sendError(client, 'Invalid message format');
             }
 
