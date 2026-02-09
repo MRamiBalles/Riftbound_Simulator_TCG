@@ -19,7 +19,7 @@ export class GameRoom {
     private engine: CoreEngine;
     private clients: Map<string, Client> = new Map();
     private playerSessions: Map<PlayerId, string> = new Map();
-    private rateLimiter = new RateLimiter(60, 1);
+    private rateLimiter = new RateLimiter(60, 1); // 60 actions/min
 
     constructor(roomId: string) {
         this.roomId = roomId;
@@ -56,37 +56,32 @@ export class GameRoom {
     }
 
     public handleMessage(clientId: string, data: any) {
-        console.log(`[DEBUG] GameRoom.handleMessage for ${clientId}`);
         const client = this.clients.get(clientId);
-        if (!client) return console.error(`[DEBUG] Client ${clientId} not found in room`);
+        if (!client) return;
 
         if (!this.rateLimiter.tryConsume(clientId)) {
-            console.log(`[DEBUG] Rate limit hit for ${clientId}`);
+            console.warn(`Rate limit hit for ${clientId}`);
             return this.sendError(client, 'Rate limit exceeded');
         }
 
         try {
-            console.log(`[DEBUG] Parsing schema for ${clientId}`);
             const result = IncomingMessageSchema.safeParse(data);
             if (!result.success) {
-                console.log(`[DEBUG] SCHEMA INVALID for ${clientId}:`, JSON.stringify(result.error.format()));
                 return this.sendError(client, 'Invalid message format');
             }
 
             const message = result.data;
-            console.log(`[DEBUG] Message type: ${message.type} from ${clientId}`);
-
             if (message.type === 'ACTION') {
                 this.processAction(client, message.payload as any);
             }
         } catch (e) {
-            console.error(`[DEBUG] handleMessage CRASH for ${clientId}:`, e);
-            this.sendError(client, 'Internal Error');
+            console.error(`Error in handleMessage for ${clientId}:`, e);
+            this.sendError(client, 'Internal Server Error');
         }
     }
 
     private processAction(client: Client, action: Action) {
-        if (client.playerId === 'spectator') return this.sendError(client, 'Spectator');
+        if (client.playerId === 'spectator') return this.sendError(client, 'Spectators cannot perform actions');
         if (action.playerId !== client.playerId) return this.sendError(client, 'Identity mismatch');
 
         try {
@@ -111,7 +106,6 @@ export class GameRoom {
 
     private sendError(client: Client, message: string) {
         if (client.ws.readyState === WebSocket.OPEN) {
-            console.log(`[DEBUG] SENDING ERROR to ${client.id}: ${message}`);
             client.ws.send(JSON.stringify({ type: 'ERROR', payload: { message } }));
         }
     }

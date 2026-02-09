@@ -9,7 +9,7 @@ const rooms: Map<string, GameRoom> = new Map();
 
 function getOrCreateRoom(roomId: string): GameRoom {
     if (!rooms.has(roomId)) {
-        console.log(`[DEBUG] Creating new room: ${roomId}`);
+        console.log(`Creating new room: ${roomId}`);
         rooms.set(roomId, new GameRoom(roomId));
     }
     return rooms.get(roomId)!;
@@ -28,51 +28,40 @@ wss.on('connection', (ws: WebSocket, req) => {
     const playerName = urlParams.get('name') || 'Anonymous';
     const clientId = crypto.randomUUID();
 
-    console.log(`[DEBUG] Connection established: ${clientId} (${playerName}) room: ${roomId}`);
-
     const room = getOrCreateRoom(roomId);
 
     try {
-        console.log(`[DEBUG] Calling room.addClient for ${clientId}`);
         const role = room.addClient(ws, clientId, playerName);
-        console.log(`[DEBUG] addClient DONE for ${clientId}, role: ${role}`);
+        console.log(`New connection: ${clientId} (${playerName}) room: ${roomId} as ${role}`);
 
-        const welcomeMsg = JSON.stringify({
+        ws.send(JSON.stringify({
             type: 'WELCOME',
             payload: { clientId, role, roomId }
-        });
-
-        console.log(`[DEBUG] Sending WELCOME to ${clientId}`);
-        ws.send(welcomeMsg, (err) => {
-            if (err) console.error(`[DEBUG] Error sending WELCOME to ${clientId}:`, err);
-            else console.log(`[DEBUG] WELCOME sent successfully to ${clientId}`);
-        });
+        }));
 
         ws.on('message', (message: any) => {
-            const raw = message.toString();
-            console.log(`[DEBUG] GameServer RECEIVED from ${clientId}: ${raw.substring(0, 50)}`);
             try {
-                const data = JSON.parse(raw);
+                const data = JSON.parse(message.toString());
                 room.handleMessage(clientId, data);
             } catch (e) {
-                console.error(`[DEBUG] JSON error for ${clientId}:`, raw);
+                console.error(`Invalid JSON from ${clientId}`);
             }
         });
 
         ws.on('close', () => {
-            console.log(`[DEBUG] Connection CLOSED for ${clientId}`);
+            console.log(`Client ${clientId} disconnected`);
             room.removeClient(clientId);
         });
 
     } catch (e) {
-        console.error(`[DEBUG] FATAL connection error for ${clientId}:`, e);
+        console.error(`Connection error for ${clientId}:`, e);
         ws.close();
     }
 });
 
 export function startServer(port: number) {
     return server.listen(port, () => {
-        console.log(`[DEBUG] Game Server listening on port ${port}`);
+        console.log(`Game Server listening on port ${port}`);
     });
 }
 
