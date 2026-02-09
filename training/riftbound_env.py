@@ -22,8 +22,9 @@ class RiftboundEnv(gym.Env):
         )
         
         self.node_process = None
-        # Path to headless-bridge script inside container
-        self.bridge_path = config.get("bridge_path", "/app/dist/scripts/headless-bridge.js") if config else "/app/dist/scripts/headless-bridge.js"
+        # Path to headless-bridge script (compiled JS)
+        local_bridge = os.path.join(os.path.dirname(__file__), "../scripts/headless-bridge.js")
+        self.bridge_path = config.get("bridge_path", local_bridge) if config else local_bridge
         
         self._start_node_bridge()
 
