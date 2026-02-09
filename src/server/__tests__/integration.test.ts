@@ -70,16 +70,23 @@ describe('Game Server Integration', () => {
         const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=security_test&name=Hacker`);
         await new Promise(resolve => ws.on('open', resolve));
 
-        // Consume initial messages (GAME_STATE_UPDATE and WELCOME)
-        // console.log('[DEBUG] Consuming initial messages...');
-        await new Promise(resolve => ws.once('message', resolve)); // Message 1
-        await new Promise(resolve => ws.once('message', resolve)); // Message 2
-        // console.log('[DEBUG] Initial messages consumed');
+        // Wait specifically for WELCOME message to ensure handshake is done
+        await new Promise<void>((resolve) => {
+            const listener = (msg: any) => {
+                const data = JSON.parse(msg.toString());
+                if (data.type === 'WELCOME') {
+                    ws.off('message', listener);
+                    resolve();
+                }
+            };
+            ws.on('message', listener);
+        });
+
+        // console.log('[DEBUG] Hacker handshake done, setting up ERROR listener');
 
         const responsePromise = new Promise<any>(resolve => {
             ws.on('message', (msg) => {
                 const data = JSON.parse(msg.toString());
-                // console.log('[DEBUG] Hacker received message type:', data.type);
                 if (data.type === 'ERROR') resolve(data);
             });
         });
