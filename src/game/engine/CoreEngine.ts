@@ -191,6 +191,35 @@ export class CoreEngine {
         return JSON.parse(JSON.stringify(this.state));
     }
 
+    /**
+     * Checks if a specific engine action is currently legal.
+     */
+    public isActionLegal(action: Action): boolean {
+        if (this.state.winner) return false;
+        const player = this.state.players[action.playerId];
+
+        switch (action.type) {
+            case 'PLAY_CARD':
+                const card = player.hand.find(c => c.instanceId === action.cardId);
+                if (!card) return false;
+                if (player.mana < card.currentCost) return false;
+                if (this.state.priority !== action.playerId) return false;
+                return true;
+            case 'DECLARE_ATTACKERS':
+                if (this.state.phase !== 'Main' || this.state.priority !== action.playerId) return false;
+                const attackers = action.attackers || [];
+                return attackers.every(id => {
+                    const unit = player.field.find(u => u.instanceId === id);
+                    return unit && !unit.hasAttacked && !unit.summoningSickness && !unit.isStunned;
+                });
+            case 'PASS':
+            case 'END_TURN':
+                return this.state.priority === action.playerId;
+            default:
+                return true;
+        }
+    }
+
     // --- GAME LOGIC ---
 
     private handleMulligan(action: Action) {

@@ -39,16 +39,17 @@ function handleReset() {
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'player', mulliganCards: [] });
         engine.applyAction({ type: 'SELECT_MULLIGAN', playerId: 'opponent', mulliganCards: [] });
 
-        // Get initial observation
+        // Get initial observation and mask
         const state = engine.getState();
         const obs = EncodingService.encode(state, currentPlayer);
+        const mask = ActionSpaceMapper.getActionMask(engine, state, currentPlayer);
 
         return {
             observation: obs,
+            actionMask: mask,
             info: {
                 turn: state.turn,
                 phase: state.phase,
-                validActions: [] // TODO: Implement getValidActions mask
             }
         };
     } catch (e: any) {
@@ -62,8 +63,10 @@ function handleStep(actionIdx: number) {
 
         // Check if game already over
         if (state.winner) {
+            const finalObs = EncodingService.encode(state, currentPlayer);
             return {
-                observation: EncodingService.encode(state, currentPlayer),
+                observation: finalObs,
+                actionMask: new Array(48).fill(0),
                 reward: 0,
                 done: true,
                 truncated: false,
@@ -76,19 +79,16 @@ function handleStep(actionIdx: number) {
 
         let reward = 0;
 
-        if (action) {
+        if (action && engine.isActionLegal(action)) {
             try {
                 // Apply action
                 engine.applyAction(action);
             } catch (e) {
-                // Invalid action penalty?
                 reward = -0.1;
             }
         } else {
-            // Invalid action mapped (e.g. play card 5 when hand has 3)
-            // Just pass or penalize
-            reward = -0.01;
-            // Force pass to prevent infinite loops if model gets stuck
+            // Invalid action mapped or illegal move
+            reward = -0.05;
             engine.applyAction({ type: 'PASS', playerId: currentPlayer });
         }
 
@@ -99,14 +99,16 @@ function handleStep(actionIdx: number) {
         if (done) {
             reward = newState.winner === currentPlayer ? 1.0 : -1.0;
         } else {
-            // Shaping rewards (optional)
-            // e.g. damage dealt, cards drawn
+            // SHAPING: Penalty per turn to encourage faster wins
+            reward -= 0.001;
         }
 
         const obs = EncodingService.encode(newState, currentPlayer);
+        const mask = ActionSpaceMapper.getActionMask(engine, newState, currentPlayer);
 
         return {
             observation: obs,
+            actionMask: mask,
             reward,
             done,
             truncated: newState.turn > 100, // Max steps

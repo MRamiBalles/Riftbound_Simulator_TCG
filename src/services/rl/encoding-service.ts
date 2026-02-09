@@ -119,23 +119,37 @@ export class ActionSpaceMapper {
         // 0: PASS
         if (index === 0) return { type: 'PASS', playerId };
 
-        // 1-10: Play Card
+        // 1-10: Play Card From Hand
         if (index >= 1 && index <= 10) {
             const card = me.hand[index - 1];
             if (!card) return null;
             return { type: 'PLAY_CARD', playerId, cardId: card.instanceId };
         }
 
-        // 11-20: Attack Face (Simplified for now)
-        if (index >= 11 && index <= 20) {
+        // 11-16: Attack Face with Field Unit
+        if (index >= 11 && index <= 16) {
             const card = me.field[index - 11];
-            if (!card || card.hasAttacked || card.summoningSickness) return null;
+            if (!card) return null;
             return { type: 'DECLARE_ATTACKERS', playerId, attackers: [card.instanceId] };
         }
 
-        // 21-30: End Turn / Resolve
-        if (index === 21) return { type: 'END_TURN', playerId };
+        // 17: End Turn
+        if (index === 17) return { type: 'END_TURN', playerId };
 
         return null;
+    }
+
+    /**
+     * Generates a boolean mask (1 for legal, 0 for illegal) for the action space.
+     */
+    public static getActionMask(engine: any, state: SerializedGameState, playerId: PlayerId): number[] {
+        const mask = new Array(48).fill(0);
+        for (let i = 0; i < 48; i++) {
+            const action = this.mapToEngine(i, state, playerId);
+            if (action && (engine as any).isActionLegal(action)) {
+                mask[i] = 1;
+            }
+        }
+        return mask;
     }
 }
