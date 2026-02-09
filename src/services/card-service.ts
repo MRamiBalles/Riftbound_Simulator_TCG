@@ -1,8 +1,8 @@
 export type { Card, Set } from '@/lib/database.types';
 import { Card, Set } from '@/lib/database.types';
 
-// RIFTBOUND TCG DATA (Manual Override for Authenticity)
-import RIFTBOUND_DATA from '@/data/riftbound-data.json';
+// RIFTBOUND TCG DATA (Declarative Effects System v2)
+import RIFTBOUND_DATA from '@/data/core_set_v2.json';
 
 // Riftbound TCG Official Sets
 export const MOCK_SETS: Set[] = [

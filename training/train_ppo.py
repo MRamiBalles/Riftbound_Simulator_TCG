@@ -5,9 +5,8 @@ from ray.rllib.algorithms.ppo import PPOConfig
 from riftbound_env import RiftboundEnv
 
 def train_riftbound():
-    # Initialize Ray
-    # In KubeRay, address='auto' connects to the Ray Cluster
-    ray.init(address='auto', ignore_reinit_error=True)
+    # Initialize Ray locally
+    ray.init(ignore_reinit_error=True)
     
     # Register Environment
     tune.register_env("riftbound_env", lambda config: RiftboundEnv(config))
