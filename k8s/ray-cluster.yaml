@@ -1,0 +1,55 @@
+
+apiVersion: ray.io/v1
+kind: RayCluster
+metadata:
+  name: riftbound-rl-cluster
+  namespace: ray-system
+spec:
+  rayVersion: '2.9.0'
+  headGroupSpec:
+    replicas: 1
+    rayStartParams:
+      dashboard-host: '0.0.0.0'
+    template:
+      spec:
+        containers:
+        - name: ray-head
+          image: manu/riftbound-ray-head:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+          ports:
+          - containerPort: 6379
+            name: gcs-server
+          - containerPort: 8265
+            name: dashboard
+          - containerPort: 10001
+            name: client
+  workerGroupSpecs:
+  - replicas: 2
+    minReplicas: 1
+    maxReplicas: 10
+    groupName: cpu-group
+    rayStartParams: {}
+    template:
+      spec:
+        containers:
+        - name: ray-worker
+          image: manu/riftbound-ray-worker:latest
+          imagePullPolicy: Always
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh","-c","ray stop"]
+          resources:
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+            requests:
+              cpu: "1"
+              memory: "2Gi"
