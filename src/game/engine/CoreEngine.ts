@@ -379,16 +379,14 @@ export class CoreEngine {
         this.state.log.push(`Stack: Resolving ${card.name} from ${item.playerId}`);
 
         // Find the card logic
-        if (item.targetId) {
-            this.applyTargetEffect(card.instanceId, item.targetId, card);
-        }
+        this.applyTargetEffect(card.instanceId, item.targetId, card);
 
         // Clean up: move to graveyard
         // It was already removed from hand in handlePlayCard
         player.graveyard.push(card);
     }
 
-    private applyTargetEffect(sourceId: string, targetId: string, sourceCard?: RuntimeCard) {
+    private applyTargetEffect(sourceId: string, targetId: string | undefined, sourceCard?: RuntimeCard) {
         // Legacy fallback for cards without declarative effects
         if (sourceCard?.effects && sourceCard.effects.length > 0) {
             const context: EffectContext = {
