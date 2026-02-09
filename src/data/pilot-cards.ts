@@ -6,7 +6,7 @@
  * Once validated, this pattern will be applied to riftbound-data.json
  */
 
-import { CardWithEffects, EFFECT_SCHEMA_VERSION } from '../engine/effects/effect.types';
+import { CardWithEffects, EFFECT_SCHEMA_VERSION } from '../game/engine/effects/effect.types';
 
 /**
  * Pilot cards migrated to declarative effect system.

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { CoreEngine } from '../engine/CoreEngine';
+import { CoreEngine } from '../CoreEngine';
 import { Card } from '@/lib/database.types';
-import { PILOT_CARDS_WITH_EFFECTS, getPilotCard } from '../../data/pilot-cards';
+import { PILOT_CARDS_WITH_EFFECTS, getPilotCard } from '../../../data/pilot-cards';
 
 /**
  * Integration tests validating the declarative effect system works

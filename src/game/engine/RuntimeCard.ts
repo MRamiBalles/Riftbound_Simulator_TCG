@@ -45,6 +45,7 @@ export interface RuntimeCard extends Card {
 export function createRuntimeCard(card: Card, ownerId: string, overrideId?: string): RuntimeCard {
     const keywords = (card as any).keywords || [];
     const hasBarrier = keywords.includes('Barrier');
+    const effects = (card as any).effects || undefined;
 
     return {
         ...card,
@@ -59,6 +60,7 @@ export function createRuntimeCard(card: Card, ownerId: string, overrideId?: stri
         isStunned: false,
         isBarrierActive: hasBarrier,
         keywords: keywords,
-        enchantments: []
+        enchantments: [],
+        effects: effects // Explicitly copy declarative effects
     };
 }
