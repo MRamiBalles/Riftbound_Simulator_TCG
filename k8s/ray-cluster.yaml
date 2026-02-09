@@ -1,9 +1,11 @@
-
 apiVersion: ray.io/v1
 kind: RayCluster
 metadata:
   name: riftbound-rl-cluster
   namespace: ray-system
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8265"
 spec:
   rayVersion: '2.9.0'
   headGroupSpec:
@@ -19,10 +21,10 @@ spec:
           resources:
             limits:
               cpu: "2"
-              memory: "4Gi"
+              memory: "8Gi" # Increased for policy optimization
             requests:
               cpu: "1"
-              memory: "2Gi"
+              memory: "4Gi"
           ports:
           - containerPort: 6379
             name: gcs-server
@@ -30,9 +32,13 @@ spec:
             name: dashboard
           - containerPort: 10001
             name: client
+        volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
   workerGroupSpecs:
-  - replicas: 2
-    minReplicas: 1
+  - replicas: 4 # Increased to 4 actors for better entropy
+    minReplicas: 2
     maxReplicas: 10
     groupName: cpu-group
     rayStartParams: {}
@@ -48,8 +54,15 @@ spec:
                 command: ["/bin/sh","-c","ray stop"]
           resources:
             limits:
-              cpu: "2"
+              cpu: "1"
               memory: "4Gi"
             requests:
-              cpu: "1"
+              cpu: "500m"
               memory: "2Gi"
+          volumeMounts:
+          - mountPath: /dev/shm
+            name: dshm
+        volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory

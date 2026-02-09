@@ -1,16 +1,10 @@
-
 apiVersion: ray.io/v1
 kind: RayJob
 metadata:
-  name: riftbound-training-job
+  name: riftbound-training-job-v2
   namespace: ray-system
 spec:
   entrypoint: python /app/training/train_ppo.py
-  # runtimeEnvYAML: |
-  #   pip:
-  #     - gymnasium
-  #     - torch
-  #     - ray[rllib]
   rayClusterSpec:
     rayVersion: '2.9.0'
     headGroupSpec:
@@ -25,13 +19,13 @@ spec:
             resources:
               limits:
                 cpu: "2"
-                memory: "4Gi"
+                memory: "8Gi"
               requests:
                 cpu: "1"
-                memory: "2Gi"
+                memory: "4Gi"
     workerGroupSpecs:
-    - replicas: 2
-      minReplicas: 1
+    - replicas: 4
+      minReplicas: 2
       maxReplicas: 10
       groupName: cpu-group
       rayStartParams: {}
@@ -40,3 +34,10 @@ spec:
           containers:
           - name: ray-worker
             image: manu/riftbound-ray-worker:latest
+            resources:
+              limits:
+                cpu: "1"
+                memory: "4Gi"
+              requests:
+                cpu: "500m"
+                memory: "2Gi"

@@ -1,37 +1,36 @@
-
 # Ray Worker Node (Hybrid Python + Node.js)
 FROM rayproject/ray:2.9.0-py310
 
-User root
+USER root
 
-# Install Node.js 20
+# Install Node.js 20 and ts-node
 RUN apt-get update && apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs build-essential && \
+    npm install -g ts-node typescript && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Python deps
+# Install Python deps for Ray/RLlib
 RUN pip install --no-cache-dir \
     "ray[rllib]" \
     torch \
     gymnasium \
-    stable-baselines3 \
     requests
 
 WORKDIR /app
 
-# Copy Node.js project definition
+# Copy dependency definitions
 COPY package*.json ./
+COPY tsconfig*.json ./
 
 # Install Node dependencies
-RUN npm ci --only=production
+RUN npm ci
 
-# Copy source code and build scripts
+# Copy full source and datasets (including core_set_v2.json)
 COPY . .
 
-# Build output (assuming dist/ exists or tsc runs)
-# Check if build script exists, otherwise assume pre-built
-RUN npm run build || true
+# Build step (TypeScript to JS)
+RUN npm run build:server || true
 
 # Entry point handled by KubeRay
 CMD ["ray", "start", "--block"]

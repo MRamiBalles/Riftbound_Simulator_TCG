@@ -1,20 +1,20 @@
-
 # Ray Head Node (Python/RLlib Environment)
 FROM rayproject/ray:2.9.0-py310
+
+USER root
 
 # Install RL dependencies
 RUN pip install --no-cache-dir \
     "ray[rllib]" \
     torch \
     gymnasium \
-    stable-baselines3 \
-    pandas \
     requests
 
 # Copy training scripts
 COPY training/ /app/training/
+COPY src/data/core_set_v2.json /app/src/data/core_set_v2.json
 
 WORKDIR /app/training
 
 # Default command (overridden by KubeRay)
-CMD ["ray", "start", "--head"]
+CMD ["ray", "start", "--head", "--dashboard-host", "0.0.0.0"]
