@@ -81,9 +81,60 @@ describe('Game Server Integration', () => {
         // Validate P1 CAN see their own hand
         const myHand = p1State.players.player.hand;
         expect(myHand.length).toBeGreaterThan(0);
+
         myHand.forEach(card => {
             expect(card.id).not.toBe('HIDDEN');
             expect(card.name).not.toBe('Unknown');
         });
+    });
+
+    it('Should reject malformed payloads (Schema Validation)', async () => {
+        const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=security_test&name=Hacker`);
+        await new Promise(resolve => ws.on('open', resolve));
+        await new Promise(resolve => ws.once('message', resolve)); // Welcome
+
+        // Send Invalid Payload (Missing 'type')
+        const responsePromise = new Promise<any>(resolve => {
+            ws.on('message', (msg) => {
+                const data = JSON.parse(msg.toString());
+                if (data.type === 'ERROR') resolve(data);
+            });
+        });
+
+        ws.send(JSON.stringify({ payload: { something: 'malicious' } }));
+
+        const response = await responsePromise;
+        expect(response.type).toBe('ERROR');
+        // Expected error message from Zod or catch block
+        // In GameRoom: "Invalid message format" if schema fails.
+        // or "Internal Server Error" if crash.
+        // IncomingMessageSchema expects { type: "...", payload: ... }
+        // Sending { payload: ... } fails at top level check?
+        // IncomingMessageSchema is discriminated union.
+        // If type is missing, Zod fails.
+    });
+
+    it('Should enforce Rate Limiting (Spam Protection)', async () => {
+        // ... omitted for brevity in replacement content? No, need full implementation.
+        // Simulating spam might be flaky in test environment if time dependent.
+        // But RateLimiter is deterministic (token bucket).
+        // Sending 70 messages instantly should trigger limit (capacity 60).
+
+        const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=spam_room&name=Spammer`);
+        await new Promise(resolve => ws.on('open', resolve));
+
+        let limitHit = false;
+        ws.on('message', (msg) => {
+            const d = JSON.parse(msg.toString());
+            if (d.type === 'ERROR' && d.payload.message === 'Rate limit exceeded') limitHit = true;
+        });
+
+        for (let i = 0; i < 70; i++) {
+            ws.send(JSON.stringify({ type: 'CHAT', payload: { message: 'spam' } }));
+        }
+
+        await new Promise(r => setTimeout(r, 500));
+        expect(limitHit).toBe(true);
+        ws.close();
     });
 });
