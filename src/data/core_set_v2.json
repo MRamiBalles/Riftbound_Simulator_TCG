@@ -31,6 +31,13 @@
         "keywords": [
             "Mech",
             "Piltover"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -42,15 +49,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-001.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />Give a friendly unit at a battlefield +2 :rb_might: this turn for each enemy unit there.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_ALLY"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-066",
@@ -110,14 +109,6 @@
         "keywords": [
             "Ahri",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -133,14 +124,6 @@
         "keywords": [
             "Ahri",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -155,14 +138,6 @@
         "attack": 3,
         "keywords": [
             "Ahri"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -177,14 +152,6 @@
         "attack": 3,
         "keywords": [
             "Ahri"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -267,6 +234,14 @@
         "attack": 3,
         "keywords": [
             "Piltover"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -391,7 +366,7 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "REFILL_MANA",
+                "action": "GAIN_MANA",
                 "value": 2,
                 "target": "OWNER"
             }
@@ -410,6 +385,14 @@
         "keywords": [
             "Annie",
             "Noxus"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DAMAGE",
+                "value": 1,
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -444,7 +427,7 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "REFILL_MANA",
+                "action": "GAIN_MANA",
                 "value": 2,
                 "target": "OWNER"
             }
@@ -467,7 +450,7 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "REFILL_MANA",
+                "action": "GAIN_MANA",
                 "value": 2,
                 "target": "OWNER"
             }
@@ -490,7 +473,7 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "REFILL_MANA",
+                "action": "GAIN_MANA",
                 "value": 2,
                 "target": "OWNER"
             }
@@ -764,15 +747,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-206.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />Give two friendly units each +2 :rb_might: this turn.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_ALLY"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-277",
@@ -1006,14 +981,6 @@
         "keywords": [
             "Fae",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -1071,6 +1038,14 @@
             "Mech",
             "Blitzcrank",
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -1098,7 +1073,21 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-057.webp",
         "text": "[Hidden] <em>(Hide now for :rb_rune_rainbow: to react with later for :rb_energy_0:.)</em><br />[Action] <em>(Play on your turn or in showdowns.)</em><br />Give a unit [Shield 3] and [Tank] this turn. <em>(+3 :rb_might: while it's a defender. It must be assigned combat damage first.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Shield",
+                "target": "SELF"
+            }
+        ]
     },
     {
         "id": "SFD-162",
@@ -1127,7 +1116,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-003.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />[Repeat] :rb_energy_1: <em>(You may pay the additional cost to repeat this spell's effect.)</em><br />Give a unit [Assault 2]. <em>(+2 :rb_might: while it's an attacker.)</em>",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
+        ]
     },
     {
         "id": "OGN-126",
@@ -1171,15 +1168,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-151.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />[Repeat] :rb_energy_2: <em>(You may pay the additional cost to repeat this spell's effect.)</em><br />Give two friendly units each +1 :rb_might: this turn.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELECTED_ALLY"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "SFD-118",
@@ -1398,15 +1387,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-207.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />As you play this, you may spend a buff as an additional cost. If you do, ignore this spell's cost.<br />Give a unit +3 :rb_might: this turn.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "SFD-122",
@@ -1530,6 +1511,12 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 2,
+                "target": "OWNER"
             }
         ]
     },
@@ -1637,6 +1624,14 @@
         "attack": 2,
         "keywords": [
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -1663,7 +1658,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-004.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Give a unit [Assault 3] this turn. <em>(+3 :rb_might: while it's an attacker.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
+        ]
     },
     {
         "id": "OGN-044",
@@ -1941,14 +1944,6 @@
         "set_name": "Spiritforged",
         "keywords": [
             "Rumble"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -1964,14 +1959,6 @@
         "keywords": [
             "Mech",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -2117,14 +2104,6 @@
             "Trifarian",
             "Darius",
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2141,14 +2120,6 @@
             "Trifarian",
             "Darius",
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2239,14 +2210,6 @@
         "set_name": "Proving Grounds",
         "keywords": [
             "Garen"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_ALLY"
-            }
         ]
     },
     {
@@ -2260,14 +2223,6 @@
         "set_name": "Spiritforged",
         "keywords": [
             "Irelia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -2309,7 +2264,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-005.webp",
         "text": "Kill a gear. Its controller draws 2.",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "SFD-094",
@@ -2338,6 +2300,13 @@
         "attack": 2,
         "keywords": [
             "Demacia"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -2351,12 +2320,6 @@
         "set_name": "Origins",
         "keywords": [],
         "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_UNIT"
-            },
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
@@ -2376,12 +2339,6 @@
         "set_name": "Origins",
         "keywords": [],
         "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_UNIT"
-            },
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
@@ -2492,6 +2449,14 @@
         "keywords": [
             "Dr. Mundo",
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DRAW",
+                "value": 3,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -2625,14 +2590,6 @@
         "keywords": [
             "Draven",
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2648,14 +2605,6 @@
         "keywords": [
             "Draven",
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2685,14 +2634,6 @@
         "keywords": [
             "Dragon",
             "Shurima"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_ATTACK",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2764,12 +2705,6 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            },
-            {
-                "trigger": "ON_CAST",
                 "action": "STUN",
                 "target": "SELECTED_UNIT"
             }
@@ -2816,14 +2751,6 @@
         "attack": 4,
         "keywords": [
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -2852,15 +2779,15 @@
         "keywords": [],
         "effects": [
             {
+                "trigger": "ON_CAST",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            },
+            {
                 "trigger": "ON_PLAY",
                 "action": "SUMMON",
                 "value": 2,
                 "target": "OWNER"
-            },
-            {
-                "trigger": "ON_CAST",
-                "action": "RECALL",
-                "target": "SELECTED_UNIT"
             }
         ]
     },
@@ -2884,15 +2811,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-046.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />Give a friendly unit +1 :rb_might: this turn, then an additional +1 :rb_might: this turn if it is the only unit you control there.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELECTED_ALLY"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-098",
@@ -3077,7 +2996,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-135.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Return a gear to its owner's hand.",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-180",
@@ -3088,7 +3014,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-180.webp",
         "text": "Give a unit at a battlefield or a gear [Temporary]. <em>(Kill it at the start of its controller's Beginning Phase, before scoring.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "SFD-101",
@@ -3190,15 +3123,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-034.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />[Repeat] :rb_energy_2: <em>(You may pay the additional cost to repeat this spell's effect.)</em><br />Give a unit +2 :rb_might: this turn.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "SFD-021",
@@ -3264,6 +3189,12 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
             }
         ]
     },
@@ -3278,6 +3209,14 @@
         "set_name": "Spiritforged",
         "keywords": [
             "Fiora"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -3291,6 +3230,14 @@
         "set_name": "Spiritforged",
         "keywords": [
             "Fiora"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -3501,6 +3448,11 @@
         "keywords": [],
         "effects": [
             {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            },
+            {
                 "trigger": "ON_PLAY",
                 "action": "SUMMON",
                 "value": 1,
@@ -3567,6 +3519,13 @@
         "set_name": "Origins",
         "keywords": [
             "Ahri"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -3578,15 +3537,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-066.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />[Repeat] :rb_energy_2: <em>(You may pay the additional cost to repeat this spell's effect.)</em><br />Give a unit -2 :rb_might: this turn.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "SFD-067",
@@ -3601,14 +3552,6 @@
         "keywords": [
             "Dog",
             "Freljord"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": -2,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -3658,7 +3601,7 @@
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
-                "value": 1,
+                "value": 3,
                 "target": "OWNER"
             }
         ]
@@ -3743,6 +3686,14 @@
         "keywords": [
             "Mech",
             "Bandle City"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Ganking",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -3820,7 +3771,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD.webp",
         "text": "Kill this, :rb_exhaust:: [Reaction] — [Add] :rb_rune_rainbow:. <em>(Abilities that add resources can't be reacted to.)</em>",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "SFD-T03",
@@ -3831,7 +3789,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-T03.webp",
         "text": "Kill this: [tap]: REACTION: ADD [rune]. (Abilities that add resources can't be reacted to.)",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-233",
@@ -3842,15 +3807,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-233.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Give friendly units +5 :rb_might: this turn.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 5,
-                "target": "SELECTED_ALLY"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-280",
@@ -4018,14 +3975,6 @@
         "keywords": [
             "Pirate",
             "Bilgewater"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 2,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4037,15 +3986,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-052.webp",
         "text": ":rb_exhaust:: Give a unit +3 :rb_might: this turn.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "ARC-003",
@@ -4269,7 +4210,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-221.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />When any unit takes damage this turn, kill it.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGS-003",
@@ -4340,14 +4288,6 @@
         "keywords": [
             "Irelia",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4363,14 +4303,6 @@
         "keywords": [
             "Irelia",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4386,14 +4318,6 @@
         "keywords": [
             "Irelia",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4409,14 +4333,6 @@
         "keywords": [
             "Irelia",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4634,6 +4550,13 @@
         "keywords": [
             "Jayce",
             "Piltover"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -4648,6 +4571,14 @@
         "attack": 5,
         "keywords": [
             "Mount Targon"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Shield",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -4663,6 +4594,14 @@
         "keywords": [
             "Jinx",
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -4678,6 +4617,14 @@
         "keywords": [
             "Jinx",
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -4774,15 +4721,7 @@
         "text": "When you discard one or more cards, ready me and give me +1 [might] this turn.",
         "set_name": "Arcane Box Set",
         "attack": 5,
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-202",
@@ -4797,14 +4736,6 @@
         "keywords": [
             "Jinx",
             "Zaun"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4820,14 +4751,6 @@
         "keywords": [
             "Jinx",
             "Zaun"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -4843,14 +4766,6 @@
         "keywords": [
             "Jinx",
             "Zaun"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -5101,7 +5016,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-237.webp",
         "text": "Starting with the next player, each other player chooses a unit you don't control that hasn't been chosen for this spell. Kill those units.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-141",
@@ -5180,6 +5102,14 @@
         "attack": 2,
         "keywords": [
             "Equipment"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DRAW",
+                "value": 2,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -5191,7 +5121,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-069.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Double a friendly unit's Might this turn. Give it [Temporary]. <em>(Kill it at the start of its controller's Beginning Phase, before scoring.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "SFD-096",
@@ -5384,6 +5321,13 @@
         "keywords": [
             "Trifarian",
             "Noxus"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -5420,6 +5364,12 @@
                 "trigger": "ON_ATTACK",
                 "action": "STUN",
                 "target": "SELECTED_UNIT"
+            },
+            {
+                "trigger": "ON_ATTACK",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Shield",
+                "target": "SELF"
             }
         ]
     },
@@ -5442,6 +5392,12 @@
                 "trigger": "ON_ATTACK",
                 "action": "STUN",
                 "target": "SELECTED_UNIT"
+            },
+            {
+                "trigger": "ON_ATTACK",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Shield",
+                "target": "SELF"
             }
         ]
     },
@@ -5621,6 +5577,14 @@
             "Lucian",
             "Demacia",
             "Sentinel"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -5637,6 +5601,14 @@
             "Lucian",
             "Demacia",
             "Sentinel"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Assault",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -5725,14 +5697,6 @@
         "keywords": [
             "Lux",
             "Demacia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_SPELL_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -5783,6 +5747,14 @@
         "keywords": [
             "Pirate",
             "Bilgewater"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -6162,6 +6134,12 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
             }
         ]
     },
@@ -6439,15 +6417,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-090.webp",
         "text": ":rb_exhaust:: Give a unit -1 :rb_might: this turn, to a minimum of 1 :rb_might:.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": -1,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-214",
@@ -6620,7 +6590,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-181.webp",
         "text": ":rb_exhaust:: Return another friendly gear, unit, or [Hidden] card to its owner's hand.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-135",
@@ -6668,6 +6645,12 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
             }
         ]
     },
@@ -6709,7 +6692,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-104.webp",
         "text": "[Temporary] <em>(Kill this at the start of its controller's Beginning Phase, before scoring.)</em><br />Friendly units have [Deflect]. <em>(Opponents must pay :rb_rune_rainbow: to choose them with a spell or ability.)</em>",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-215",
@@ -6738,6 +6728,13 @@
         "attack": 3,
         "keywords": [
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -6867,6 +6864,11 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
             }
         ]
     },
@@ -6959,15 +6961,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-154.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Give a unit +7 :rb_might: this turn.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 7,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "SFD-075",
@@ -6982,14 +6976,6 @@
         "keywords": [
             "Mech",
             "Piltover"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -7056,15 +7042,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-097.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Give a unit +5 :rb_might: this turn.",
         "set_name": "Spiritforged",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 5,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-155",
@@ -7084,6 +7062,12 @@
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
+                "value": 1,
+                "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
                 "value": 1,
                 "target": "OWNER"
             }
@@ -7176,14 +7160,6 @@
         "attack": 2,
         "keywords": [
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_SPELL_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -7198,14 +7174,6 @@
         "attack": 2,
         "keywords": [
             "Noxus"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_SPELL_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -7217,7 +7185,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-032.webp",
         "text": ":rb_exhaust:: The next spell you play deals 1 Bonus Damage. <em>(Each instance of damage the spell deals is increased by 1.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DAMAGE",
+                "value": 1,
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-285",
@@ -7448,6 +7424,14 @@
         "keywords": [
             "Rell",
             "Noxus"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -7613,14 +7597,6 @@
         "attack": 3,
         "keywords": [
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELECTED_ALLY"
-            }
         ]
     },
     {
@@ -7708,6 +7684,11 @@
                 "trigger": "ON_CAST",
                 "action": "DAMAGE",
                 "value": 4,
+                "target": "SELECTED_UNIT"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
                 "target": "SELECTED_UNIT"
             }
         ]
@@ -7956,6 +7937,11 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
             }
         ]
     },
@@ -8035,14 +8021,6 @@
         "keywords": [
             "Pirate",
             "Bilgewater"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -8237,14 +8215,6 @@
         "keywords": [
             "Sett",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 4,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -8260,14 +8230,6 @@
         "keywords": [
             "Sett",
             "Ionia"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 4,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -8282,14 +8244,6 @@
         "attack": 4,
         "keywords": [
             "Sett"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 4,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -8304,14 +8258,6 @@
         "attack": 4,
         "keywords": [
             "Sett"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 4,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -8407,6 +8353,12 @@
         "set_name": "Origins",
         "keywords": [],
         "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DAMAGE",
+                "value": 6,
+                "target": "SELECTED_UNIT"
+            },
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
@@ -8526,7 +8478,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-105.webp",
         "text": "Deal 6 to each of up to two units.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DAMAGE",
+                "value": 6,
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-266",
@@ -8539,14 +8499,6 @@
         "set_name": "Origins",
         "keywords": [
             "Viktor"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 1,
-                "target": "SELECTED_ALLY"
-            }
         ]
     },
     {
@@ -8677,15 +8629,7 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-093.webp",
         "text": "[Reaction] <em>(Play any time, even before spells and abilities resolve.)</em><br />Give a unit -4 :rb_might: this turn, to a minimum of 1 :rb_might:.",
         "set_name": "Origins",
-        "keywords": [],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": -4,
-                "target": "SELECTED_UNIT"
-            }
-        ]
+        "keywords": []
     },
     {
         "id": "OGN-176",
@@ -8715,6 +8659,14 @@
         "keywords": [
             "Bird",
             "Freljord"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_DEATH",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -8729,6 +8681,18 @@
         "attack": 4,
         "keywords": [
             "Mount Targon"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            },
+            {
+                "trigger": "ON_PLAY",
+                "action": "STUN",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -8768,6 +8732,11 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
             }
         ]
     },
@@ -8874,6 +8843,13 @@
         "keywords": [
             "Draven",
             "Equipment"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -8955,7 +8931,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-094.webp",
         "text": "[Hidden] <em>(Hide now for :rb_rune_rainbow: to react with later for :rb_energy_0:.)</em><br />[Action] <em>(Play on your turn or in showdowns.)</em><br />Play a ready 3 :rb_might: Sprite unit token with [Temporary]. <em>(Kill it at the start of its controller's Beginning Phase, before scoring.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-106",
@@ -8969,6 +8952,13 @@
         "attack": 3,
         "keywords": [
             "Fae"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -9041,7 +9031,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-288.webp",
         "text": "When you hold here, you may channel 1 rune exhausted.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
+        ]
     },
     {
         "id": "OGN-288/298",
@@ -9052,7 +9050,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-288/298.webp",
         "text": "When you hold here, you may channel 1 rune exhausted.",
         "set_name": "Origins Proving Grounds",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
+        ]
     },
     {
         "id": "OGN-177",
@@ -9143,6 +9149,20 @@
         "attack": 6,
         "keywords": [
             "Freljord"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            },
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -9157,6 +9177,20 @@
         "attack": 6,
         "keywords": [
             "Freljord"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            },
+            {
+                "trigger": "ON_PLAY",
+                "action": "GRANT_KEYWORD",
+                "keyword": "Tank",
+                "target": "SELF"
+            }
         ]
     },
     {
@@ -9181,12 +9215,6 @@
         "set_name": "Origins",
         "keywords": [],
         "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": -1,
-                "target": "SELECTED_UNIT"
-            },
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
@@ -9327,7 +9355,7 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "REFILL_MANA",
+                "action": "GAIN_MANA",
                 "value": 2,
                 "target": "OWNER"
             }
@@ -9368,6 +9396,12 @@
                 "action": "DRAW",
                 "value": 1,
                 "target": "OWNER"
+            },
+            {
+                "trigger": "ON_DEATH",
+                "action": "GAIN_MANA",
+                "value": 2,
+                "target": "OWNER"
             }
         ]
     },
@@ -9385,14 +9419,6 @@
             "Yordle",
             "Teemo",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -9409,14 +9435,6 @@
             "Yordle",
             "Teemo",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -9433,14 +9451,6 @@
             "Yordle",
             "Teemo",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -9457,14 +9467,6 @@
             "Yordle",
             "Teemo",
             "Bandle City"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
-                "value": 3,
-                "target": "SELF"
-            }
         ]
     },
     {
@@ -9756,7 +9758,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-022.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />Kill all gear.",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-116",
@@ -9781,7 +9790,14 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/SFD-040.webp",
         "text": "[Action] <em>(Play on your turn or in showdowns.)</em><br />[Repeat] :rb_energy_2: <em>(You may pay the additional cost to repeat this spell's effect.)</em><br />Stun an attacking unit. <em>(It doesn't deal combat damage this turn.)</em>",
         "set_name": "Spiritforged",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "STUN",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "SFD-060",
@@ -9906,6 +9922,17 @@
             {
                 "trigger": "ON_CAST",
                 "action": "DRAW",
+                "value": 1,
+                "target": "OWNER"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            },
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
                 "value": 1,
                 "target": "OWNER"
             }
@@ -10403,9 +10430,9 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
+                "action": "DRAW",
                 "value": 1,
-                "target": "SELF"
+                "target": "OWNER"
             }
         ]
     },
@@ -10426,9 +10453,9 @@
         "effects": [
             {
                 "trigger": "ON_CAST",
-                "action": "BUFF_ATTACK",
+                "action": "DRAW",
                 "value": 1,
-                "target": "SELF"
+                "target": "OWNER"
             }
         ]
     },
@@ -10685,7 +10712,15 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-296.webp",
         "text": "Spells and abilities affecting units here each deal 1 Bonus Damage. <em>(Each instance of damage the spell deals is increased by 1.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "DAMAGE",
+                "value": 1,
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-296/298",
@@ -10796,6 +10831,14 @@
         "keywords": [
             "Volibear",
             "Freljord"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "DAMAGE",
+                "value": 5,
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -10811,6 +10854,14 @@
         "keywords": [
             "Volibear",
             "Freljord"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "DAMAGE",
+                "value": 5,
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -10870,6 +10921,14 @@
         "set_name": "Origins",
         "keywords": [
             "Volibear"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -10883,6 +10942,14 @@
         "set_name": "Origins",
         "keywords": [
             "Volibear"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -10896,6 +10963,14 @@
         "set_name": "Origins",
         "keywords": [
             "Volibear"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -10909,6 +10984,14 @@
         "set_name": "Origins",
         "keywords": [
             "Volibear"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "GAIN_MANA",
+                "value": 1,
+                "target": "OWNER"
+            }
         ]
     },
     {
@@ -10965,7 +11048,14 @@
         "text": "I enter ready. When I attack, destroy all damaged enemy units here.",
         "set_name": "Arcane Box Set",
         "attack": 5,
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     },
     {
         "id": "OGN-159",
@@ -10981,6 +11071,13 @@
             "Dog",
             "Warwick",
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_ATTACK",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -11036,14 +11133,6 @@
         "keywords": [
             "Dragon",
             "Mount Targon"
-        ],
-        "effects": [
-            {
-                "trigger": "ON_PLAY",
-                "action": "BUFF_ATTACK",
-                "value": 8,
-                "target": "SELECTED_UNIT"
-            }
         ]
     },
     {
@@ -11111,6 +11200,13 @@
         "attack": 1,
         "keywords": [
             "Ionia"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -11466,6 +11562,13 @@
         "attack": 2,
         "keywords": [
             "Zaun"
+        ],
+        "effects": [
+            {
+                "trigger": "ON_PLAY",
+                "action": "RECALL",
+                "target": "SELECTED_UNIT"
+            }
         ]
     },
     {
@@ -11512,6 +11615,13 @@
         "image_url": "https://static.dotgg.gg/riftbound/cards/OGN-077.webp",
         "text": "[Hidden] <em>(Hide now for :rb_rune_rainbow: to react with later for :rb_energy_0:.)</em><br />The next time a friendly unit would die, kill this instead. Recall that unit exhausted. <em>(Send it to base. This isn't a move.)</em>",
         "set_name": "Origins",
-        "keywords": []
+        "keywords": [],
+        "effects": [
+            {
+                "trigger": "ON_CAST",
+                "action": "KILL",
+                "target": "SELECTED_UNIT"
+            }
+        ]
     }
 ]
