@@ -66,25 +66,31 @@ export class GameRoom {
     }
 
     public handleMessage(clientId: string, rawMessage: any) {
+        console.log(`[DEBUG] Received rawMessage from ${clientId}:`, JSON.stringify(rawMessage));
         const client = this.clients.get(clientId);
-        if (!client) return;
+        if (!client) {
+            console.error(`[DEBUG] Client NOT FOUND for ${clientId}`);
+            return;
+        }
 
         // 1. Rate Limiting
         if (!this.rateLimiter.tryConsume(clientId)) {
-            console.warn(`Rate limit exceeded for ${clientId}`);
+            console.log(`[DEBUG] Rate limit exceeded for ${clientId}`);
             this.sendError(client, 'Rate limit exceeded');
-            // client.ws.close(); // Optional strict disconnect
             return;
         }
 
         try {
             // 2. Schema Validation
+            // console.log(`[DEBUG] Validating schema for ${clientId}`);
             const parseResult = IncomingMessageSchema.safeParse(rawMessage);
 
             if (!parseResult.success) {
-                console.log(`[DEBUG] Invalid schema from ${clientId}:`, JSON.stringify(parseResult.error.format()));
+                console.log(`[DEBUG] Schema Validation FAILED for ${clientId}:`, JSON.stringify(parseResult.error.format()));
                 return this.sendError(client, 'Invalid message format');
             }
+
+            // console.log(`[DEBUG] Schema Validation PASSED for ${clientId}`);
 
             const message = parseResult.data;
 

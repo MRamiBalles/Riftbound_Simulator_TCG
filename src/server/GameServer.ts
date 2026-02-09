@@ -49,12 +49,13 @@ wss.on('connection', (ws: WebSocket, req) => {
             }
         }));
 
-        ws.on('message', (message: string) => {
+        ws.on('message', (message: any) => {
+            console.log(`[DEBUG] GameServer received raw data from ${clientId}: ${message.toString().substring(0, 50)}...`);
             try {
                 const data = JSON.parse(message.toString());
                 room.handleMessage(clientId, data);
             } catch (e) {
-                console.error('Invalid JSON received:', message);
+                console.error('[DEBUG] Invalid JSON received:', message);
             }
         });
 
