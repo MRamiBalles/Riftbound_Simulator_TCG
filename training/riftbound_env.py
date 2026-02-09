@@ -16,10 +16,11 @@ class RiftboundEnv(gym.Env):
         # Action Space: 48 discrete actions
         self.action_space = spaces.Discrete(48)
         
-        # Observation Space: 200 float features
-        self.observation_space = spaces.Box(
-            low=0, high=1, shape=(200,), dtype=np.float32
-        )
+        # Observation Space: Dict with observations and action_mask
+        self.observation_space = spaces.Dict({
+            "observations": spaces.Box(low=0, high=1, shape=(200,), dtype=np.float32),
+            "action_mask": spaces.Box(low=0, high=1, shape=(48,), dtype=np.int8)
+        })
         
         self.node_process = None
         # Path to headless-bridge script (Source TS)
@@ -50,7 +51,7 @@ class RiftboundEnv(gym.Env):
                 bufsize=1
             )
             
-            # Wait for ready signal? Ideally implemented in protocol
+            # Flush stderr to avoid hanging if there's early output
         except Exception as e:
             print(f"Failed to start node bridge: {e}")
             raise e
@@ -85,10 +86,24 @@ class RiftboundEnv(gym.Env):
                 raise RuntimeError(f"Bridge Error: {response['error']}")
                 
             return response.get("result")
-        except BrokenPipeError:
+        except (BrokenPipeError, ConnectionResetError):
             self._start_node_bridge()
-            # Retry once
             return self._send_command(method, params)
+
+    def _process_result(self, result):
+        obs = np.array(result.get("observation", []), dtype=np.float32)
+        mask = np.array(result.get("actionMask", [1]*48), dtype=np.int8)
+
+        # Pad observation
+        current_len = len(obs)
+        if current_len < 200:
+            obs = np.pad(obs, (0, 200 - current_len), 'constant')
+        
+        # RLlib expecting a dict for parametric action space / masking
+        return {
+            "observations": obs,
+            "action_mask": mask
+        }
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
@@ -97,24 +112,19 @@ class RiftboundEnv(gym.Env):
         if not result:
              raise RuntimeError("Reset returned empty result")
 
-        obs = np.array(result.get("observation", []), dtype=np.float32)
-        
-        # Pad observation
-        current_len = len(obs)
-        if current_len < 200:
-            obs = np.pad(obs, (0, 200 - current_len), 'constant')
-            
-        return obs, result.get("info", {})
+        processed_obs = self._process_result(result)
+        return processed_obs, result.get("info", {})
 
     def step(self, action):
         result = self._send_command("step", {"action": int(action)})
         
-        obs = np.array(result.get("observation", []), dtype=np.float32)
-
-        # Pad observation
-        current_len = len(obs)
-        if current_len < 200:
-            obs = np.pad(obs, (0, 200 - current_len), 'constant')
+        processed_obs = self._process_result(result)
+            
+        reward = float(result.get("reward", 0.0))
+        done = bool(result.get("done", False))
+        truncated = bool(result.get("truncated", False))
+        
+        return processed_obs, reward, done, truncated, result.get("info", {})
             
         reward = float(result.get("reward", 0.0))
         done = bool(result.get("done", False))

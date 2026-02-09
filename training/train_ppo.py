@@ -23,13 +23,13 @@ def train_riftbound():
         .training(
             train_batch_size=4000,
             gamma=0.99,
-            lr=5e-5,
+            lr=1e-4, # Slightly higher for large state space
             model={
-                "fcnet_hiddens": [256, 256, 128],
+                "fcnet_hiddens": [512, 512, 256], # Deeper net for 233 cards
                 "fcnet_activation": "relu",
             }
         )
-        .resources(num_gpus=0) # Set to 1 if GPU available
+        .resources(num_gpus=0) # Dedicated for CPU-based training on K8s
     )
     
     # Build Algorithm
