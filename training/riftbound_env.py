@@ -22,25 +22,26 @@ class RiftboundEnv(gym.Env):
         )
         
         self.node_process = None
-        # Path to headless-bridge script (compiled JS)
-        local_bridge = os.path.join(os.path.dirname(__file__), "../scripts/headless-bridge.js")
+        # Path to headless-bridge script (Source TS)
+        local_bridge = os.path.normpath(os.path.join(os.path.dirname(__file__), "../scripts/headless-bridge.ts"))
         self.bridge_path = config.get("bridge_path", local_bridge) if config else local_bridge
         
         self._start_node_bridge()
 
     def _start_node_bridge(self):
-        """Spawns the Node.js simulation bridge."""
+        """Spawns the Node.js simulation bridge using ts-node."""
         if self.node_process:
             self.node_process.kill()
             
         try:
+            # Use cmd /c npx ts-node to handle Windows environment and TS directly
             self.node_process = subprocess.Popen(
-                ['node', self.bridge_path],
+                ['cmd', '/c', 'npx', 'ts-node', '--transpile-only', self.bridge_path],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
-                bufsize=1  # Line buffered
+                bufsize=1
             )
             
             # Wait for ready signal? Ideally implemented in protocol
