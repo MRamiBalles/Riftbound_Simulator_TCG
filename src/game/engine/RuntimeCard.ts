@@ -1,5 +1,5 @@
 import { Card } from '@/lib/database.types';
-import { Keyword } from './game.types';
+import { Keyword, CardEffect } from './effects/effect.types';
 
 export interface Enchantment {
     id: string;
@@ -34,6 +34,9 @@ export interface RuntimeCard extends Card {
     // Mechanics
     keywords: Keyword[];
     enchantments: Enchantment[];
+
+    // Declarative Effects (Data-Driven)
+    effects?: CardEffect[];
 
     // UI Helper
     highlight?: boolean;

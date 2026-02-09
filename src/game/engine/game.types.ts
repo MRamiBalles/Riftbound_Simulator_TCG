@@ -1,11 +1,11 @@
-import { Card } from '@/lib/database.types';
 import { RuntimeCard } from './RuntimeCard';
+import { Keyword } from './effects/effect.types';
 
 export type PlayerId = 'player' | 'opponent';
 export type Phase = 'Draw' | 'Mulligan' | 'Main' | 'Combat' | 'End';
-export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End'; // More granular if needed
+export type TurnPhase = 'Start' | 'Mulligan' | 'Play' | 'Combat' | 'End';
 
-export type Keyword = 'Rush' | 'Barrier' | 'Overwhelm' | 'Elusive' | 'Tough' | 'Regeneration' | 'Quick Attack' | 'Lifesteal';
+export type { Keyword }; // Re-export for backwards compatibility
 export type TargetType = 'face' | 'unit' | 'any';
 export type SpellSpeed = 'Burst' | 'Fast' | 'Slow';
 
@@ -57,13 +57,15 @@ export interface StackItem {
 }
 
 export interface SerializedPlayerState {
-    id: PlayerId;
+    id?: PlayerId;
     health: number;
     maxHealth: number;
     mana: number;
-    maxMana: number; /* Spell mana could be added here later */
+    maxMana: number;
+    spellMana: number;
     hand: RuntimeCard[];
-    deckCount: number;
+    deck: RuntimeCard[];      // Full deck (server-side) 
+    deckCount?: number;       // Deprecated: use deck.length
     field: RuntimeCard[];
     graveyard: RuntimeCard[];
 }
