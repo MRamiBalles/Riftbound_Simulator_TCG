@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import WebSocket from 'ws';
 import { startServer } from '../GameServer';
 import { SerializedGameState } from '../../game/engine/game.types';
@@ -19,23 +19,15 @@ describe('Game Server Integration', () => {
     });
 
     it('Should allow two players to connect and assign roles', async () => {
-        const p1Promise = new Promise<any>((resolve) => {
-            const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=test1&name=Player1`);
+        const connect = (name: string) => new Promise<any>((resolve) => {
+            const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=test1&name=${name}`);
             ws.on('message', (msg) => {
                 const data = JSON.parse(msg.toString());
                 if (data.type === 'WELCOME') resolve(data.payload);
             });
         });
 
-        const p2Promise = new Promise<any>((resolve) => {
-            const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=test1&name=Player2`);
-            ws.on('message', (msg) => {
-                const data = JSON.parse(msg.toString());
-                if (data.type === 'WELCOME') resolve(data.payload);
-            });
-        });
-
-        const [p1, p2] = await Promise.all([p1Promise, p2Promise]);
+        const [p1, p2] = await Promise.all([connect('P1'), connect('P2')]);
         const roles = new Set([p1.role, p2.role]);
         expect(roles.has('player')).toBe(true);
         expect(roles.has('opponent')).toBe(true);
@@ -61,6 +53,7 @@ describe('Game Server Integration', () => {
         ]);
 
         const opponentHand = p1State.players.opponent.hand;
+        expect(opponentHand).toBeDefined();
         if (opponentHand.length > 0) {
             opponentHand.forEach(card => expect(card.id).toBe('HIDDEN'));
         }
@@ -68,55 +61,43 @@ describe('Game Server Integration', () => {
 
     it('Should reject malformed payloads (Schema Validation)', async () => {
         const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=security_test&name=Hacker`);
-        await new Promise(resolve => ws.on('open', resolve));
 
-        // Wait specifically for WELCOME message to ensure handshake is done
-        await new Promise<void>((resolve) => {
-            const listener = (msg: any) => {
-                const data = JSON.parse(msg.toString());
-                if (data.type === 'WELCOME') {
-                    ws.off('message', listener);
-                    resolve();
-                }
-            };
-            ws.on('message', listener);
-        });
-
-        // console.log('[DEBUG] Hacker handshake done, setting up ERROR listener');
-
-        const responsePromise = new Promise<any>(resolve => {
+        // Wait for WELCOME and then send garbage
+        const errorPromise = new Promise<any>((resolve) => {
             ws.on('message', (msg) => {
                 const data = JSON.parse(msg.toString());
-                if (data.type === 'ERROR') resolve(data);
+                if (data.type === 'WELCOME') {
+                    ws.send(JSON.stringify({ some_garbage: true }));
+                } else if (data.type === 'ERROR') {
+                    resolve(data);
+                }
             });
         });
 
-        // console.log('[DEBUG] Sending garbage payload');
-        ws.send(JSON.stringify({ some_garbage: true }));
-
-        const response = await responsePromise;
-        expect(response.type).toBe('ERROR');
-        expect(response.payload.message).toBe('Invalid message format');
-
+        const error = await errorPromise;
+        expect(error.type).toBe('ERROR');
+        expect(error.payload.message).toBe('Invalid message format');
         ws.close();
-    }, 10000);
+    });
 
     it('Should enforce Rate Limiting (Spam Protection)', async () => {
         const ws = new WebSocket(`ws://localhost:${TEST_PORT}?room=spam_room&name=Spammer`);
-        await new Promise(resolve => ws.on('open', resolve));
 
-        let limitHit = false;
-        ws.on('message', (msg) => {
-            const d = JSON.parse(msg.toString());
-            if (d.type === 'ERROR' && d.payload.message === 'Rate limit exceeded') limitHit = true;
+        const limitPromise = new Promise<void>((resolve) => {
+            ws.on('open', () => {
+                for (let i = 0; i < 70; i++) {
+                    ws.send(JSON.stringify({ type: 'CHAT', payload: { message: 'spam' } }));
+                }
+            });
+            ws.on('message', (msg) => {
+                const d = JSON.parse(msg.toString());
+                if (d.type === 'ERROR' && d.payload.message === 'Rate limit exceeded') {
+                    resolve();
+                }
+            });
         });
 
-        for (let i = 0; i < 70; i++) {
-            ws.send(JSON.stringify({ type: 'CHAT', payload: { message: 'spam' } }));
-        }
-
-        await new Promise(r => setTimeout(r, 1000));
-        expect(limitHit).toBe(true);
+        await limitPromise;
         ws.close();
     });
 });

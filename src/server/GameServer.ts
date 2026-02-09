@@ -2,28 +2,24 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { GameRoom } from './GameRoom';
 import http from 'http';
+import crypto from 'crypto';
 
 const PORT = process.env.PORT || 8080;
-
-// Simple in-memory room storage
 const rooms: Map<string, GameRoom> = new Map();
 
-// Helper to get or create a room
 function getOrCreateRoom(roomId: string): GameRoom {
     if (!rooms.has(roomId)) {
-        console.log(`Creating new room: ${roomId}`);
+        console.log(`[DEBUG] Creating new room: ${roomId}`);
         rooms.set(roomId, new GameRoom(roomId));
     }
     return rooms.get(roomId)!;
 }
 
-// Create HTTP server (for health checks / upgrades)
 const server = http.createServer((req, res) => {
     res.writeHead(200);
     res.end('Riftbound Game Server Running');
 });
 
-// Attach WebSocket Server
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws: WebSocket, req) => {
@@ -32,58 +28,54 @@ wss.on('connection', (ws: WebSocket, req) => {
     const playerName = urlParams.get('name') || 'Anonymous';
     const clientId = crypto.randomUUID();
 
-    console.log(`New connection: ${clientId} (${playerName}) requesting room ${roomId}`);
+    console.log(`[DEBUG] Connection established: ${clientId} (${playerName}) room: ${roomId}`);
 
     const room = getOrCreateRoom(roomId);
 
-    // Add client to room
     try {
+        console.log(`[DEBUG] Calling room.addClient for ${clientId}`);
         const role = room.addClient(ws, clientId, playerName);
+        console.log(`[DEBUG] addClient DONE for ${clientId}, role: ${role}`);
 
-        ws.send(JSON.stringify({
+        const welcomeMsg = JSON.stringify({
             type: 'WELCOME',
-            payload: {
-                clientId,
-                role,
-                roomId
-            }
-        }));
+            payload: { clientId, role, roomId }
+        });
+
+        console.log(`[DEBUG] Sending WELCOME to ${clientId}`);
+        ws.send(welcomeMsg, (err) => {
+            if (err) console.error(`[DEBUG] Error sending WELCOME to ${clientId}:`, err);
+            else console.log(`[DEBUG] WELCOME sent successfully to ${clientId}`);
+        });
 
         ws.on('message', (message: any) => {
-            console.log(`[DEBUG] GameServer received raw data from ${clientId}: ${message.toString().substring(0, 50)}...`);
+            const raw = message.toString();
+            console.log(`[DEBUG] GameServer RECEIVED from ${clientId}: ${raw.substring(0, 50)}`);
             try {
-                const data = JSON.parse(message.toString());
+                const data = JSON.parse(raw);
                 room.handleMessage(clientId, data);
             } catch (e) {
-                console.error('[DEBUG] Invalid JSON received:', message);
+                console.error(`[DEBUG] JSON error for ${clientId}:`, raw);
             }
         });
 
         ws.on('close', () => {
-            console.log(`Client ${clientId} disconnected`);
+            console.log(`[DEBUG] Connection CLOSED for ${clientId}`);
             room.removeClient(clientId);
         });
 
-        ws.on('error', (err) => {
-            console.error(`WebSocket error for ${clientId}:`, err);
-        });
-
     } catch (e) {
-        console.error('Connection handling error:', e);
+        console.error(`[DEBUG] FATAL connection error for ${clientId}:`, e);
         ws.close();
     }
 });
 
-
 export function startServer(port: number) {
-    const serverInstance = server.listen(port, () => {
-        console.log(`Game Server listening on port ${port}`);
+    return server.listen(port, () => {
+        console.log(`[DEBUG] Game Server listening on port ${port}`);
     });
-    return serverInstance;
 }
 
-// Only start if run directly
 if (require.main === module) {
     startServer(Number(PORT));
 }
-
