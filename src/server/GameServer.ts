@@ -73,6 +73,16 @@ wss.on('connection', (ws: WebSocket, req) => {
     }
 });
 
-server.listen(PORT, () => {
-    console.log(`Game Server listening on port ${PORT}`);
-});
+
+export function startServer(port: number) {
+    const serverInstance = server.listen(port, () => {
+        console.log(`Game Server listening on port ${port}`);
+    });
+    return serverInstance;
+}
+
+// Only start if run directly
+if (require.main === module) {
+    startServer(Number(PORT));
+}
+
