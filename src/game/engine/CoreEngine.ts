@@ -49,6 +49,9 @@ export class CoreEngine {
         this.initializePlayer('player', playerDeck);
         this.initializePlayer('opponent', opponentDeck);
 
+        // Reset Mulligan Status
+        this.mulliganStatus = { player: false, opponent: false };
+
         // Start Game
         this.state.log.push('Game Initialized');
         this.drawInitialHands();
@@ -196,27 +199,38 @@ export class CoreEngine {
      */
     public isActionLegal(action: Action): boolean {
         if (this.state.winner) return false;
+
+        // Phase-specific legality
+        if (this.state.phase === 'Mulligan') {
+            return action.type === 'SELECT_MULLIGAN' && !this.mulliganStatus[action.playerId];
+        }
+
         const player = this.state.players[action.playerId];
 
         switch (action.type) {
             case 'PLAY_CARD':
+                if (this.state.priority !== action.playerId) return false;
+                if (this.state.phase !== 'Main') return false;
                 const card = player.hand.find(c => c.instanceId === action.cardId);
                 if (!card) return false;
                 if (player.mana < card.currentCost) return false;
-                if (this.state.priority !== action.playerId) return false;
                 return true;
             case 'DECLARE_ATTACKERS':
                 if (this.state.phase !== 'Main' || this.state.priority !== action.playerId) return false;
                 const attackers = action.attackers || [];
+                if (attackers.length === 0) return false;
                 return attackers.every(id => {
                     const unit = player.field.find(u => u.instanceId === id);
                     return unit && !unit.hasAttacked && !unit.summoningSickness && !unit.isStunned;
                 });
+            case 'DECLARE_BLOCKERS':
+                if (this.state.phase !== 'Combat' || !this.state.combat || this.state.combat.step !== 'declare_blockers') return false;
+                return this.state.priority === action.playerId;
             case 'PASS':
             case 'END_TURN':
                 return this.state.priority === action.playerId;
             default:
-                return true;
+                return false;
         }
     }
 
