@@ -14,14 +14,19 @@ Sistema de simulación e inteligencia artificial para el juego de cartas colecci
 
 ```
 Riftbound_Simulator_TCG/
-├── src/                    # Frontend Next.js
-│   ├── services/           # Servicios cliente (DriftWatchdog, etc.)
-│   └── data/               # Atlas semántico y modelo ONNX
-├── backend/                # Motor Python
-│   ├── models/             # Arquitecturas MuZero/TinyZero
-│   ├── embeddings/         # Cache de vectores semánticos
-│   └── league/             # Sistema de liga adversarial
-└── scripts/                # Utilidades de sincronización y exportación
+├── src/                    # Motor TS and Frontend Next.js
+│   ├── game/engine         # Sovereign Core Engine
+│   └── services/rl         # Encoding & Action Mapping
+├── training/               # Python RL Infrastructure
+│   ├── riftbound_env.py    # Gymnasium Environment (Action Masking)
+│   └── train_ppo.py        # Ray/RLlib PPO Orchestrator
+├── k8s/                    # Kubernetes Manifests
+│   ├── ray-cluster.yaml    # Infrastructure (KubeRay)
+│   └── training-job.yaml   # AI Training Job
+├── scripts/                # Bridge & Migration tools
+│   ├── headless-bridge.ts  # RL Bridge (Node.js)
+│   └── genesis_migration.js# Mass migration tool
+└── public/                 # Assets & Data (core_set_v2.json)
 ```
 
 ## Requisitos

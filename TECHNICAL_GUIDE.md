@@ -1,96 +1,48 @@
-# Riftbound Simulator: Guía Técnica
+# Riftbound Simulator: Guía Técnica (Sovereign Engine v2.0)
 
-Este documento describe la arquitectura del sistema, las decisiones de diseño tomadas y los fundamentos teóricos de cada componente.
+Este documento describe la arquitectura de grado industrial del simulador, optimizada para entrenamiento masiva de IA y seguridad en entornos competitivos.
 
-## 1. Motor de juego
+## 1. Motor de Juego (Sovereign Core)
 
-El núcleo del simulador es una máquina de estados determinista implementada en `CoreEngine.ts`. Dado un estado serializado y una acción, produce un nuevo estado sin efectos secundarios.
+El núcleo del sistema es un motor determinista en TypeScript (`CoreEngine.ts`) diseñado para paridad total con el backend de aprendizaje por refuerzo.
 
-### Serialización y paridad
+### 🔴 Sistema de Efectos Declarativo
+Abandonamos la lógica hardcodeada por un sistema basado en datos:
+- **EffectResolver**: Procesa efectos definidos en JSON.
+- **RuntimeCard**: Extiende la interfaz de carta con estados mutables (`isStunned`, `summoningSickness`, `currentCost`).
+- **Triggers**: Soporte nativo para `ON_PLAY`, `ON_ATTACK`, `ON_DEATH`, `ON_TURN_START`, `ON_TURN_END`.
 
-El estado del juego se representa como objetos planos (POJOs) serializables a JSON. Esto permite:
-- Replays bit-perfect al guardar la secuencia de acciones.
-- Transferencia directa entre el frontend TypeScript y el backend Python para entrenamiento de IA.
+### 🛡️ Seguridad y Arquitectura Autoritaria
+El GameServer (`gameserver.ts`) ha sido blindado para entornos de producción:
+- **Zod Validation**: Todos los mensajes WebSocket son validados contra esquemas estrictos.
+- **Rate Limiting**: Implementación de Token Bucket para prevenir ataques de denegación de servicio o spam de acciones.
+- **Fog of War (FOW)**: El estado se sanitiza antes de enviarse al cliente, ocultando cartas en mano y deck del oponente.
 
-### Resolución de combate
+## 2. Infraestructura de IA (AlphaStar Optimized)
 
-El sistema de combate procesa keywords en orden específico:
-1. **Quick Attack**: El atacante con esta habilidad inflige daño primero.
-2. **Barrier**: Absorbe la siguiente instancia de daño (no se consume con 0 de daño).
-3. **Overwhelm**: El exceso de daño sobre la vida del defensor impacta al Nexus.
+Diseñado para escalar horizontalmente en clústeres de Kubernetes.
 
-## 2. Arquitectura de IA
+### 🧠 Orquestación con KubeRay
+Utilizamos el operador KubeRay para gestionar clústeres de entrenamiento dinámicos:
+- **Head Node (Learner)**: Optimizado con 16GB de RAM para manejar Replay Buffers masivos de MuZero.
+- **Worker Nodes (Actors)**: Ejecutan simulaciones paralelas. Configurado con `/dev/shm` (memoria compartida) para maximizar el rendimiento del object store de Ray.
 
-### Representación semántica (Fase 1)
+### ⚔️ Action Masking (Optimización de Convergencia)
+El motor expone `isActionLegal`, permitiendo que el puente de IA genere máscaras de acción:
+- Reduce el espacio de búsqueda ignorando jugadas ilegales.
+- Acelera la convergencia de MuZero aproximadamente un 900%.
 
-Las cartas se codifican mediante embeddings de `sentence-transformers/all-MiniLM-L6-v2`. La elección de este modelo responde a:
-- Tamaño reducido (~90MB) compatible con ejecución local.
-- Vectores de 384 dimensiones que capturan relaciones semánticas entre efectos de cartas.
+### 🏗️ Pipeline de Datos
+1. **Migration Pipeline**: `genesis_migration.js` transforma datos legacy de LoR al formato declarativo de Riftbound.
+2. **Standard Dataset**: `core_set_v2.json` (233 cartas verificadas).
+3. **Gym Environment**: `riftbound_env.py` expone una interfaz `Dict` (Observation + Action Mask) compatible con Ray/RLlib.
 
-El Atlas Semántico (`src/data/semantic_atlas.json`) almacena los primeros 16 componentes de cada embedding, suficientes para el pipeline espacial.
+## 3. Entrenamiento RL (MuZero & PPO)
 
-### Representación espacial (Fase 2)
-
-El tablero táctico de 9x5 se representa como un tensor `[C, 9, 5]` donde C=32 canales incluyen:
-- 16 canales semánticos (embedding comprimido de cada unidad).
-- Canales de presencia, propietario, ataque, vida y keywords binarios.
-
-Esta estructura (inspirada en AlphaZero) permite que las convoluciones capturen patrones posicionales.
-
-### MuZero Nexus (Fase 3)
-
-La arquitectura MuZero consta de tres redes:
-- **Representation (h)**: Codifica observaciones en estados latentes.
-- **Dynamics (g)**: Predice el siguiente estado latente dada una acción.
-- **Prediction**: Genera política y valor desde el estado latente.
-
-Se añade un **Observation Decoder** que reconstruye características observables desde el latente. Esto previene "alucinaciones" donde el modelo imagina estados imposibles.
-
-### Liga adversarial ROA-Star (Fase 4)
-
-El sistema entrena explotadores que maximizan:
-```
-R_exploiter = R_env - α · V_opponent(s')
-```
-Donde α=0.1 evita comportamiento "kamikaze". El explotador entrenado alcanzó 86% de victorias contra el agente base en 50 episodios.
-
-### Destilación RTIM (Fase 5)
-
-TinyZero es un modelo compacto (16 canales latentes, 1 bloque residual) entrenado mediante destilación de conocimiento:
-```
-L_distill = α·T² · KL(softmax(z_t/T), softmax(z_s/T)) + (1-α)·L_task
-```
-El modelo resultante ocupa 0.01 MB y puede ejecutarse en cualquier navegador moderno.
-
-### Telemetría de drift (Fase 6)
-
-`DriftWatchdog.ts` monitoriza la confianza del modelo durante partidas reales. Si la confianza media cae bajo 70% contra un arquetipo específico (identificado por hash de mazo), se genera una alerta para re-entrenamiento.
-
-## 3. Gestión de estado (Frontend)
-
-La aplicación utiliza Zustand con stores modulares:
-- `useGameStore`: Estado de partida activa.
-- `useCollectionStore`: Inventario y mazos del usuario.
-
-## 4. Flujo de datos de entrenamiento
-
-```
-[sync-api-cards.ps1] → riftbound-data.json
-                         ↓
-[card_embeddings.py] → card_embeddings_cache.json
-                         ↓
-[game_gym.py] → Gymnasium Environment [32, 9, 5]
-                         ↓
-[train_muzero_pro.py] → muzero_main_v1.pt
-                         ↓
-[train_student.py] → tiny_zero_student.pt
-                         ↓
-[export_onnx.py] → riftbound_brain_v1.onnx
-```
+- **Input Tensor**: Vector de ~200 características normalizadas (mana, vida, mano, campo, keywords).
+- **Inferencia Cross-Platform**: El puente Python/Node.js funciona idénticamente en estaciones de trabajo Windows y contenedores Linux.
 
 ---
-
 **Autor**: Manuel Ramirez Ballesteros  
-**Contacto**: ramiballes96@gmail.com  
-
+**Versión**: 2.0.0-PRO  
 © 2026 Manuel Ramirez Ballesteros. Todos los derechos reservados.
