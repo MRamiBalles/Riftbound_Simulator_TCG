@@ -60,6 +60,32 @@ npm run dev
 - [Guía Técnica](TECHNICAL_GUIDE.md): Detalles de arquitectura y decisiones de diseño.
 - [Changelog](CHANGELOG.md): Historial de cambios por versión.
 
+## Infraestructura y Entrenamiento Masivo
+
+### 🔴 Sistema de Efectos Declarativo
+El motor utiliza ahora un sistema basado en datos (`src/game/engine/effects`) que permite:
+- Migración automatizada de cartas mediante `scripts/genesis_migration.js`.
+- Soporte para triggers complejos (`ON_DEATH`, `ON_ATTACK`, `ON_TURN_START/END`).
+- Dataset verificado de **233 cartas** en `src/data/core_set_v2.json`.
+
+### 🛡️ Servidor Autoritativo
+Servidor WebSocket blindado con:
+- Validación de esquemas via `Zod`.
+- Rate Limiting (Token Bucket).
+- Fog of War nativo para evitar visibilidad total del estado.
+
+### 🧠 Kubernetes & Ray Cluster
+Infraestructura escalable para entrenamiento MuZero:
+- **KubeRay Operator**: Orquestación de clústeres de Ray.
+- **Memoria Compartida (/dev/shm)**: Optimizado para el Plasma Object Store de Ray.
+- **Observabilidad**: Integración con Prometheus para el monitoreo de métricas de recompensa.
+
+Para desplegar localmente:
+```bash
+kubectl apply -f k8s/ray-cluster.yaml
+kubectl apply -f k8s/training-job.yaml
+```
+
 ---
 
 **Autor**: Manuel Ramirez Ballesteros  

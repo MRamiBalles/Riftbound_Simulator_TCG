@@ -16,15 +16,15 @@ spec:
       spec:
         containers:
         - name: ray-head
-          image: manu/riftbound-ray-head:latest
+          image: manu/riftbound-ray-head:v1.0.0
           imagePullPolicy: Always
           resources:
             limits:
               cpu: "2"
-              memory: "8Gi" # Increased for policy optimization
+              memory: "16Gi" # Increased for policy optimization (AlphaStar pattern)
             requests:
               cpu: "1"
-              memory: "4Gi"
+              memory: "8Gi"
           ports:
           - containerPort: 6379
             name: gcs-server
@@ -46,7 +46,7 @@ spec:
       spec:
         containers:
         - name: ray-worker
-          image: manu/riftbound-ray-worker:latest
+          image: manu/riftbound-ray-worker:v1.0.0
           imagePullPolicy: Always
           lifecycle:
             preStop:
